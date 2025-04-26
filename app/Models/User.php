@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Travel;
+use Illuminate\Support\Str;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -56,5 +58,26 @@ class User extends Authenticatable
             ->explode(' ')
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
+    }
+
+
+    /**
+     * ownedTravels
+     *
+     * @return BelongsToMany<Travel, $this>
+     */
+    public function ownedTravels(): BelongsToMany
+    {
+        return $this->belongsToMany(Travel::class)->withPivot('is_owner')->withTimestamps()->wherePivot('is_owner', true);
+    }
+
+    /**
+     * travels
+     *
+     * @return BelongsToMany<Travel, $this>
+     */
+    public function travels(): BelongsToMany
+    {
+        return $this->belongsToMany(Travel::class)->withPivot('is_owner')->withTimestamps();
     }
 }

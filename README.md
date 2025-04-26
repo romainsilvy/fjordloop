@@ -28,3 +28,4 @@
 
 - landing page
 - traduction correcte code de base 
+- gestion delete cascade ou non table travel users
