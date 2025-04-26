@@ -7,15 +7,11 @@
         <flux:input label="Nom" placeholder="Nom du voyage" wire:model="name" />
         <flux:input label="Lieu" placeholder="Adresse" wire:model="placeName" />
 
-        {{-- integrer membersselector + datepicker --}}
-
         <livewire:travel.members-selector wire:model="members" />
 
-        <div class="flex *:w-1/2 gap-4">
-            <flux:input label="Date de début" placeholder="Date de début" wire:model="startDate" type="date" />
-            <flux:input label="Date de fin" placeholder="Date de fin" wire:model="endDate" type="date" />
-        </div>
-
+        <livewire:date-range-picker
+            wire:model="dateRange"
+            />
 
         <div class="flex">
             <flux:spacer />

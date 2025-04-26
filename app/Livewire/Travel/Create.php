@@ -12,12 +12,13 @@ class Create extends Component
     public $name;
     #[Validate('required')]
     public $placeName;
-    #[Validate('required|date')]
-    public $startDate;
-    #[Validate('required|date')]
-    public $endDate;
 
     public $members = [];
+
+    public array $dateRange = [
+        'start' => null,
+        'end' => null,
+    ];
 
     public function save()
     {
@@ -29,14 +30,16 @@ class Create extends Component
         $travel = Travel::create([
             'name' => $this->name,
             'place_name' => $this->placeName,
-            // 'start_date' => $this->dateRange['start'],
-            // 'end_date' => $this->dateRange['end'],
-            'start_date' => $this->startDate,
-            'end_date' => $this->endDate,
+            'start_date' => $this->dateRange['start'],
+            'end_date' => $this->dateRange['end'],
         ]);
 
         $travel->attachOwner($user);
         $travel->inviteMembers($this->members, $user);
+
+        return redirect()->route('travel.show', [
+            'travelId' => $travel->id,
+        ]);
     }
 
     public function render()

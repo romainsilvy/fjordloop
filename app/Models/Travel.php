@@ -125,6 +125,13 @@ class Travel extends Model
         return $query->whereNull('start_date')->orWhereNull('end_date');
     }
 
+    public function scopeFromInvitation(Builder $query, string $token): Travel|null
+    {
+        return $query->withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
+            $query->where('token', $token);
+        })->firstOrFail();
+    }
+
     public function attachOwner(User $user): void
     {
         $this->members()->attach($user->id, ['is_owner' => true]);
