@@ -1,5 +1,5 @@
 <div class="p-4 bg-white dark:bg-zinc-800 rounded-2xl shadow-md space-y-2">
-    <h2 class="text-xl font-semibold text-zinc-800 dark:text-white">
+    <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">
         {{ $travel->name }}
     </h2>
 

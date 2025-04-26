@@ -1,5 +1,17 @@
 <div>
-    <flux:heading size="xl">Voyages</flux:heading>
+    <div class="flex">
+        <flux:heading size="xl">Voyages</flux:heading>
+
+        <flux:spacer />
+
+        <flux:modal.trigger name="create-travel">
+            <flux:button>Nouveau</flux:button>
+        </flux:modal.trigger>
+    </div>
+
+    <livewire:travel.create />
+
+
     <flux:separator variant="subtle" class="my-8" />
 
     <div class="flex flex-col gap-10">

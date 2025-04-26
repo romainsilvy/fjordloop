@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\TravelInvitation;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Travel extends Model
 {
@@ -124,30 +125,35 @@ class Travel extends Model
         return $query->whereNull('start_date')->orWhereNull('end_date');
     }
 
-    // /**
-    //  * invite
-    //  *
-    //  * @param  array<string>  $members
-    //  */
-    // public function inviteMembers(array $members, User $user): void
-    // {
-    //     foreach ($members as $member) {
-    //         $this->invitations()->create([
-    //             'email' => $member,
-    //             'user_id' => $user->id,
-    //         ]);
-    //     }
-    // }
+    public function attachOwner(User $user): void
+    {
+        $this->members()->attach($user->id, ['is_owner' => true]);
+    }
 
-    // /**
-    //  * invitations
-    //  *
-    //  * @return HasMany<TravelInvitation, $this>
-    //  */
-    // public function invitations(): HasMany
-    // {
-    //     return $this->hasMany(TravelInvitation::class);
-    // }
+    /**
+     * invite
+     *
+     * @param  array<string>  $members
+     */
+    public function inviteMembers(array $members, User $user): void
+    {
+        foreach ($members as $member) {
+            $this->invitations()->create([
+                'email' => $member,
+                'user_id' => $user->id,
+            ]);
+        }
+    }
+
+    /**
+     * invitations
+     *
+     * @return HasMany<TravelInvitation, $this>
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(TravelInvitation::class);
+    }
 
     // /**
     //  * travelType
