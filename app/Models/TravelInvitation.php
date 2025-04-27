@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Mail\TravelInvitation as TravelInvitationMail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Mail;
 
 class TravelInvitation extends Model
 {
+
+    use HasUuids;
     protected $fillable = [
         'travel_id',
         'user_id',

@@ -26,7 +26,6 @@
 
 # todo list : 
 
-- passer tous les id en uuid
 - landing page
 - traduction correcte code de base 
 - gestion delete cascade ou non table travel users
