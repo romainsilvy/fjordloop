@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  app:
+    image: registry.silvy-leligois.fr/aeroz:prod
+    container_name: aeroz-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    env_file:
+      - .env-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.aeroz.rule=Host(`aeroz.silvy-leligois.fr`)"
+      - "traefik.http.routers.aeroz.entrypoints=websecure"
+      - "traefik.http.services.aeroz.loadbalancer.server.port=80"
+      - "traefik.http.routers.aeroz.service=aeroz"
+      - "traefik.http.routers.aeroz.tls.certresolver=leresolver"
+      - "--certificatesresolvers.myhttpchallenge.acme.tlschallenge=true"
+      - "traefik.docker.network=traefik"
+    networks:
+      - aeroz
+      - traefik
+    depends_on:
+      - pgsql
+    command: >
+      sh -c "
+      php artisan optimize &&
+      php artisan route:cache &&
+      php artisan view:cache &&
+      php artisan config:cache &&
+      php artisan migrate --force &&"
+
+  pgsql:
+    image: "postgres:latest"
+    container_name: aeroz-pgsql
+    environment:
+      POSTGRES_DB: db-TajaitCXuPYGSA
+      POSTGRES_USER: riyBZdSOHGvRNO
+      POSTGRES_PASSWORD: aXcaOfUbLKUAld
+    volumes:
+      - "./pg_data:/var/lib/postgresql/data"
+    networks:
+      - aeroz
+
+networks:
+  aeroz:
+    driver: bridge
+  traefik:
+    external: true
+

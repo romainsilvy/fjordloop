@@ -1,0 +1,87 @@
+# Stage 1: Build stage
+FROM php:8.2-apache AS builder
+
+# Install required system packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    zip \
+    unzip \
+    wget \
+    gnupg2 \
+    libzip-dev \
+    cron \
+    libpq-dev \
+    libicu-dev \
+    curl \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip exif bcmath intl \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set PHP configuration
+RUN echo "short_open_tag=Off" >> /usr/local/etc/php/php.ini \
+    && echo "upload_max_filesize=150M" >> /usr/local/etc/php/php.ini \
+    && echo "post_max_size=150M" >> /usr/local/etc/php/php.ini \
+    && echo "memory_limit=150M" >> /usr/local/etc/php/php.ini
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Set work directory
+WORKDIR /var/www/html
+
+# Copy application code
+COPY . .
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Install Node and build frontend assets
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
+    && export NVM_DIR="$HOME/.nvm" \
+    && . "$NVM_DIR/nvm.sh" \
+    && nvm install node \
+    && npm install \
+    && npm run build
+
+# Stage 2: Production stage
+FROM php:8.2-apache
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libzip-dev \
+    libpq-dev \
+    libicu-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip exif bcmath intl \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set PHP configuration
+RUN echo "short_open_tag=Off" >> /usr/local/etc/php/php.ini \
+    && echo "upload_max_filesize=150M" >> /usr/local/etc/php/php.ini \
+    && echo "post_max_size=150M" >> /usr/local/etc/php/php.ini \
+    && echo "memory_limit=150M" >> /usr/local/etc/php/php.ini
+
+# Enable Apache Rewrite module
+RUN a2enmod rewrite
+
+# Set work directory
+WORKDIR /var/www/html
+
+# Set Apache Document Root
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Copy built app from builder
+COPY --from=builder /var/www/html /var/www/html
+
+# Set correct ownership
+RUN chown -R www-data:www-data /var/www/html
+
+# Expose Apache port
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
