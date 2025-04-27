@@ -20,8 +20,6 @@
         <p>{{$travel->start_date}}</p>
         <p>{{$travel->end_date}}</p>
 
-        <x-map />
-
     </div>
 
 </div>

@@ -20,6 +20,7 @@ class Travel extends Model
         'place_name',
         'place_latitude',
         'place_longitude',
+        'place_geojson',
         'start_date',
         'end_date',
     ];

@@ -10,8 +10,13 @@ class Create extends Component
 {
     #[Validate('required')]
     public $name;
-    #[Validate('required')]
-    public $placeName;
+
+    public $place =[
+        'display_name' => null,
+        'lat' => null,
+        'lng' => null,
+        'geojson' => null,
+    ];
 
     public $members = [];
 
@@ -22,14 +27,16 @@ class Create extends Component
 
     public function save()
     {
-
         $this->validate();
 
         $user = auth()->user();
 
         $travel = Travel::create([
             'name' => $this->name,
-            'place_name' => $this->placeName,
+            'place_name' => $this->place['display_name'],
+            'place_latitude' => $this->place['lat'],
+            'place_longitude' => $this->place['lng'],
+            'place_geojson' => $this->place['geojson'],
             'start_date' => $this->dateRange['start'],
             'end_date' => $this->dateRange['end'],
         ]);

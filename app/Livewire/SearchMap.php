@@ -5,11 +5,14 @@ namespace App\Livewire;
 use App\Services\NominatimService;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Modelable;
 
 class SearchMap extends Component
 {
     public $query = '';
     public $results = [];
+    #[Modelable]
+    public $place = [];
 
     public function updatedQuery(NominatimService $nominatimService)
     {
@@ -40,6 +43,12 @@ class SearchMap extends Component
 
         $this->query = $name;
         $this->results = [];
+        $this->place = [
+            'display_name' => $name,
+            'lat' => $lat,
+            'lng' => $lon,
+            'geojson' => $geojson,
+        ];
     }
 
     public function render()
