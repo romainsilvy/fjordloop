@@ -3,14 +3,15 @@
 namespace App\Livewire;
 
 use App\Services\NominatimService;
-use Livewire\Component;
-use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Modelable;
+use Livewire\Component;
 
 class SearchMap extends Component
 {
     public $query = '';
+
     public $results = [];
+
     #[Modelable]
     public $place = [];
 
@@ -18,6 +19,7 @@ class SearchMap extends Component
     {
         if (strlen($this->query) < 3) {
             $this->results = [];
+
             return;
         }
 
@@ -39,7 +41,6 @@ class SearchMap extends Component
             geojson: $geojson,
             name: $name
         );
-
 
         $this->query = $name;
         $this->results = [];

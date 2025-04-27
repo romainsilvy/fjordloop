@@ -3,15 +3,15 @@
 namespace App\Livewire\Travel;
 
 use App\Models\Travel;
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class Create extends Component
 {
     #[Validate('required')]
     public $name;
 
-    public $place =[
+    public $place = [
         'display_name' => null,
         'lat' => null,
         'lng' => null,

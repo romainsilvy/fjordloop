@@ -3,19 +3,25 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use Livewire\Component;
 use Livewire\Attributes\Modelable;
+use Livewire\Component;
 
 class DateRangePicker extends Component
 {
     public int $currentYear;
+
     public int $currentMonth;
+
     public int $previousYear;
+
     public int $previousMonth;
+
     public int $nextYear;
+
     public int $nextMonth;
 
     public int $daysInMonth;
+
     public string $monthName;
 
     /** @var array<string, string> */

@@ -1,10 +1,10 @@
 <?php
 
+use App\Livewire\Settings\Appearance;
+use App\Livewire\Settings\Password;
+use App\Livewire\Settings\Profile;
 use App\Livewire\Travel\Index as TravelIndex;
 use App\Livewire\Travel\Show as TravelShow;
-use App\Livewire\Settings\Profile;
-use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Appearance;
 use Illuminate\Support\Facades\Route;
 
 Route::view('dashboard', 'dashboard')
@@ -23,7 +23,6 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Route::get('/', TravelIndex::class)->name('index');
             Route::get('/{travelId}/{token?}', TravelShow::class)->name('show');
-
 
         });
 });

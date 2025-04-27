@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Travel;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\TravelInvitation as TravelInvitationMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Mail\TravelInvitation as TravelInvitationMail;
+use Illuminate\Support\Facades\Mail;
 
 class TravelInvitation extends Model
 {

@@ -15,7 +15,9 @@ class TravelInvitation extends Mailable
     use Queueable, SerializesModels;
 
     public User $sender;
+
     public Travel $travel;
+
     public string $invitationToken;
 
     public function __construct(User $sender, Travel $travel, string $invitationToken)

@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Travel;
 
-use Livewire\Component;
-use Livewire\Attributes\Modelable;
 use Illuminate\Support\Facades\Validator;
+use Livewire\Attributes\Modelable;
+use Livewire\Component;
 
 class MembersSelector extends Component
 {
@@ -45,6 +45,7 @@ class MembersSelector extends Component
     {
         unset($this->members[$index]);
     }
+
     public function render()
     {
         return view('livewire.travel.members-selector');

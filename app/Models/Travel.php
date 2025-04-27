@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\TravelInvitation;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Travel extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -63,8 +62,6 @@ class Travel extends Model
 
     /**
      * owner
-     *
-     * @return User
      */
     public function owner(): User
     {
@@ -126,7 +123,7 @@ class Travel extends Model
         return $query->whereNull('start_date')->orWhereNull('end_date');
     }
 
-    public function scopeFromInvitation(Builder $query, string $token): Travel|null
+    public function scopeFromInvitation(Builder $query, string $token): ?Travel
     {
         return $query->withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
             $query->where('token', $token);

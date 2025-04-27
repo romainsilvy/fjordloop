@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Travel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,7 +27,6 @@ class TravelFactory extends Factory
             'end_date' => $this->faker->dateTimeBetween('+1 year', '+2 years'),
         ];
     }
-
 
     public function withOwner(User $user)
     {

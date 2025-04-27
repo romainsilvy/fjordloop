@@ -8,9 +8,13 @@ use Livewire\Component;
 class Index extends Component
 {
     public $upcoming;
+
     public $active;
+
     public $past;
+
     public $noDate;
+
     public $isResultEmpty;
 
     public function mount()

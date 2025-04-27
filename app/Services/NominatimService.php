@@ -10,7 +10,7 @@ class NominatimService
 
     public function __construct()
     {
-        $this->baseUrl = config('services.nominatim.url') . '/search';
+        $this->baseUrl = config('services.nominatim.url').'/search';
     }
 
     public function searchPlaceWithGeojson(string $q)
