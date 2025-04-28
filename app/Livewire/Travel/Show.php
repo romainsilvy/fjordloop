@@ -26,7 +26,7 @@ class Show extends Component
                 abort(404);
             }
         } else {
-            $this->travel = Travel::find($travelId);
+            $this->travel = Travel::findOrFail($travelId);
         }
     }
 
