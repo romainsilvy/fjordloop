@@ -31,7 +31,7 @@ class TravelFactory extends Factory
     public function withOwner(User $user)
     {
         return $this->afterCreating(function (Travel $travel) use ($user) {
-            $travel->members()->attach($user->id, ['is_owner' => true]);
+            $travel->attachOwner($user);
         });
     }
 }
