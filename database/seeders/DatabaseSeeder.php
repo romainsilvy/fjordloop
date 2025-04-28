@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
             UserFactory::new()->definition(),
         );
 
-        Travel::factory()->count(10)->withOwner($user)->create();
+        Travel::factory()->count(10)->withOwner($user)->createActivities()->create();
     }
 }

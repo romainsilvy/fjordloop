@@ -17,9 +17,9 @@
     <div class="flex flex-col gap-10">
         <p>{{$travel->name}}</p>
         <p>{{$travel->place_name}}</p>
-        <p>{{$travel->start_date}}</p>
-        <p>{{$travel->end_date}}</p>
 
+        <x-travel.show-date :travel="$travel" />
     </div>
 
+    <x-activity.list :activities="$activities" title="Activités" />
 </div>

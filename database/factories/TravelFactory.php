@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Travel;
 use App\Models\User;
+use App\Models\Travel;
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -32,6 +33,15 @@ class TravelFactory extends Factory
     {
         return $this->afterCreating(function (Travel $travel) use ($user) {
             $travel->attachOwner($user);
+        });
+    }
+
+    public function createActivities(int $count = 5)
+    {
+        return $this->afterCreating(function (Travel $travel) use ($count) {
+            Activity::factory($count)->create([
+                'travel_id' => $travel->id,
+            ]);
         });
     }
 }

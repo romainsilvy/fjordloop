@@ -26,6 +26,9 @@
 
 # todo list : 
 
+- gestion correcte invitations avec modale accepter ou refuser
+- sondage de dates
+- vote de lieu / activité
 - ajout toast erreur quand erreur api nominatim
 - landing page
 - traduction correcte code de base 

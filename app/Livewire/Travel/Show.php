@@ -13,6 +13,8 @@ class Show extends Component
 
     public $isInvited = false;
 
+    public $activities;
+
     public function mount($travelId, $token = null)
     {
         $this->token = $token;
@@ -28,6 +30,8 @@ class Show extends Component
         } else {
             $this->travel = Travel::findOrFail($travelId);
         }
+
+        $this->activities = $this->travel->activities()->get();
     }
 
     public function render()
