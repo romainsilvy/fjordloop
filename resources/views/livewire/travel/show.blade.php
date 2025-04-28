@@ -9,17 +9,12 @@
         </flux:modal.trigger>
     </div>
 
-    {{-- <livewire:travel.create /> --}}
-
-
-    <flux:separator variant="subtle" class="my-8" />
-
-    <div class="flex flex-col gap-10">
-        <p>{{$travel->name}}</p>
-        <p>{{$travel->place_name}}</p>
-
+    <div>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{$travel->place_name}}
         <x-travel.show-date :travel="$travel" />
     </div>
+
+    <flux:separator variant="subtle" class="my-8" />
 
     <x-activity.list :activities="$activities" title="Activités" />
 </div>

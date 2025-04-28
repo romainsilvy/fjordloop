@@ -6,8 +6,10 @@
     </flux:heading>
 
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        @foreach ($activities as $activity)
+        @forelse ($activities as $activity)
             <x-activity.card :activity="$activity" />
-        @endforeach
+        @empty
+            <p class="ml-4 text-zinc-500 dark:text-zinc-400">Vous n'avez aucune activité pour le moment.</p>
+        @endforelse
     </div>
 </div>
