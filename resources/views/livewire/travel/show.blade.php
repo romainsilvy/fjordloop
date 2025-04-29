@@ -18,5 +18,9 @@
 
     <flux:separator variant="subtle" class="my-8" />
 
+    <livewire:travel.global-map :travel="$travel" />
+
+
+
     <x-activity.list :activities="$activities" title="Activités" />
 </div>

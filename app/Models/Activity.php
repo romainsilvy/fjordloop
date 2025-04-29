@@ -39,6 +39,11 @@ class Activity extends Model
         });
     }
 
+    public function scopeHasPlace(Builder $query)
+    {
+        return $query->whereNotNull(['place_name', 'place_latitude', 'place_longitude']);
+    }
+
     public function travel(): BelongsTo
     {
         return $this->belongsTo(Travel::class);
