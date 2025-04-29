@@ -3,7 +3,7 @@
     <div
         class="w-full border rounded-lg block disabled:shadow-none dark:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5">
         <div wire:ignore x-data="{ activities: @js($activities) }" x-init="initMap($refs.map, activities)">
-            <div class="w-full h-96 rounded-lg" x-ref="map"></div>
+            <div class="w-full h-[60vh] rounded-lg" x-ref="map"></div>
         </div>
     </div>
 </flux:field>

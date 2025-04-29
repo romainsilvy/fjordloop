@@ -14,26 +14,16 @@
 
     <flux:separator variant="subtle" class="my-8" />
 
-    <div class="flex flex-col gap-10">
-        @if ($active->isNotEmpty())
-            <x-travel.list :travels="$active" title="Actifs" />
-        @endif
+    <div class="flex flex-col">
+        @forelse ($sections as $section)
+            <x-travel.list :travels="$section['travels']" :title="$section['title']" />
 
-        @if ($upcoming->isNotEmpty())
-            <x-travel.list :travels="$upcoming" title="À venir" />
-        @endif
-
-        @if ($past->isNotEmpty())
-            <x-travel.list :travels="$past" title="Passés" />
-        @endif
-
-        @if ($noDate->isNotEmpty())
-            <x-travel.list :travels="$noDate" title="Pas de date renseignée" />
-        @endif
+            @if (!$loop->last)
+                <flux:separator variant="subtle" class="my-8" />
+            @endif
+        @empty
+            <p class="text-center text-zinc-500 dark:text-zinc-400">Vous n'avez aucun voyage pour le moment.</p>
+        @endforelse
     </div>
-
-    @unless (!$isResultEmpty)
-        <p class="text-center text-zinc-500 dark:text-zinc-400">Vous n'avez aucun voyage pour le moment.</p>
-    @endunless
 
 </div>

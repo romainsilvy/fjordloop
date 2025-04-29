@@ -7,27 +7,31 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $upcoming;
+    public $sections = [];
 
-    public $active;
-
-    public $past;
-
-    public $noDate;
-
-    public $isResultEmpty;
 
     public function mount()
     {
-        $this->upcoming = Travel::upcoming()->get();
-        $this->active = Travel::active()->get();
-        $this->past = Travel::past()->get();
-        $this->noDate = Travel::noDate()->get();
+        $upcoming = Travel::upcoming()->get();
+        $active = Travel::active()->get();
+        $past = Travel::past()->get();
+        $noDate = Travel::noDate()->get();
 
-        $this->isResultEmpty = $this->upcoming->isEmpty() &&
-            $this->active->isEmpty() &&
-            $this->past->isEmpty() &&
-            $this->noDate->isEmpty();
+        if ($active->isNotEmpty()) {
+            $this->sections[] = ['title' => 'Actifs', 'travels' => $active];
+        }
+
+        if ($upcoming->isNotEmpty()) {
+            $this->sections[] = ['title' => 'À venir', 'travels' => $upcoming];
+        }
+
+        if ($past->isNotEmpty()) {
+            $this->sections[] = ['title' => 'Passés', 'travels' => $past];
+        }
+
+        if ($noDate->isNotEmpty()) {
+            $this->sections[] = ['title' => 'Pas de date renseignée', 'travels' => $noDate];
+        }
     }
 
     public function render()
