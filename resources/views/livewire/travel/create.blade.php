@@ -1,4 +1,4 @@
-<flux:modal name="create-travel" class="w-full max-w-4xl mt-10" id="create-travel-modal">
+<flux:modal name="create-travel" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" wire:cancel="cleanupFields">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Créer un voyage</flux:heading>
@@ -8,7 +8,7 @@
 
         <livewire:travel.members-selector wire:model="members" />
 
-        <livewire:search-map wire:model="place" modalId='create-travel-modal'/>
+        <livewire:search-map wire:model="place"/>
 
         <livewire:date-range-picker wire:model="dateRange"/>
 

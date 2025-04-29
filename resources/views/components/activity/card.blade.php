@@ -1,6 +1,6 @@
 @props(['activity'])
 
-<a class="p-4 bg-primary-500 rounded-md shadow-md space-y-2" {{-- href="{{ route('travel.show', ['travelId' => $travel->id]) }}" wire:navigate --}} href="#">
+<a class="flex flex-col p-4 bg-primary-500 rounded-md shadow-md" href="#">
     <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">
         {{ $activity->name }}
     </h2>
@@ -29,4 +29,15 @@
             Prix total : @euro($activity->price_by_group)
         </p>
     @endif
+
+    <flux:spacer />
+
+    <div class="flex mt-auto">
+        <flux:spacer />
+        <flux:modal.trigger name="update-activity-{{ $activity->id }}">
+            <flux:icon.pencil-square />
+        </flux:modal.trigger>
+    </div>
+
+    <livewire:activity.update :activity="$activity" />
 </a>

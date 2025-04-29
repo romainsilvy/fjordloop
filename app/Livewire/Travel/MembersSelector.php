@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Travel;
 
-use Illuminate\Support\Facades\Validator;
-use Livewire\Attributes\Modelable;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Modelable;
+use Illuminate\Support\Facades\Validator;
 
 class MembersSelector extends Component
 {
@@ -44,6 +45,14 @@ class MembersSelector extends Component
     public function deleteMember(int $index): void
     {
         unset($this->members[$index]);
+    }
+
+    #[On('clean-members')]
+    public function cleanUp(): void
+    {
+        $this->members = [];
+        $this->memberToAdd = '';
+        $this->error = '';
     }
 
     public function render()

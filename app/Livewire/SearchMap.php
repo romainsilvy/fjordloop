@@ -2,9 +2,10 @@
 
 namespace App\Livewire;
 
+use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Services\NominatimService;
 use Livewire\Attributes\Modelable;
-use Livewire\Component;
 
 class SearchMap extends Component
 {
@@ -15,8 +16,10 @@ class SearchMap extends Component
     #[Modelable]
     public $place = [];
 
-
-    public $modalId;
+    public function mount()
+    {
+        $this->query = $this->place['display_name'] ?? '';
+    }
 
     public function updatedQuery(NominatimService $nominatimService)
     {
@@ -52,6 +55,19 @@ class SearchMap extends Component
             'lat' => $lat,
             'lng' => $lon,
             'geojson' => $geojson,
+        ];
+    }
+
+    #[On('clean-map')]
+    public function cleanUp()
+    {
+        $this->query = '';
+        $this->results = [];
+        $this->place = [
+            'display_name' => null,
+            'lat' => null,
+            'lng' => null,
+            'geojson' => null,
         ];
     }
 

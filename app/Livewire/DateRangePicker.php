@@ -3,8 +3,9 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use Livewire\Attributes\Modelable;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Modelable;
 
 class DateRangePicker extends Component
 {
@@ -180,6 +181,18 @@ class DateRangePicker extends Component
         $this->nextMonth = $date->copy()->addMonth()->month;
         $this->nextYear = $date->copy()->addMonth()->year;
     }
+
+    #[On('clean-date-range')]
+    public function cleanUp(): void
+    {
+        $this->dateRange = [
+            'start' => '',
+            'end' => '',
+        ];
+
+        $this->updateCalendar();
+    }
+
 
     public function render()
     {

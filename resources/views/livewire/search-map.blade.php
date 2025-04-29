@@ -28,7 +28,9 @@
         @endif
 
 
-        <div wire:ignore x-data="locationPicker()" x-on:location-selected.window="updateLocation($event.detail.lat, $event.detail.lon, $event.detail.geojson, $event.detail.name)">
+        <div wire:ignore x-data="locationPicker(@js($place))"
+            x-on:location-selected.window="updateLocation($event.detail.lat, $event.detail.lon, $event.detail.geojson, $event.detail.name)"
+            x-on:clean-map.window="cleanMap()">
             <div class="w-full h-64 rounded-b-lg" x-ref="map"></div>
         </div>
     </div>
@@ -36,14 +38,16 @@
 
 @push('scripts')
     <script>
-        function locationPicker() {
+        function locationPicker(place) {
             return {
                 map: null,
                 marker: null,
                 geojsonLayer: null,
+                existingPlace: place,
 
                 init() {
-                    const modal = document.getElementById('{{$modalId}}').firstElementChild;
+                    const modal = this.$root.closest('dialog');
+
                     if (!modal) return;
 
                     const observer = new MutationObserver((mutationsList) => {
@@ -66,32 +70,47 @@
                     const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(this.map);
+
+
+                    this.updateLocation(this.existingPlace.lat, this.existingPlace.lng, this.existingPlace.geojson, this
+                        .existingPlace.display_name);
                 },
                 updateLocation(lat, lon, geojson, name) {
-                    this.map.setView([lat, lon], 12);
 
-                    if (this.marker) {
-                        this.marker.setLatLng([lat, lon]);
-                    } else {
-                        this.marker = L.marker([lat, lon]).addTo(this.map);
+                    if (lat && lon) {
+
+                        this.map.setView([lat, lon], 12);
+
+                        if (this.marker) {
+                            this.marker.setLatLng([lat, lon]);
+                        } else {
+                            this.marker = L.marker([lat, lon]).addTo(this.map);
+                        }
+
+
+                        if (this.geojsonLayer) {
+                            this.map.removeLayer(this.geojsonLayer);
+                        }
+
+                        if (geojson) {
+                            this.geojsonLayer = L.geoJSON(JSON.parse(geojson), {
+                                style: {
+                                    color: '#2563eb',
+                                    fillColor: '#60a5fa',
+                                    fillOpacity: 0.4,
+                                    weight: 2
+                                }
+                            }).addTo(this.map);
+
+                            this.map.fitBounds(this.geojsonLayer.getBounds());
+                        }
                     }
-
-
-                    if (this.geojsonLayer) {
-                        this.map.removeLayer(this.geojsonLayer);
-                    }
-
-                    if (geojson) {
-                        this.geojsonLayer = L.geoJSON(JSON.parse(geojson), {
-                            style: {
-                                color: '#2563eb',
-                                fillColor: '#60a5fa',
-                                fillOpacity: 0.4,
-                                weight: 2
-                            }
-                        }).addTo(this.map);
-
-                        this.map.fitBounds(this.geojsonLayer.getBounds());
+                },
+                cleanMap() {
+                    if (this.map) {
+                        this.map.off();
+                        this.map.remove();
+                        this.map = null;
                     }
                 }
             }

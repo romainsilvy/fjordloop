@@ -3,14 +3,16 @@
 namespace App\Livewire\Activity;
 
 use Flux\Flux;
-use App\Models\Travel;
 use Livewire\Component;
+use App\Models\Activity;
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
 
-class Create extends Component
+use function PHPUnit\Framework\isNull;
+
+class Update extends Component
 {
-    public Travel $travel;
+    public Activity $activity;
 
     #[Validate('required')]
     public $name;
@@ -36,14 +38,29 @@ class Create extends Component
     public $price;
     public $priceType = 'price_by_person';
 
-    // public array $dateRange = [
-    //     'start' => null,
-    //     'end' => null,
-    // ];
-
-    public function mount(Travel $travel)
+    public function mount(Activity $activity)
     {
-        $this->travel = $travel;
+        $this->activity = $activity;
+
+        if ($this->activity) {
+
+            if ($this->activity->price_by_person) {
+                $this->priceType = 'price_by_person';
+            } elseif ($this->activity->price_by_group) {
+                $this->priceType = 'price_by_group';
+            } else {
+                $this->priceType = 'price_by_person';
+            }
+
+            $this->name = $this->activity->name;
+            $this->description = $this->activity->description;
+            $this->place['display_name'] = $this->activity->place_name;
+            $this->place['lat'] = $this->activity->place_latitude;
+            $this->place['lng'] = $this->activity->place_longitude;
+            $this->place['geojson'] = $this->activity->place_geojson;
+            $this->url = $this->activity->url;
+            $this->price = $this->activity->{$this->priceType};
+        }
     }
 
     public function save()
@@ -52,7 +69,7 @@ class Create extends Component
 
         $user = auth()->user();
 
-        $activity = $this->travel->activities()->create([
+        $activity = $this->activity->update([
             'name' => $this->name,
             'description' => $this->description,
             'place_name' => $this->place['display_name'],
@@ -62,14 +79,21 @@ class Create extends Component
             'url' => $this->url,
             'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
-            // 'date_range' => json_encode($this->dateRange),
         ]);
 
-        $this->cleanupFields();
 
-        $this->dispatch('activityCreated');
+        $this->dispatch('activityUpdated');
         Flux::modals()->close();
-        Toaster::success( 'Activité créée!');
+        Toaster::success( 'Activité modifiée !');
+    }
+
+    public function delete()
+    {
+        $this->activity->delete();
+
+        $this->dispatch('activityDeleted');
+        Flux::modals()->close();
+        Toaster::success( 'Activité supprimée !');
     }
 
     public function cleanupFields()
@@ -86,11 +110,12 @@ class Create extends Component
         $this->priceType = 'price_by_person';
         $this->price = null;
 
-        $this->dispatch(event: 'clean-map');
+        $this->dispatch('clean-map');
     }
+
 
     public function render()
     {
-        return view('livewire.activity.create');
+        return view('livewire.activity.update');
     }
 }

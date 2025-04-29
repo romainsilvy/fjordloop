@@ -36,6 +36,8 @@ class Show extends Component
     }
 
     #[On('activityCreated')]
+    #[On('activityUpdated')]
+    #[On('activityDeleted')]
     public function refreshActivities()
     {
         $this->activities = $this->travel->activities()->get();
