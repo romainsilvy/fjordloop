@@ -26,6 +26,7 @@
 
 # todo list : 
 
+- gestion des membres a une activité
 - gestion correcte invitations avec modale accepter ou refuser
 - sondage de dates
 - vote de lieu / activité

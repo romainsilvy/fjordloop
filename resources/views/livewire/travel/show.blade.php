@@ -9,6 +9,8 @@
         </flux:modal.trigger>
     </div>
 
+    <livewire:activity.create />
+
     <div>
         <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{$travel->place_name}}
         <x-travel.show-date :travel="$travel" />
