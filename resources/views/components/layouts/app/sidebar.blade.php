@@ -120,6 +120,7 @@
 
         {{ $slot }}
 
+        <x-toaster-hub />
         @stack('scripts')
         @fluxScripts
     </body>

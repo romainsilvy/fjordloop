@@ -4,6 +4,7 @@ namespace App\Livewire\Travel;
 
 use App\Models\Travel;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Show extends Component
 {
@@ -31,6 +32,12 @@ class Show extends Component
             $this->travel = Travel::findOrFail($travelId);
         }
 
+        $this->refreshActivities();
+    }
+
+    #[On('activityCreated')]
+    public function refreshActivities()
+    {
         $this->activities = $this->travel->activities()->get();
     }
 

@@ -9,7 +9,7 @@
         </flux:modal.trigger>
     </div>
 
-    <livewire:activity.create />
+    <livewire:activity.create :travel="$travel" />
 
     <div>
         <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{$travel->place_name}}

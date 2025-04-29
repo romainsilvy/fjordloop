@@ -6,7 +6,11 @@
 
         <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
         <flux:input label="Description" placeholder="Description" wire:model="description" />
+        {{-- url --}}
+        <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
 
+        <flux:input label="Prix par personne" type="number" wire:model="priceByPerson" />
+        <flux:input label="Prix pour le groupe" type="number" wire:model="priceByGroup" />
 
         {{-- <livewire:travel.members-selector wire:model="members" />
 
