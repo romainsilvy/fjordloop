@@ -43,7 +43,7 @@
                 geojsonLayer: null,
 
                 init() {
-                    const modal = document.getElementById('create-travel-modal').firstElementChild;
+                    const modal = document.getElementById('{{$modalId}}').firstElementChild;
                     if (!modal) return;
 
                     const observer = new MutationObserver((mutationsList) => {

@@ -26,6 +26,8 @@
 
 # todo list : 
 
+- gestion de la date et heure de l'activité 
+- refresh la carte a la fermeture de la modale
 - gestion des membres a une activité
 - gestion correcte invitations avec modale accepter ou refuser
 - sondage de dates

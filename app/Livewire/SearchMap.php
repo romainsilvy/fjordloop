@@ -15,6 +15,9 @@ class SearchMap extends Component
     #[Modelable]
     public $place = [];
 
+
+    public $modalId;
+
     public function updatedQuery(NominatimService $nominatimService)
     {
         if (strlen($this->query) < 3) {

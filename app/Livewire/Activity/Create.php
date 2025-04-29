@@ -26,10 +26,15 @@ class Create extends Component
 
     #[Validate('url|nullable')]
     public $url;
+
+    public $availablePrices = [
+        'price_by_person' => 'par personne',
+        'price_by_group' => 'pour le groupe',
+    ];
+
     #[Validate('numeric|nullable')]
-    public $priceByPerson;
-    #[Validate('numeric|nullable')]
-    public $priceByGroup;
+    public $price;
+    public $priceType = 'price_by_person';
 
     // public array $dateRange = [
     //     'start' => null,
@@ -50,10 +55,13 @@ class Create extends Component
         $activity = $this->travel->activities()->create([
             'name' => $this->name,
             'description' => $this->description,
-            // 'place' => $this->place,
+            'place_name' => $this->place['display_name'],
+            'place_latitude' => $this->place['lat'],
+            'place_longitude' => $this->place['lng'],
+            'place_geojson' => $this->place['geojson'],
             'url' => $this->url,
-            'price_by_person' => $this->priceByPerson,
-            'price_by_group' => $this->priceByGroup,
+            'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
+            'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
             // 'date_range' => json_encode($this->dateRange),
         ]);
 
@@ -75,8 +83,8 @@ class Create extends Component
             'geojson' => null,
         ];
         $this->url = null;
-        $this->priceByPerson = null;
-        $this->priceByGroup = null;
+        $this->priceType = 'price_by_person';
+        $this->price = null;
     }
 
     public function render()

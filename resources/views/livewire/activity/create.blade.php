@@ -6,17 +6,26 @@
 
         <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
         <flux:input label="Description" placeholder="Description" wire:model="description" />
-        {{-- url --}}
         <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
 
-        <flux:input label="Prix par personne" type="number" wire:model="priceByPerson" />
-        <flux:input label="Prix pour le groupe" type="number" wire:model="priceByGroup" />
+        <div class="*:w-1/2">
+            <flux:input.group label="Prix">
+                <flux:input type="number" placeholder="99.99" wire:model="price" />
+
+                <flux:select class="max-w-fit" wire:model="priceType">
+                    @foreach ($availablePrices as $key => $availablePrice)
+                        <flux:select.option :value="$key" >{{ $availablePrice }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </flux:input.group>
+        </div>
 
         {{-- <livewire:travel.members-selector wire:model="members" />
 
-        <livewire:search-map wire:model="place"/>
-
         <livewire:date-range-picker wire:model="dateRange"/> --}}
+
+        <livewire:search-map wire:model="place" modalId='create-activity-modal' />
+
 
         <div class="flex">
             <flux:spacer />

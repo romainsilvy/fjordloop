@@ -8,7 +8,7 @@
 
         <livewire:travel.members-selector wire:model="members" />
 
-        <livewire:search-map wire:model="place"/>
+        <livewire:search-map wire:model="place" modalId='create-travel-modal'/>
 
         <livewire:date-range-picker wire:model="dateRange"/>
 
