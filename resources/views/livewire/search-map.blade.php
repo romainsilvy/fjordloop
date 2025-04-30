@@ -92,7 +92,7 @@
                     }
                 },
                 updateLocation(lat, lon, geojson, name) {
-                    if (lat && lon) {
+                    if (lat && lon && this.map) {
 
                         this.map.setView([lat, lon], 12);
 

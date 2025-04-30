@@ -47,6 +47,8 @@ class Show extends Component
     public function refreshActivities()
     {
         $this->activities = $this->travel->activities()->get();
+
+        $this->dispatch('activities-refreshed', $this->activities);
     }
 
     public function render()

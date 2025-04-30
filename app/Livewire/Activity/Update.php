@@ -104,8 +104,9 @@ class Update extends Component
     {
         $this->activity->delete();
 
-        Toaster::success('Activité supprimée !');
         $this->dispatch('activityDeleted');
+        Flux::modals()->close();
+        Toaster::success('Activité supprimée !');
     }
 
     public function cleanupFields()
