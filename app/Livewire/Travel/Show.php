@@ -11,27 +11,11 @@ class Show extends Component
 {
     public $travel;
 
-    public $token;
-
-    public $isInvited = false;
-
     public $activities;
 
-    public function mount($travelId, $token = null)
+    public function mount($travelId)
     {
-        $this->token = $token;
-
-        if ($this->token) {
-            $this->travel = Travel::fromInvitation($this->token);
-
-            if ($this->travel) {
-                $this->isInvited = true;
-            } else {
-                abort(404);
-            }
-        } else {
-            $this->travel = Travel::findOrFail($travelId);
-        }
+        $this->travel = Travel::findOrFail($travelId);
 
         $this->refreshActivities();
     }

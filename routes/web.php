@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvitationsController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -22,9 +23,13 @@ Route::middleware(['auth'])->group(function () {
         ->name('travel.')
         ->group(function () {
             Route::get('/', TravelIndex::class)->name('index');
-            Route::get('/{travelId}/{token?}', TravelShow::class)->name('show');
+            Route::get('/{travelId}', TravelShow::class)->name('show');
 
+            Route::prefix('{token}')->name('invitation.')->controller(InvitationsController::class)->group(function () {
+                Route::get('accept', 'accept')->name('accept');
+                Route::get('refuse', 'refuse')->name('refuse');
+            });
         });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

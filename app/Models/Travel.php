@@ -70,15 +70,6 @@ class Travel extends Model
         return $this->belongsToMany(User::class)->withPivot('is_owner')->withTimestamps()->wherePivot('is_owner', true)->first();
     }
 
-    // public function getTotalDays(): int
-    // {
-    //     if (! $this->start_date || ! $this->end_date) {
-    //         return 0;
-    //     }
-
-    //     return (int) $this->start_date->diffInDays($this->end_date);
-    // }
-
     /**
      * Scope a query to only include ended travels.
      *
@@ -125,12 +116,14 @@ class Travel extends Model
         return $query->whereNull('start_date')->orWhereNull('end_date');
     }
 
-    public function scopeFromInvitation(Builder $query, string $token): ?Travel
+    public static function fromInvitation(string $token): ?Travel
     {
-        return $query->withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
+        return self::withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
             $query->where('token', $token);
-        })->firstOrFail();
+        })->first();
     }
+
+    
 
     public function attachOwner(User $user): void
     {
@@ -150,6 +143,22 @@ class Travel extends Model
                 'user_id' => $user->id,
             ]);
         }
+    }
+
+    public function acceptInvitation(string $token): void
+    {
+        $this->invitations()->where('token', $token)->firstOrFail()->delete();
+        $this->members()->attach(auth()->id());
+    }
+
+    public function refuseInvitation(string $token): void
+    {
+        $this->invitations()->where('token', $token)->firstOrFail()->delete();
+    }
+
+    public function isMember(): bool
+    {
+        return $this->members()->where('user_id', auth()->id())->exists();
     }
 
     /**

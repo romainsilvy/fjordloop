@@ -26,13 +26,12 @@
 
 # todo list : 
 
+- map globale voyage : si aucune info la focus sur lat lon du voyage
 - Gestion des relations suppression activité
 - gestion de la date et heure de l'activité 
 - gestion des membres a une activité
-- gestion correcte invitations avec modale accepter ou refuser
 - sondage de dates
 - vote de lieu / activité
-- ajout toast erreur quand erreur api nominatim
 - landing page
 - traduction correcte code de base 
 - gestion delete cascade ou non table travel users
