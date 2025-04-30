@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Services\NominatimService;
 use Livewire\Attributes\Modelable;
+use Illuminate\Support\Facades\Log;
+use Masmerise\Toaster\Toaster;
+
 
 class SearchMap extends Component
 {
@@ -29,7 +32,17 @@ class SearchMap extends Component
             return;
         }
 
-        $response = $nominatimService->searchPlaceWithGeojson($this->query);
+        try {
+            $response = $nominatimService->searchPlaceWithGeojson($this->query);
+        } catch (\Exception $e) {
+            // log the error
+            Log::error('Nominatim search error: ' . $e->getMessage());
+            Toaster::error('Une erreur est survenue dans la recherche, nos équipes ont été prévenues. Merci de réessayer plus tard');
+
+            $this->results = [];
+
+            return;
+        }
 
         if ($response->successful()) {
             $this->results = $response->json();
