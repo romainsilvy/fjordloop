@@ -38,6 +38,12 @@ class SearchMap extends Component
         }
     }
 
+    #[On('open-map')]
+    public function updateQueryFromEvent($lat, $lon, $geojson, $name)
+    {
+        $this->query = $name;
+    }
+
     public function selectLocation($lat, $lon, $geojson, $name)
     {
         $this->dispatch(

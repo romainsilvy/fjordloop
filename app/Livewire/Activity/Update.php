@@ -66,6 +66,13 @@ class Update extends Component
             $this->price = $this->activity->{$this->priceType};
 
             Flux::modal('update-activity')->show();
+
+            $this->dispatch('open-map',
+                lat: $this->place['lat'],
+                lon: $this->place['lng'],
+                geojson: $this->place['geojson'],
+                name: $this->place['display_name'],
+            );
         }
     }
 

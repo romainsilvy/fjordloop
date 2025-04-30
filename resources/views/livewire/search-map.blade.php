@@ -30,6 +30,7 @@
 
         <div wire:ignore x-data="locationPicker(@js($place))"
             x-on:location-selected.window="updateLocation($event.detail.lat, $event.detail.lon, $event.detail.geojson, $event.detail.name)"
+            x-on:open-map.window="openMap($event.detail.lat, $event.detail.lon, $event.detail.geojson, $event.detail.name)"
             x-on:clean-map.window="cleanMap()">
             <div class="w-full h-64 rounded-b-lg" x-ref="map"></div>
         </div>
@@ -54,7 +55,6 @@
                         for (const mutation of mutationsList) {
                             if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
                                 if (modal.hasAttribute('open')) {
-                                    console.log('Modal opened');
                                     this.initMap(); // Initialize map when modal opens
                                 }
                             }
@@ -75,8 +75,23 @@
                     this.updateLocation(this.existingPlace.lat, this.existingPlace.lng, this.existingPlace.geojson, this
                         .existingPlace.display_name);
                 },
-                updateLocation(lat, lon, geojson, name) {
+                openMap(lat, lon, geojson, name) {
+                    const modal = this.$root.closest('dialog');
 
+                    // Check if modal is open and map is already initialized
+                    if (modal && modal.hasAttribute('open') && this.map) {
+                        this.updateLocation(lat, lon, geojson, name);
+                    } else {
+                        // Save data to use when map is initialized
+                        this.existingPlace = {
+                            lat: lat,
+                            lng: lon,
+                            geojson: geojson,
+                            display_name: name
+                        };
+                    }
+                },
+                updateLocation(lat, lon, geojson, name) {
                     if (lat && lon) {
 
                         this.map.setView([lat, lon], 12);
