@@ -1,4 +1,4 @@
-<flux:modal name="update-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" wire:cancel="cleanupFields">
+<flux:modal name="update-activity" class="w-full max-w-4xl mt-10 max-h-[90vh]" wire:close="cleanupFields" wire:cancel="cleanupFields">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Modifier l'activité {{ $activity?->name }}</flux:heading>
@@ -6,6 +6,8 @@
 
         <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
         <flux:input label="Description" placeholder="Description" wire:model="description" />
+        <livewire:search-map wire:model="place" />
+
         <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
 
         <div class="*:w-1/2">
@@ -20,7 +22,6 @@
             </flux:input.group>
         </div>
 
-        <livewire:search-map wire:model="place" />
 
         <div class="flex">
             <flux:button wire:confirm="Êtes vous sur de vouloir supprimer cette activité ?" wire:click="delete"

@@ -103,6 +103,16 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+*:focus {
+    outline: none !important;
+}
+
+/* If you need focus indicators for accessibility, use a different style */
+*:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+}
+
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
