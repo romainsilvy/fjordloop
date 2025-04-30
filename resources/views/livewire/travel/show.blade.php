@@ -1,5 +1,5 @@
 <div>
-    <flux:heading size="xl">{{ ucfirst($travel->name)}}</flux:heading>
+    <flux:heading size="xl">{{ ucfirst($travel->name) }}</flux:heading>
 
     {{-- <div class="flex">
         <flux:heading size="xl">{{ ucfirst($travel->name)}}</flux:heading>
@@ -14,8 +14,8 @@
     <livewire:activity.create :travel="$travel" />
 
     <div>
-        <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{$travel->place_name}}
-        <x-travel.show-date :travel="$travel" />
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ $travel->place_name }}
+            <x-travel.show-date :travel="$travel" />
     </div>
 
     <flux:separator variant="subtle" class="my-8" />
@@ -26,5 +26,8 @@
         <flux:separator variant="subtle" class="my-8" />
 
         <x-activity.list :activities="$activities" title="Activités" />
+
+        <livewire:activity.update />
+
     </div>
 </div>

@@ -5,14 +5,16 @@ namespace App\Livewire\Activity;
 use Flux\Flux;
 use Livewire\Component;
 use App\Models\Activity;
+use Livewire\Attributes\On;
 use Masmerise\Toaster\Toaster;
-use Livewire\Attributes\Validate;
 
+use Livewire\Attributes\Reactive;
+use Livewire\Attributes\Validate;
 use function PHPUnit\Framework\isNull;
 
 class Update extends Component
 {
-    public Activity $activity;
+    public ?Activity $activity;
 
     #[Validate('required')]
     public $name;
@@ -38,9 +40,11 @@ class Update extends Component
     public $price;
     public $priceType = 'price_by_person';
 
-    public function mount(Activity $activity)
+
+    #[On('open-activity-modal')]
+    public function populateFromActivity($activityId)
     {
-        $this->activity = $activity;
+        $this->activity = Activity::find($activityId);
 
         if ($this->activity) {
 
@@ -60,6 +64,8 @@ class Update extends Component
             $this->place['geojson'] = $this->activity->place_geojson;
             $this->url = $this->activity->url;
             $this->price = $this->activity->{$this->priceType};
+
+            Flux::modal('update-activity')->show();
         }
     }
 
@@ -84,16 +90,15 @@ class Update extends Component
 
         $this->dispatch('activityUpdated');
         Flux::modals()->close();
-        Toaster::success( 'Activité modifiée !');
+        Toaster::success('Activité modifiée !');
     }
 
     public function delete()
     {
         $this->activity->delete();
 
+        Toaster::success('Activité supprimée !');
         $this->dispatch('activityDeleted');
-        Flux::modals()->close();
-        Toaster::success( 'Activité supprimée !');
     }
 
     public function cleanupFields()

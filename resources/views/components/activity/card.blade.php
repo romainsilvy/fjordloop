@@ -34,10 +34,6 @@
 
     <div class="flex mt-auto">
         <flux:spacer />
-        <flux:modal.trigger name="update-activity-{{ $activity->id }}">
-            <flux:icon.pencil-square />
-        </flux:modal.trigger>
+            <flux:icon.pencil-square wire:click="selectActivity('{{ $activity->id }}')" />
     </div>
-
-    <livewire:activity.update :activity="$activity" />
 </a>
