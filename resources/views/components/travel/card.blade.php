@@ -6,7 +6,11 @@
 
     <x-travel.show-date :travel="$travel" />
 
-    <p class="text-zinc-600 dark:text-zinc-300">
-        {{ $travel->place_name }}
-    </p>
+    @if ($travel->place_name)
+        <div class="flex flex-row items-center justify-start gap-2">
+            <flux:icon.map-pin class="size-4" />
+            <p class="text-sm">{{ $travel->place_name }}
+        </div>
+    @endif
+
 </a>

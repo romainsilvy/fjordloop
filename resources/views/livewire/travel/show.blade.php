@@ -3,11 +3,13 @@
         <div class="flex flex-col">
             <flux:heading size="xl">{{ ucfirst($travel->name) }}</flux:heading>
 
-            <div class="flex flex-row items-center justify-start gap-2">
-                <flux:icon.map-pin class="size-4" />
-                <p class="text-sm">{{ $travel->place_name }}
-            </div>
-            
+            @if ($travel->place_name)
+                <div class="flex flex-row items-center justify-start gap-2">
+                    <flux:icon.map-pin class="size-4" />
+                    <p class="text-sm">{{ $travel->place_name }}
+                </div>
+            @endif
+
             <x-travel.show-date :travel="$travel" />
         </div>
         <flux:separator variant="subtle" />
