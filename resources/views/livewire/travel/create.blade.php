@@ -1,4 +1,4 @@
-<flux:modal name="create-travel" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" wire:cancel="cleanupFields">
+<flux:modal name="create-travel" class="w-full max-w-4xl mt-10" wire:close="cleanupFields">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Créer un voyage</flux:heading>

@@ -3,18 +3,29 @@
 namespace App\Livewire\Activity;
 
 use Flux\Flux;
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Activity;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
-use Masmerise\Toaster\Toaster;
+use Livewire\WithFileUploads;
 
+use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Validate;
 use function PHPUnit\Framework\isNull;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Update extends Component
 {
+    use WithFileUploads;
+
     public ?Activity $activity;
+    public $existingMedia = [];
+    public $mediaToDelete = [];
+    #[Validate(['images.*' => 'image|max:10240'])] // Only images, 10MB max
+    public $images = [];
+    public $tempImages = []; // to add files instead of replacing the originals
 
     #[Validate('required')]
     public $name;
@@ -65,14 +76,69 @@ class Update extends Component
             $this->url = $this->activity->url;
             $this->price = $this->activity->{$this->priceType};
 
+            $this->loadExistingMedia();
+
             Flux::modal('update-activity')->show();
 
-            $this->dispatch('open-map',
+            $this->dispatch(
+                'open-map',
                 lat: $this->place['lat'],
                 lon: $this->place['lng'],
                 geojson: $this->place['geojson'],
                 name: $this->place['display_name'],
             );
+        }
+    }
+
+    public function updatedImages()
+    {
+        foreach ($this->images as $image) {
+            $this->tempImages[] = $image;
+        }
+
+        $this->images = [];
+    }
+
+    protected function loadExistingMedia()
+    {
+        if ($this->activity) {
+            $this->existingMedia = $this->activity->getMedia()
+                ->map(function ($media) {
+                    return [
+                        'id' => $media->id,
+                        'name' => $media->name,
+                        'url' => $media->getTemporaryUrl(Carbon::now()->addMinutes(5)),
+                        'file_name' => $media->file_name,
+                        'marked_for_deletion' => in_array($media->id, $this->mediaToDelete),
+                    ];
+                })
+                ->toArray();
+        }
+    }
+
+    public function removeImage(int $index)
+    {
+        if (isset($this->tempImages[$index])) {
+            $updatedImages = [];
+
+            foreach ($this->tempImages as $i => $image) {
+                if ($i !== $index) {
+                    $updatedImages[] = $image;
+                }
+            }
+
+            $this->tempImages = $updatedImages;
+        }
+    }
+
+    public function markMediaForDeletion($mediaId)
+    {
+        if ($this->activity) {
+            if (!in_array($mediaId, $this->mediaToDelete)) {
+                $this->mediaToDelete[] = $mediaId;
+            }
+
+            $this->loadExistingMedia();
         }
     }
 
@@ -82,7 +148,7 @@ class Update extends Component
 
         $user = auth()->user();
 
-        $activity = $this->activity->update([
+        $this->activity->update([
             'name' => $this->name,
             'description' => $this->description,
             'place_name' => $this->place['display_name'],
@@ -94,6 +160,20 @@ class Update extends Component
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
         ]);
 
+
+        foreach ($this->tempImages as $image) {
+            $this->activity
+                ->addMedia($image->getRealPath())
+                ->usingName($image->getClientOriginalName())
+                ->toMediaCollection();
+        }
+
+        // Delete media marked for deletion
+        foreach ($this->mediaToDelete as $mediaId) {
+            $this->activity->deleteMedia($mediaId);
+        };
+
+        $this->cleanupFields();
 
         $this->dispatch('activityUpdated');
         Flux::modals()->close();
@@ -122,6 +202,10 @@ class Update extends Component
         $this->url = null;
         $this->priceType = 'price_by_person';
         $this->price = null;
+        $this->images = [];
+        $this->tempImages = [];
+        $this->existingMedia = [];
+        $this->mediaToDelete = [];
 
         $this->dispatch('clean-map');
     }

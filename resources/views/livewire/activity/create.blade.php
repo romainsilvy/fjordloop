@@ -1,4 +1,4 @@
-<flux:modal name="create-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" wire:cancel="cleanupFields">
+<flux:modal name="create-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" :dismissible="false">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Créer une activité</flux:heading>
@@ -8,13 +8,15 @@
         <flux:input label="Description" placeholder="Description" wire:model="description" />
         <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
 
+        <x-upload-image-carrousel :images="$tempImages" />
+
         <div class="*:w-1/2">
             <flux:input.group label="Prix">
                 <flux:input type="number" placeholder="99.99" wire:model="price" />
 
                 <flux:select class="max-w-fit" wire:model="priceType">
                     @foreach ($availablePrices as $key => $availablePrice)
-                        <flux:select.option :value="$key" >{{ $availablePrice }}</flux:select.option>
+                        <flux:select.option :value="$key">{{ $availablePrice }}</flux:select.option>
                     @endforeach
                 </flux:select>
             </flux:input.group>

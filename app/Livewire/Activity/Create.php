@@ -5,18 +5,23 @@ namespace App\Livewire\Activity;
 use Flux\Flux;
 use App\Models\Travel;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
+
     public Travel $travel;
 
     #[Validate('required')]
     public $name;
     #[Validate('required')]
     public $description;
-
+    public array $tempImages = []; // to add files instead of replacing the originals
+    public array $images = []; // accepts multiple files
     public $place = [
         'display_name' => null,
         'lat' => null,
@@ -46,6 +51,30 @@ class Create extends Component
         $this->travel = $travel;
     }
 
+    public function updatedImages()
+    {
+        foreach ($this->images as $image) {
+            $this->tempImages[] = $image;
+        }
+
+        $this->images = [];
+    }
+
+    public function removeImage(int $index)
+    {
+        if (isset($this->tempImages[$index])) {
+            $updatedImages = [];
+
+            foreach ($this->tempImages as $i => $image) {
+                if ($i !== $index) {
+                    $updatedImages[] = $image;
+                }
+            }
+
+            $this->tempImages = $updatedImages;
+        }
+    }
+
     public function save()
     {
         $this->validate();
@@ -65,11 +94,18 @@ class Create extends Component
             // 'date_range' => json_encode($this->dateRange),
         ]);
 
+        foreach ($this->tempImages as $image) {
+            $activity
+                ->addMedia($image->getRealPath())
+                ->usingName($image->getClientOriginalName())
+                ->toMediaCollection();
+        }
+
         $this->cleanupFields();
 
         $this->dispatch('activityCreated');
         Flux::modals()->close();
-        Toaster::success( 'Activité créée!');
+        Toaster::success('Activité créée!');
     }
 
     public function cleanupFields()
@@ -83,6 +119,8 @@ class Create extends Component
             'geojson' => null,
         ];
         $this->url = null;
+        $this->tempImages = [];
+        $this->images = [];
         $this->priceType = 'price_by_person';
         $this->price = null;
 

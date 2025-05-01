@@ -24,6 +24,8 @@
 - Vue calendrier des logements/transports/activités
 - Filtrage par type d'élément et par membre
 
+
+
 # todo list : 
 
 ## Gestion argent 
@@ -75,3 +77,4 @@
 - page erreur au lieu du 404 invitation
 - ajouter queues
 - setup mail sur la prod
+- cleanup des photos sur le s3 a la suppression des resources qui en ont

@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Models\Travel;
+use Carbon\Carbon;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Activity extends Model
+class Activity extends Model implements HasMedia
 {
-    use HasUuids, HasFactory;
+    use HasUuids, HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -36,6 +39,17 @@ class Activity extends Model
                     $query->where('user_id', null);
                 }
             });
+        });
+    }
+
+    public function getMediaDisplay()
+    {
+        return $this->getMedia()->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'url' => $media->getTemporaryUrl(Carbon::now()->addMinutes(5)),
+                'name' => $media->file_name,
+            ];
         });
     }
 
