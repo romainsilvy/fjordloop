@@ -6,11 +6,16 @@
     <div
         class="w-full border rounded-lg block disabled:shadow-none dark:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5">
 
-        <div class="py-2 px-3 w-full">
+
+        <div class="py-2 px-3 w-full relative block group/input">
             <input type="text" wire:model.live.debounce.300ms="query" placeholder="Rechercher un lieu"
                 class="w-full"></input>
-        </div>
 
+            <div wire:loading.delay wire:target="query"
+                class="absolute top-1/2 end-3 -translate-y-1/2 transform flex items-center gap-x-1.5 text-xs text-zinc-400">
+                <flux:icon.loading class="size-4" />
+            </div>
+        </div>
 
 
         @if (!empty($results))
