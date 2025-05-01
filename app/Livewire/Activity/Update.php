@@ -30,7 +30,6 @@ class Update extends Component
 
     #[Validate('required')]
     public $name;
-    #[Validate('required')]
     public $description;
 
     public $place = [

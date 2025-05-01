@@ -5,7 +5,7 @@
         </div>
 
         <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
-        <flux:input label="Description" placeholder="Description" wire:model="description" />
+        <flux:textarea label="Description" placeholder="Description" wire:model="description" />
         <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
 
         <x-upload-image-carrousel :images="$tempImages" />

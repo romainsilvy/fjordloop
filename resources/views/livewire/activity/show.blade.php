@@ -151,7 +151,7 @@
             <flux:separator class="mb-5"/>
 
             <p class="">
-                {{ $activity->description }}
+                {!! nl2br($activity->description) !!}
             </p>
         </div>
     </div>

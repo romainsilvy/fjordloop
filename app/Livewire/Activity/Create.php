@@ -20,7 +20,6 @@ class Create extends Component
 
     #[Validate('required')]
     public $name;
-    #[Validate('required')]
     public $description;
     public array $tempImages = []; // to add files instead of replacing the originals
     public array $images = []; // accepts multiple files
