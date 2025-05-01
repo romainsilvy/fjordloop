@@ -1,6 +1,6 @@
 <a class="p-4 bg-primary-500 rounded-md shadow-md space-y-2"
     href="{{ route('travel.show', ['travelId' => $travel->id]) }}" wire:navigate>
-    <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">
+    <h2 class="text-lg font-semibold text-zinc-800">
         {{ $travel->name }}
     </h2>
 

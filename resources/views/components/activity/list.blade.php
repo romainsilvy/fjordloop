@@ -2,7 +2,7 @@
 
 <div class="flex flex-col gap-6">
     <div class="flex">
-        <flux:heading size="xl" class="text-zinc-800 dark:text-white pl-4">
+        <flux:heading size="xl" class="text-zinc-800 pl-4">
             {{ $title }}
         </flux:heading>
 

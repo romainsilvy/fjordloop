@@ -22,7 +22,7 @@
                 <flux:separator variant="subtle" class="my-8" />
             @endif
         @empty
-            <p class="text-center text-zinc-500 dark:text-zinc-400">Vous n'avez aucun voyage pour le moment.</p>
+            <p class="text-center text-zinc-500">Vous n'avez aucun voyage pour le moment.</p>
         @endforelse
     </div>
 
