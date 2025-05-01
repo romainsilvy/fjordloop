@@ -14,7 +14,7 @@
         observer.observe($refs.carousel, { childList: true, subtree: true });
     }
 }" x-init="init()">
-    <input type="file" id="image-upload" wire:model="images" multiple hidden x-ref="fileInput" />
+    <input type="file" id="image-upload-carrousel" wire:model="images" multiple hidden x-ref="fileInput" />
 
     <label class="block text-sm font-medium text-gray-700 mb-2">Images</label>
     <div class="relative">
@@ -67,3 +67,72 @@
         </div>
     </div>
 </div>
+
+
+@push('scripts')
+    <script>
+        // Use a more unique ID to ensure we're accessing the right element
+        const IMAGE_UPLOAD_ID = 'image-upload-carrousel';
+        let pasteInitialized = false;
+
+        function setupPasteHandler() {
+            // Remove any existing handlers first
+            document.removeEventListener('paste', handlePaste);
+
+            // Add the event listener
+            document.addEventListener('paste', handlePaste);
+
+            pasteInitialized = true;
+        }
+
+        function handlePaste(event) {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            let hasProcessedImage = false;
+
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file') {
+                    const file = item.getAsFile();
+                    if (file && file.type.startsWith('image/') && !hasProcessedImage) {
+                        const fileInput = document.getElementById(IMAGE_UPLOAD_ID);
+
+                        if (!fileInput) {
+                            console.error('File input element not found');
+                            return;
+                        }
+
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        fileInput.files = dataTransfer.files;
+
+                        // Dispatch the change event
+                        fileInput.dispatchEvent(new Event('change', {
+                            bubbles: true
+                        }));
+
+                        // Flag to prevent duplicate processing in the same paste event
+                        hasProcessedImage = true;
+                    }
+                }
+            }
+        }
+
+        // Initialize on page load
+        if (!pasteInitialized) {
+            setupPasteHandler();
+        }
+
+        // Properly handle Livewire navigation events
+        document.addEventListener('livewire:navigated', () => {
+            setTimeout(() => {
+                setupPasteHandler();
+            }, 100);
+        });
+
+        // Clean up when the component is removed/destroyed
+        document.addEventListener('livewire:navigating', () => {
+            document.removeEventListener('paste', handlePaste);
+            pasteInitialized = false;
+        });
+    </script>
+@endpush
