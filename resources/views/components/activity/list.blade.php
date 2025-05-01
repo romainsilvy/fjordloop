@@ -1,4 +1,4 @@
-@props(['activities' => [], 'title'])
+@props(['activities' => [], 'title', 'travel'])
 
 <div class="flex flex-col gap-6">
     <div class="flex">
@@ -15,7 +15,7 @@
 
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         @forelse ($activities as $activity)
-            <x-activity.card :activity="$activity" />
+            <x-activity.card :activity="$activity" :travel="$travel" />
         @empty
             <p class="ml-4 text-black">Vous n'avez aucune activité pour le moment.</p>
         @endforelse

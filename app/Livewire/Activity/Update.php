@@ -62,10 +62,9 @@ class Update extends Component
     public $travelDateRange;
 
 
-    #[On('open-activity-modal')]
-    public function populateFromActivity($activityId)
+    public function mount($activity)
     {
-        $this->activity = Activity::find($activityId);
+        $this->activity = $activity;
 
         if ($this->activity) {
             $travel = $this->activity->travel;
@@ -106,9 +105,9 @@ class Update extends Component
             $this->place['geojson'] = $this->activity->place_geojson;
             $this->url = $this->activity->url;
             $this->price = $this->activity->{$this->priceType};
-            $this->startDate = $this->activity->start_date->format('Y-m-d');
+            $this->startDate = $this->activity->start_date?->format('Y-m-d');
             $this->startTime = $this->activity->start_time;
-            $this->endDate = $this->activity->end_date->format('Y-m-d');
+            $this->endDate = $this->activity->end_date?->format('Y-m-d');
             $this->endTime = $this->activity->end_time;
 
             $this->loadExistingMedia();
@@ -234,25 +233,22 @@ class Update extends Component
                 ->toMediaCollection();
         }
 
-        // Delete media marked for deletion
         foreach ($this->mediaToDelete as $mediaId) {
             $this->activity->deleteMedia($mediaId);
         };
 
         $this->cleanupFields();
 
-        $this->dispatch('activityUpdated');
         Flux::modals()->close();
         Toaster::success('Activité modifiée !');
-    }
+
+        $this->redirectRoute('travel.activity.show', ['travelId' => $this->activity->travel_id, 'activityId' => $this->activity->id], navigate: true);    }
 
     public function delete()
     {
         $this->activity->delete();
-
-        $this->dispatch('activityDeleted');
-        Flux::modals()->close();
         Toaster::success('Activité supprimée !');
+        $this->redirectRoute('travel.show', $this->activity->travel_id, navigate: true);
     }
 
     public function cleanupFields()

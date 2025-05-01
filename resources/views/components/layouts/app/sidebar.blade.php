@@ -109,8 +109,14 @@
         </flux:header>
 
         {{ $slot }}
-
-        <x-toaster-hub />
+        <div x-persist="toaster">
+            <style>
+                #toaster {
+                    left: 0;
+                }
+            </style>
+            <x-toaster-hub />
+        </div>
         @stack('scripts')
 
 

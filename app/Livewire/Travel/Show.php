@@ -20,14 +20,7 @@ class Show extends Component
         $this->refreshActivities();
     }
 
-    public function selectActivity($activityId)
-    {
-        $this->dispatch('open-activity-modal', $activityId);
-    }
-
     #[On('activityCreated')]
-    #[On('activityUpdated')]
-    #[On('activityDeleted')]
     public function refreshActivities()
     {
         $this->activities = $this->travel->activities()->get();

@@ -1,4 +1,10 @@
 <div>
+    <flux:breadcrumbs class="mb-4">
+        <flux:breadcrumbs.item href="{{ route('travel.index') }}">Voyages</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item>{{ ucfirst($travel->name) }}</flux:breadcrumbs.item>
+    </flux:breadcrumbs>
+
+
     <div class="flex flex-col gap-4">
         <div class="flex flex-col">
             <flux:heading size="xl">{{ ucfirst($travel->name) }}</flux:heading>
@@ -19,13 +25,12 @@
 
         <flux:separator variant="subtle" />
 
-        <x-activity.list :activities="$activities" title="Activités" />
+        <x-activity.list :activities="$activities" title="Activités" :travel="$travel" />
 
 
     </div>
 
     {{-- Modals --}}
-    <livewire:activity.update />
     <livewire:activity.create :travel="$travel" />
 
 </div>

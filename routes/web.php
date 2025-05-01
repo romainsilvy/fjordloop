@@ -6,6 +6,8 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Travel\Index as TravelIndex;
 use App\Livewire\Travel\Show as TravelShow;
+use App\Livewire\Activity\Show as ActivityShow;
+
 use Illuminate\Support\Facades\Route;
 
 Route::view('dashboard', 'dashboard')
@@ -24,6 +26,12 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Route::get('/', TravelIndex::class)->name('index');
             Route::get('/{travelId}', TravelShow::class)->name('show');
+
+            Route::prefix('{travelId}/activity')
+                ->name('activity.')
+                ->group(function () {
+                    Route::get('/{activityId}', ActivityShow::class)->name('show');
+                });
 
             Route::prefix('{token}')->name('invitation.')->controller(InvitationsController::class)->group(function () {
                 Route::get('accept', 'accept')->name('accept');
