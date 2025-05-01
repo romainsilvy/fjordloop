@@ -82,6 +82,33 @@
             </p>
         @endif
 
+        @if ($activity->start_date)
+            @if (!$activity->end_date || $activity->start_date->isSameDay($activity->end_date))
+                <p>
+                    Le {{ $activity->start_date->format('d/m/Y') }}
+
+                    @if ($activity->start_time && $activity->end_time)
+                        de {{ $activity->start_time }} à {{ $activity->end_time }}
+                    @elseif ($activity->start_time)
+                        à {{ $activity->start_time }}
+                    @endif
+
+                </p>
+            @else
+                <p>
+                    Du {{ $activity->start_date->format('d/m/Y') }} au {{ $activity->end_date->format('d/m/Y') }}
+                    @if ($activity->start_time && $activity->end_time)
+                        de {{ $activity->start_time }} à {{ $activity->end_time }}
+                    @elseif ($activity->start_time)
+                        à {{ $activity->start_time }}
+                    @endif
+                </p>
+
+
+            @endif
+
+        @endif
+
         <flux:spacer />
 
         <div class="flex mt-auto">

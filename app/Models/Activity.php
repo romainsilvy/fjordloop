@@ -26,7 +26,18 @@ class Activity extends Model implements HasMedia
         'place_latitude',
         'place_longitude',
         'place_geojson',
+        'start_date',
+        'start_time',
+        'end_date',
+        'end_time',
         'travel_id',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        // 'start_time' => 'date',
+        // 'end_time' => 'time',
     ];
 
     protected static function booted()

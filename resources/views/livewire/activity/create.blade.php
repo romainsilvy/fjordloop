@@ -10,6 +10,34 @@
 
         <x-upload-image-carrousel :images="$tempImages" />
 
+
+        <div class="*:w-1/2 flex items-center gap-4">
+
+            <flux:input.group label="Début">
+                <flux:select class="max-w-fit" wire:model.live="startDate">
+                    <flux:select.option value="">pas de date</flux:select.option>
+                    @foreach ($availableStartDates as $key => $date)
+                        <flux:select.option :value="$key">{{ $date }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+
+                <flux:input type="time" wire:model.live="startTime" />
+            </flux:input.group>
+
+            <flux:input.group label="Fin">
+                <flux:select class="max-w-fit" wire:model.live="endDate">
+                    @if (!$startDate)
+                    <flux:select.option value="">pas de date</flux:select.option>
+                    @endif
+                    @foreach ($availableEndDates as $key => $date)
+                        <flux:select.option :value="$key">{{ $date }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+
+                <flux:input type="time" wire:model.live="endTime" />
+            </flux:input.group>
+        </div>
+
         <div class="*:w-1/2">
             <flux:input.group label="Prix">
                 <flux:input type="number" placeholder="99.99" wire:model="price" />
@@ -21,10 +49,6 @@
                 </flux:select>
             </flux:input.group>
         </div>
-
-        {{-- <livewire:travel.members-selector wire:model="members" />
-
-        <livewire:date-range-picker wire:model="dateRange"/> --}}
 
         <livewire:search-map wire:model="place" />
 

@@ -6,13 +6,14 @@ use Flux\Flux;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Activity;
-use Illuminate\Support\Facades\Log;
+use Carbon\CarbonPeriod;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Log;
 use function PHPUnit\Framework\isNull;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -52,12 +53,42 @@ class Update extends Component
     public $priceType = 'price_by_person';
 
 
+    public $availableStartDates = [];
+    public $startDate;
+    public $startTime;
+    public $availableEndDates = [];
+    public $endDate;
+    public $endTime;
+    public $travelDateRange;
+
+
     #[On('open-activity-modal')]
     public function populateFromActivity($activityId)
     {
         $this->activity = Activity::find($activityId);
 
         if ($this->activity) {
+            $travel = $this->activity->travel;
+
+            $startDate = Carbon::parse($travel->start_date);
+            $endDate = Carbon::parse($travel->end_date);
+
+            $datesArray = [];
+
+            $period = CarbonPeriod::create($startDate, $endDate);
+
+
+            foreach ($period as $date) {
+                $key = $date->format('Y-m-d'); // e.g. 2025-06-01
+                $value = $date->translatedFormat('l j F'); // e.g. Monday 6 June (with localization support)
+                $datesArray[$key] = $value;
+            }
+
+            $this->travelDateRange = $datesArray;
+
+            $this->availableStartDates = $this->travelDateRange;
+            $this->refreshAvailableEndDates($this->startDate);
+
 
             if ($this->activity->price_by_person) {
                 $this->priceType = 'price_by_person';
@@ -75,6 +106,10 @@ class Update extends Component
             $this->place['geojson'] = $this->activity->place_geojson;
             $this->url = $this->activity->url;
             $this->price = $this->activity->{$this->priceType};
+            $this->startDate = $this->activity->start_date->format('Y-m-d');
+            $this->startTime = $this->activity->start_time;
+            $this->endDate = $this->activity->end_date->format('Y-m-d');
+            $this->endTime = $this->activity->end_time;
 
             $this->loadExistingMedia();
 
@@ -87,7 +122,34 @@ class Update extends Component
                 geojson: $this->place['geojson'],
                 name: $this->place['display_name'],
             );
+
         }
+    }
+
+    public function refreshAvailableEndDates($startDate)
+    {
+        $noDate = ['' => 'pas de date'];
+        $availableDates = array_filter($this->travelDateRange, function ($key) use ($startDate) {
+            return $key >= $startDate;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->availableEndDates = $noDate + $availableDates;
+    }
+
+    public function updatedStartDate()
+    {
+        $this->refreshAvailableEndDates($this->startDate);
+
+
+        if ($this->startDate == null) {
+            $this->endDate = null;
+        }
+
+        if ($this->endDate == null || $this->endDate < $this->startDate) {
+            $this->endDate = $this->startDate;
+        }
+
+
     }
 
     public function updatedImages()
@@ -158,6 +220,10 @@ class Update extends Component
             'url' => $this->url,
             'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
+            'start_date' => $this->startDate ? Carbon::parse($this->startDate) : null,
+            'start_time' => $this->startTime,
+            'end_date' => $this->endDate ? Carbon::parse($this->endDate) : null,
+            'end_time' => $this->endTime,
         ]);
 
 

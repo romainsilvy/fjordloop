@@ -3,8 +3,10 @@
 namespace App\Livewire\Activity;
 
 use Flux\Flux;
+use Carbon\Carbon;
 use App\Models\Travel;
 use Livewire\Component;
+use Carbon\CarbonPeriod;
 use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
@@ -41,15 +43,62 @@ class Create extends Component
     public $price;
     public $priceType = 'price_by_person';
 
-    // public array $dateRange = [
-    //     'start' => null,
-    //     'end' => null,
-    // ];
+    public $availableStartDates;
+    public $startDate;
+    public $startTime;
+    public $availableEndDates;
+    public $endDate;
+    public $endTime;
+    public $travelDateRange;
+
 
     public function mount(Travel $travel)
     {
         $this->travel = $travel;
+
+        $startDate = Carbon::parse($travel->start_date);
+        $endDate = Carbon::parse($travel->end_date);
+
+        $datesArray = [];
+
+        $period = CarbonPeriod::create($startDate, $endDate);
+
+        foreach ($period as $date) {
+            $key = $date->format('Y-m-d'); // e.g. 2025-06-01
+            $value = $date->translatedFormat('l j F'); // e.g. Monday 6 June (with localization support)
+            $datesArray[$key] = $value;
+        }
+
+        $this->travelDateRange = $datesArray;
+
+        $this->availableStartDates = $this->travelDateRange;
+        $this->refreshAvailableEndDates($this->startDate);
     }
+
+    public function refreshAvailableEndDates($startDate)
+    {
+        $noDate = ['' => 'pas de date'];
+        $availableDates = array_filter($this->travelDateRange, function ($key) use ($startDate) {
+            return $key >= $startDate;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->availableEndDates = $noDate + $availableDates;
+    }
+
+    public function updatedStartDate()
+    {
+        if ($this->startDate == null) {
+            $this->endDate = null;
+        }
+
+        if ($this->endDate == null || $this->endDate < $this->startDate) {
+            $this->endDate = $this->startDate;
+        }
+
+
+        $this->refreshAvailableEndDates($this->startDate);
+    }
+
 
     public function updatedImages()
     {
@@ -91,7 +140,10 @@ class Create extends Component
             'url' => $this->url,
             'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
-            // 'date_range' => json_encode($this->dateRange),
+            'start_date' => $this->startDate,
+            'start_time' => $this->startTime,
+            'end_date' => $this->endDate,
+            'end_time' => $this->endTime,
         ]);
 
         foreach ($this->tempImages as $image) {
