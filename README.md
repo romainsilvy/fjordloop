@@ -26,14 +26,53 @@
 
 # todo list : 
 
-- map globale voyage : si aucune info la focus sur lat lon du voyage
+## Gestion argent 
+
+- Possible sur chaque élément d'ajouter une dépense
+- Possible d'ajouter une dépense non liée a un événement 
+- Sur chaque dépense, définir qui a payé et pour qui 
+- Faire un graphique pour montrer qui dois combien a qui 
+- Ajouter une notion d'objectif de budget
+
+## Activités 
+
+- Système de vote : 
+    - A la création de l'activité, possibilité de choisir si on souhaite soumettre au vote ou non 
+    - Les différents utilisateurs peuvent voter pour les activités qui les intéressent (dans une section dédiée sur la page voyage)
+    - Tous les membres du voyage ont les memes droits, ils peuvent tous passer une activité de vote a validée et modifier la liste de membres
+- Ajout d'un statut (A réserver, réservé, payé, etc)
+- Ajout de plusieurs images de l'activité
+- Une fois l'activité plus en phase de vote, il faut pouvoir choisir la date et l'heure
+- Pouvoir lier des membres a une activité
+
+## Utilisateur 
+
+- Possible de mettre une photo de profil
+
+## Logements 
+
+## Transports 
+
+## Coffre fort numérique
+
+- Séparer en deux sections: 
+    - des documents a ajouter au global sur mon profil (passport, CNI, livret de famille, etc) -> Se renseigner sur la legislation du stockage 
+    - Des documents relatifs au voyage (billet d'avion, de train, entrée dans un musée, etc)
+- avoir une section ou je peux retrouver ces differents documents
+
+## Voyage
+
+- Sur la carte : focus sur lat et long de la ou on a defini le voyage si pas de markers a mettre
+- Notion d'historique des modifications pour voir qui a fait quoi
+- Ajouter un système de sondage pour la date du voyage
+- Ajouter une modal de modification du voyage
+
+
+## Autre 
 - Gestion des relations suppression activité
-- gestion de la date et heure de l'activité 
-- gestion des membres a une activité
-- sondage de dates
-- vote de lieu / activité
 - landing page
 - traduction correcte code de base 
 - gestion delete cascade ou non table travel users
 - page erreur au lieu du 404 invitation
 - ajouter queues
+- setup mail sur la prod
