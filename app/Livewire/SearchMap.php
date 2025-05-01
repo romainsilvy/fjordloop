@@ -46,10 +46,8 @@ class SearchMap extends Component
 
         if ($response->successful()) {
             $this->results = $response->json();
-            dd($this->results);
         } else {
             $this->results = [];
-            dd('error');
         }
     }
 
