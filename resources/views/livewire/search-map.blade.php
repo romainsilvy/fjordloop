@@ -71,7 +71,7 @@
                     });
                 },
                 initMap() {
-                    this.map = L.map(this.$refs.map).setView([51.1642, 10.4541194], 6);
+                    this.map = L.map(this.$refs.map).setView([46.6034, 1.8883], 5);
                     const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(this.map);

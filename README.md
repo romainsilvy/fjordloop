@@ -62,7 +62,6 @@
 
 ## Voyage
 
-- Sur la carte : focus sur lat et long de la ou on a defini le voyage si pas de markers a mettre
 - Notion d'historique des modifications pour voir qui a fait quoi
 - Ajouter un système de sondage pour la date du voyage
 - Ajouter une modal de modification du voyage

@@ -5,8 +5,6 @@
         <div wire:ignore x-data="mapComponent()" x-init="initMap" x-on:activities-refreshed.window="refreshMarkers($event.detail)">
             <div class="w-full h-[60vh] rounded-lg" x-ref="mapContainer"></div>
         </div>
-        
-
     </div>
 </flux:field>
 
@@ -27,7 +25,17 @@
                         return;
                     }
 
-                    this.map = L.map(container).setView([51.1642, 10.4541], 6);
+                    let travelLat = @json($travel->place_latitude);
+                    let travelLon = @json($travel->place_longitude);
+                    let zoom = 12;
+
+                    if (!travelLat && !travelLon) {
+                        travelLat = 46.6034;
+                        travelLon = 1.8883;
+                        zoom = 5;
+                    }
+
+                    this.map = L.map(container).setView([travelLat, travelLon], zoom);
 
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'
