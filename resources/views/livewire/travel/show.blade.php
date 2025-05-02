@@ -6,18 +6,28 @@
 
 
     <div class="flex flex-col gap-4">
-        <div class="flex flex-col">
-            <flux:heading size="xl">{{ ucfirst($travel->name) }}</flux:heading>
+        <div class="flex">
+            <div class="flex flex-col">
+                <flux:heading size="xl">{{ ucfirst($travel->name) }}</flux:heading>
 
-            @if ($travel->place_name)
-                <div class="flex flex-row items-center justify-start gap-2">
-                    <flux:icon.map-pin class="size-4" />
-                    <p class="text-sm">{{ $travel->place_name }}
-                </div>
-            @endif
+                @if ($travel->place_name)
+                    <div class="flex flex-row items-center justify-start gap-2">
+                        <flux:icon.map-pin class="size-4" />
+                        <p class="text-sm">{{ $travel->place_name }}
+                    </div>
+                @endif
 
-            <x-travel.show-date :travel="$travel" />
+                <x-travel.show-date :travel="$travel" />
+            </div>
+
+            <flux:spacer />
+
+            <flux:modal.trigger name="update-travel">
+                <flux:button>Modifier</flux:button>
+            </flux:modal.trigger>
         </div>
+
+
         <flux:separator variant="subtle" />
 
 
@@ -32,5 +42,6 @@
 
     {{-- Modals --}}
     <livewire:activity.create :travel="$travel" />
+    <livewire:travel.update :travel="$travel" />
 
 </div>

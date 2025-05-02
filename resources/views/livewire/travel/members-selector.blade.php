@@ -1,9 +1,7 @@
 <flux:field>
     <flux:label class="inline-flex items-center text-sm font-medium text-zinc-800">
-        Membres
+        {{ $title }}
     </flux:label>
-
-
 
     <div
         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm py-2 min-h-10 leading-[1.375rem] ps-3 pe-3 bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200">

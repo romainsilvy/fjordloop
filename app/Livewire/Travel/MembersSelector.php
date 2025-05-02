@@ -17,6 +17,8 @@ class MembersSelector extends Component
 
     public string $memberToAdd = '';
 
+    public string $title = 'Membres';
+
     public function addMember(): void
     {
         $member = $this->memberToAdd;

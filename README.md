@@ -66,7 +66,6 @@
 
 - Notion d'historique des modifications pour voir qui a fait quoi
 - Ajouter un système de sondage pour la date du voyage
-- Ajouter une modal de modification du voyage
 
 
 ## Autre 

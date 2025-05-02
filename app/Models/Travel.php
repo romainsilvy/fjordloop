@@ -70,6 +70,11 @@ class Travel extends Model
         return $this->belongsToMany(User::class)->withPivot('is_owner')->withTimestamps()->wherePivot('is_owner', true)->first();
     }
 
+    public function isOwner(User $user): bool
+    {
+        return $this->members()->where('user_id', $user->id)->wherePivot('is_owner', true)->exists();
+    }
+
     /**
      * Scope a query to only include ended travels.
      *
@@ -123,7 +128,7 @@ class Travel extends Model
         })->first();
     }
 
-    
+
 
     public function attachOwner(User $user): void
     {
