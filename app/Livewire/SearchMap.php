@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Services\MapboxService;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Services\NominatimService;
@@ -24,7 +25,7 @@ class SearchMap extends Component
         $this->query = $this->place['display_name'] ?? '';
     }
 
-    public function updatedQuery(NominatimService $nominatimService)
+    public function updatedQuery(MapboxService $mapboxService)
     {
         if (strlen($this->query) < 3) {
             $this->results = [];
@@ -33,7 +34,16 @@ class SearchMap extends Component
         }
 
         try {
-            $response = $nominatimService->searchPlaceWithGeojson($this->query);
+            $response = $mapboxService->searchPlaceWithGeojson($this->query);
+
+            if ($response->successful()) {
+                $formattedResults = $mapboxService->formatSearchResults($response);
+                $this->results = $formattedResults;
+
+                if (empty($formattedResults)) {
+                    Toaster::info('Aucun résultat trouvé pour votre recherche');
+                }
+            }
         } catch (\Exception $e) {
             // log the error
             Log::error('Nominatim search error: ' . $e->getMessage());
@@ -42,12 +52,6 @@ class SearchMap extends Component
             $this->results = [];
 
             return;
-        }
-
-        if ($response->successful()) {
-            $this->results = $response->json();
-        } else {
-            $this->results = [];
         }
     }
 

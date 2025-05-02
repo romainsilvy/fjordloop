@@ -21,7 +21,7 @@
         @if (!empty($results))
             <div class="px-3">
                 @foreach ($results as $result)
-                    <p wire:click="selectLocation('{{ $result['lat'] }}', '{{ $result['lon'] }}', '{{ json_encode($result['geojson'] ?? null) }}', '{{ addslashes($result['display_name']) }}')"
+                    <p wire:click="selectLocation('{{ $result['lat'] }}', '{{ $result['lon'] }}', '{{ null }}', '{{ addslashes($result['display_name']) }}')"
                         class="text-xs my-1 cursor-pointer">
                         {{ $result['display_name'] }}
                     </p>
