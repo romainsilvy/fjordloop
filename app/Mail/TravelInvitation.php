@@ -33,7 +33,7 @@ class TravelInvitation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Travel Invitation',
+            subject: 'Rejoignez le voyage : ' . $this->travel->name,
         );
     }
 
