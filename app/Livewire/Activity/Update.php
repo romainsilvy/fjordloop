@@ -66,50 +66,7 @@ class Update extends Component
         $this->activity = $activity;
 
         if ($this->activity) {
-            $travel = $this->activity->travel;
-
-            $startDate = Carbon::parse($travel->start_date);
-            $endDate = Carbon::parse($travel->end_date);
-
-            $datesArray = [];
-
-            $period = CarbonPeriod::create($startDate, $endDate);
-
-
-            foreach ($period as $date) {
-                $key = $date->format('Y-m-d'); // e.g. 2025-06-01
-                $value = $date->translatedFormat('l j F'); // e.g. Monday 6 June (with localization support)
-                $datesArray[$key] = $value;
-            }
-
-            $this->travelDateRange = $datesArray;
-
-            $this->availableStartDates = $this->travelDateRange;
-            $this->refreshAvailableEndDates($this->startDate);
-
-
-            if ($this->activity->price_by_person) {
-                $this->priceType = 'price_by_person';
-            } elseif ($this->activity->price_by_group) {
-                $this->priceType = 'price_by_group';
-            } else {
-                $this->priceType = 'price_by_person';
-            }
-
-            $this->name = $this->activity->name;
-            $this->description = $this->activity->description;
-            $this->place['display_name'] = $this->activity->place_name;
-            $this->place['lat'] = $this->activity->place_latitude;
-            $this->place['lng'] = $this->activity->place_longitude;
-            $this->place['geojson'] = $this->activity->place_geojson;
-            $this->url = $this->activity->url;
-            $this->price = $this->activity->{$this->priceType};
-            $this->startDate = $this->activity->start_date?->format('Y-m-d');
-            $this->startTime = $this->activity->start_time;
-            $this->endDate = $this->activity->end_date?->format('Y-m-d');
-            $this->endTime = $this->activity->end_time;
-
-            $this->loadExistingMedia();
+            $this->initFields();
 
             Flux::modal('update-activity')->show();
 
@@ -120,9 +77,57 @@ class Update extends Component
                 geojson: $this->place['geojson'],
                 name: $this->place['display_name'],
             );
-
         }
     }
+
+    public function initFields()
+    {
+        $travel = $this->activity->travel;
+
+        $startDate = Carbon::parse($travel->start_date);
+        $endDate = Carbon::parse($travel->end_date);
+
+        $datesArray = [];
+
+        $period = CarbonPeriod::create($startDate, $endDate);
+
+
+        foreach ($period as $date) {
+            $key = $date->format('Y-m-d'); // e.g. 2025-06-01
+            $value = $date->translatedFormat('l j F'); // e.g. Monday 6 June (with localization support)
+            $datesArray[$key] = $value;
+        }
+
+        $this->travelDateRange = $datesArray;
+
+        $this->availableStartDates = $this->travelDateRange;
+        $this->refreshAvailableEndDates($this->startDate);
+
+
+        if ($this->activity->price_by_person) {
+            $this->priceType = 'price_by_person';
+        } elseif ($this->activity->price_by_group) {
+            $this->priceType = 'price_by_group';
+        } else {
+            $this->priceType = 'price_by_person';
+        }
+
+        $this->name = $this->activity->name;
+        $this->description = $this->activity->description;
+        $this->place['display_name'] = $this->activity->place_name;
+        $this->place['lat'] = $this->activity->place_latitude;
+        $this->place['lng'] = $this->activity->place_longitude;
+        $this->place['geojson'] = $this->activity->place_geojson;
+        $this->url = $this->activity->url;
+        $this->price = $this->activity->{$this->priceType};
+        $this->startDate = $this->activity->start_date?->format('Y-m-d');
+        $this->startTime = $this->activity->start_time;
+        $this->endDate = $this->activity->end_date?->format('Y-m-d');
+        $this->endTime = $this->activity->end_time;
+
+        $this->loadExistingMedia();
+    }
+
 
     public function refreshAvailableEndDates($startDate)
     {
@@ -146,8 +151,6 @@ class Update extends Component
         if ($this->endDate == null || $this->endDate < $this->startDate) {
             $this->endDate = $this->startDate;
         }
-
-
     }
 
     public function updatedImages()
@@ -241,7 +244,8 @@ class Update extends Component
         Flux::modals()->close();
         Toaster::success('Activité modifiée !');
 
-        $this->redirectRoute('travel.activity.show', ['travelId' => $this->activity->travel_id, 'activityId' => $this->activity->id], navigate: true);    }
+        $this->redirectRoute('travel.activity.show', ['travelId' => $this->activity->travel_id, 'activityId' => $this->activity->id], navigate: true);
+    }
 
     public function delete()
     {
@@ -252,23 +256,7 @@ class Update extends Component
 
     public function cleanupFields()
     {
-        $this->name = null;
-        $this->description = null;
-        $this->place = [
-            'display_name' => null,
-            'lat' => null,
-            'lng' => null,
-            'geojson' => null,
-        ];
-        $this->url = null;
-        $this->priceType = 'price_by_person';
-        $this->price = null;
-        $this->images = [];
-        $this->tempImages = [];
-        $this->existingMedia = [];
-        $this->mediaToDelete = [];
-
-        $this->dispatch('clean-map');
+        $this->initFields();
     }
 
 
