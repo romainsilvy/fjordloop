@@ -8,13 +8,6 @@
 
 <link rel="icon" type="image/png" href="/images/favicon/favicon-512x512.png">
 
-
-
-
-<script>
-    console.log('test');
-</script>
-
 @stack('styles')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 {{-- @fluxAppearance --}}
