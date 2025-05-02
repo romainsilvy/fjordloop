@@ -98,13 +98,19 @@
                 },
                 updateLocation(lat, lon, geojson, name) {
                     if (lat && lon && this.map) {
+                        const customIcon = L.icon({
+                            iconUrl: '/images/markers/travel-orange.png',
+                            iconSize: [30, 40],
+                            iconAnchor: [15, 40],
+                            popupAnchor: [0, -40],
+                        });
 
                         this.map.setView([lat, lon], 12);
 
                         if (this.marker) {
                             this.marker.setLatLng([lat, lon]);
                         } else {
-                            this.marker = L.marker([lat, lon]).addTo(this.map);
+                            this.marker = L.marker([lat, lon], { icon: customIcon }).addTo(this.map);
                         }
 
 
