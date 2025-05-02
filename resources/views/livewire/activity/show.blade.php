@@ -68,7 +68,11 @@
                     </div>
                 </div>
             @else
-                <div></div>
+                <div class="w-full  h-[50vh] bg-primary-500 rounded-lg">
+                    <div class="w-full h-full flex justify-center items-center bg-black/5">
+                        <flux:icon.photo class="size-18 text-primary-400" />
+                    </div>
+                </div>
             @endif
 
             @if ($activity->place_latitude && $activity->place_longitude)
@@ -148,9 +152,9 @@
 
             <x-activity.show-date :activity="$activity" />
 
-            <flux:separator class="mb-5"/>
+            <flux:separator class="mb-5" />
 
-            <p class="">
+            <p>
                 {!! nl2br($activity->description) !!}
             </p>
         </div>
