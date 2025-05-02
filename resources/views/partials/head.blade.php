@@ -6,6 +6,11 @@
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+<link rel="icon" type="image/png" href="/images/favicon/favicon-512x512.png">
+
+
+
+
 <script>
     console.log('test');
 </script>
