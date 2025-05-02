@@ -1,6 +1,10 @@
 <div>
+    <flux:breadcrumbs class="mb-4">
+        <flux:breadcrumbs.item>Voyages</flux:breadcrumbs.item>
+    </flux:breadcrumbs>
+
     <div class="flex">
-        <flux:heading size="xl">Voyages</flux:heading>
+        <flux:heading size="xl">Vos voyages</flux:heading>
 
         <flux:spacer />
 
