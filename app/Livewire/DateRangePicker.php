@@ -43,7 +43,7 @@ class DateRangePicker extends Component
         $date = Carbon::create($this->currentYear, $this->currentMonth, 1);
         if ($date) {
             $this->daysInMonth = $date->daysInMonth;
-            $this->monthName = $date->format('F');
+            $this->monthName = ucfirst($date->translatedFormat('F'));
 
             // Determine the first day of the current month (1=Monday, 7=Sunday)
             $firstDay = $date->dayOfWeekIso;
