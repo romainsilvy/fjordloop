@@ -175,6 +175,12 @@ class Create extends Component
         $this->priceType = 'price_by_person';
         $this->price = null;
 
+        $this->startDate = null;
+        $this->startTime = null;
+        $this->endDate = null;
+        $this->endTime = null;
+        $this->refreshAvailableEndDates(Carbon::parse($this->travel->start_date));
+
         $this->dispatch(event: 'clean-map');
     }
 

@@ -1,5 +1,5 @@
-<flux:modal name="create-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" :dismissible="false">
-    <div class="space-y-6">
+<flux:modal name="create-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields">
+    <div x-data="activityCreateCleanup()" class="space-y-6">
         <div>
             <flux:heading size="lg">Créer une activité</flux:heading>
         </div>
@@ -60,3 +60,31 @@
         </div>
     </div>
 </flux:modal>
+
+@push('scripts')
+    <script>
+        function activityCreateCleanup() {
+            return {
+                init() {
+                    const modal = this.$root.closest('dialog');
+
+                    if (!modal) return;
+
+                    const observer = new MutationObserver((mutationsList) => {
+                        for (const mutation of mutationsList) {
+                            if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
+                                if (!modal.hasAttribute('open')) {
+                                    @this.cleanupFields();
+                                }
+                            }
+                        }
+                    });
+
+                    observer.observe(modal, {
+                        attributes: true
+                    });
+                },
+            }
+        }
+    </script>
+@endpush
