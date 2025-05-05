@@ -65,7 +65,7 @@
                                         this.bounds = L.latLngBounds();
 
                                         const customIcon = L.icon({
-                                            iconUrl: '/images/markers/travel-orange.png',
+                                            iconUrl: '/images/markers/activity-orange.png',
                                             iconSize: [30, 40],
                                             iconAnchor: [15, 40],
                                             popupAnchor: [0, -40],

@@ -100,7 +100,7 @@
             updateLocation(lat, lon, name) {
                 if (lat && lon && this.map) {
                     const customIcon = L.icon({
-                        iconUrl: '/images/markers/travel-orange.png',
+                        iconUrl: '/images/markers/aeroz-blue.png',
                         iconSize: [30, 40],
                         iconAnchor: [15, 40],
                         popupAnchor: [0, -40],

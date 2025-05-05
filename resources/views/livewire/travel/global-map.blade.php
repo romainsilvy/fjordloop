@@ -2,7 +2,7 @@
 
     <div
         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200">
-        <div wire:ignore x-data="mapComponent()" x-init="initMap" x-on:activities-refreshed.window="refreshMarkers($event.detail)">
+        <div wire:ignore x-data="mapComponent()" x-init="initMap" x-on:activities-refreshed.window="refreshMarkers($event.detail, 'activity')" x-on:housings-refreshed.window="refreshMarkers($event.detail, 'housing')">
             <div class="w-full h-[60vh] rounded-lg" x-ref="mapContainer"></div>
         </div>
     </div>
@@ -13,8 +13,8 @@
     function mapComponent() {
         return {
             map: null,
-            markers: [],
-            bounds: null,
+            activityMarkers: [],
+            housingMarkers: [],
 
             initMap() {
                 this.$nextTick(() => {
@@ -41,50 +41,83 @@
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(this.map);
 
-                    this.bounds = L.latLngBounds();
-
-                    this.addMarkers(@json($activities));
+                    this.addMarkers(@json($activities), 'activity');
+                    this.addMarkers(@json($housings), 'housing');
                 });
             },
 
-            addMarkers(activities) {
+            addMarkers(items, type) {
+                let iconUrl = '/images/markers/aeroz-blue.png';
+
+                if (type === 'activity') {
+                    iconUrl = '/images/markers/activity-orange.png';
+                } else if (type === 'housing') {
+                    iconUrl = '/images/markers/housing-green.png';
+                }
+
                 const customIcon = L.icon({
-                    iconUrl: '/images/markers/travel-orange.png',
+                    iconUrl: iconUrl,
                     iconSize: [30, 40],
                     iconAnchor: [15, 40],
                     popupAnchor: [0, -40],
                 });
 
-                activities.forEach(activity => {
-                    const lat = activity.place_latitude;
-                    const lon = activity.place_longitude;
-                    const name = activity.name;
+
+
+                items.forEach(item => {
+                    const lat = item.place_latitude;
+                    const lon = item.place_longitude;
+                    const name = item.name;
 
                     if (lat && lon) {
                         const marker = L.marker([lat, lon], { icon: customIcon })
                             .addTo(this.map)
                             .bindPopup(name);
 
-                        this.markers.push(marker);
-                        this.bounds.extend([lat, lon]);
+                        if (type === 'activity') {
+                            this.activityMarkers.push(marker);
+                        } else if (type === 'housing') {
+                            this.housingMarkers.push(marker);
+                        }
                     }
                 });
 
-                if (this.bounds.isValid()) {
-                    this.map.fitBounds(this.bounds, { padding: [20, 20] });
+                this.fitAllMarkers();
+            },
+
+            fitAllMarkers() {
+                let bounds = L.latLngBounds();
+
+                if (this.activityMarkers.length > 0 || this.housingMarkers.length > 0) {
+                    this.activityMarkers.forEach(marker => {
+                        if (marker.getLatLng()) {
+                            bounds.extend(marker.getLatLng());
+                        }
+                    });
+                    this.housingMarkers.forEach(marker => {
+                        if (marker.getLatLng()) {
+                            bounds.extend(marker.getLatLng());
+                        }
+                    });
+
+                    this.map.fitBounds(bounds, { padding: [20, 20] });
                 }
             },
 
-            clearMarkers() {
-                this.bounds = L.latLngBounds();
-                this.markers.forEach(marker => this.map.removeLayer(marker));
-                this.markers = [];
+            clearMarkers(type) {
+                if (type === 'activity') {
+                    this.activityMarkers.forEach(marker => this.map.removeLayer(marker));
+                    this.activityMarkers = [];
+                } else if (type === 'housing') {
+                    this.housingMarkers.forEach(marker => this.map.removeLayer(marker));
+                    this.housingMarkers = [];
+                }
             },
 
-            refreshMarkers(newActivities) {
-                this.clearMarkers();
-                this.addMarkers(newActivities[0]);
-            }
+            refreshMarkers(newItems, type) {
+                this.clearMarkers(type);
+                this.addMarkers(newItems[0], type);
+            },
         };
     }
 </script>

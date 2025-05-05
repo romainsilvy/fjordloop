@@ -35,7 +35,7 @@ class Show extends Component
     {
         $this->housings = $this->travel->housings()->get();
 
-        // $this->dispatch('housings-refreshed', $this->housings);
+        $this->dispatch('housings-refreshed', $this->housings);
     }
 
     public function render()
