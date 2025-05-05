@@ -7,6 +7,7 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Travel\Index as TravelIndex;
 use App\Livewire\Travel\Show as TravelShow;
 use App\Livewire\Activity\Show as ActivityShow;
+use App\Livewire\Housing\Show as HousingShow;
 
 use Illuminate\Support\Facades\Route;
 
@@ -27,10 +28,22 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', TravelIndex::class)->name('index');
             Route::get('/{travelId}', TravelShow::class)->name('show');
 
-            Route::prefix('{travelId}/activity')
-                ->name('activity.')
+
+
+            Route::prefix('{travelId}')
                 ->group(function () {
-                    Route::get('/{activityId}', ActivityShow::class)->name('show');
+
+                    Route::prefix('activity')
+                        ->name('activity.')
+                        ->group(function () {
+                            Route::get('/{activityId}', ActivityShow::class)->name('show');
+                        });
+
+                    Route::prefix('housing')
+                        ->name('housing.')
+                        ->group(function () {
+                            Route::get('/{housingId}', HousingShow::class)->name('show');
+                        });
                 });
 
             Route::prefix('{token}')->name('invitation.')->controller(InvitationsController::class)->group(function () {

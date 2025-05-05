@@ -1,9 +1,9 @@
-@props(['activity'])
+@props(['placeName' => null])
 
-@if ($activity->place_name)
+@if ($placeName)
     <div class="flex flex-row items-center justify-start gap-2">
         <flux:icon.map-pin class="size-4" />
 
-        <p>{{ $activity->place_name }}</p>
+        <p>{{ $placeName }}</p>
     </div>
 @endif

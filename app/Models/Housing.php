@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Travel;
 use Carbon\Carbon;
+use App\Models\Travel;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Activity extends Model implements HasMedia
+
+class Housing extends Model implements HasMedia
 {
     use HasUuids, HasFactory, InteractsWithMedia;
 

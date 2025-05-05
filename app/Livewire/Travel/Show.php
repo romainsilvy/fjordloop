@@ -12,12 +12,14 @@ class Show extends Component
     public $travel;
 
     public $activities;
+    public $housings;
 
     public function mount($travelId)
     {
         $this->travel = Travel::findOrFail($travelId);
 
         $this->refreshActivities();
+        $this->refreshHousings();
     }
 
     #[On('activityCreated')]
@@ -26,6 +28,14 @@ class Show extends Component
         $this->activities = $this->travel->activities()->get();
 
         $this->dispatch('activities-refreshed', $this->activities);
+    }
+
+    // #[On('housingCreated')]
+    public function refreshHousings()
+    {
+        $this->housings = $this->travel->housings()->get();
+
+        // $this->dispatch('housings-refreshed', $this->housings);
     }
 
     public function render()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Housing;
 use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -219,5 +220,10 @@ class Travel extends Model
     public function activities(): HasMany
     {
         return $this->hasMany(Activity::class);
+    }
+
+    public function housings(): HasMany
+    {
+        return $this->hasMany(Housing::class);
     }
 }

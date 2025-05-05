@@ -1,11 +1,11 @@
-@props(['activity'])
+@props(['url' => null])
 
-@if ($activity->url)
+@if ($url)
     <div class="flex flex-row items-center justify-start gap-2">
         <flux:icon.link class="size-4" />
 
         <p class="underline">
-            {{ $activity->url }}
+            {{ $url }}
         </p>
     </div>
 @endif

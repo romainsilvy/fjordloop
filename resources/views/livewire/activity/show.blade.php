@@ -20,60 +20,10 @@
             </flux:modal.trigger>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 h-[50vh]">
+        <div class="grid grid-cols-2 gap-4">
 
-            @if ($activity->getMediaDisplay() && count($activity->getMediaDisplay()) > 0)
-                <div x-data="{
-                    currentIndex: 0,
-                    next() {
-                        if (this.currentIndex < {{ count($activity->getMediaDisplay()) }} - 1) {
-                            this.currentIndex++;
-                        } else {
-                            this.currentIndex = 0;
-                        }
-                    },
-                    prev() {
-                        if (this.currentIndex > 0) {
-                            this.currentIndex--;
-                        } else {
-                            this.currentIndex = {{ count($activity->getMediaDisplay()) }} - 1;
-                        }
-                    }
-                }" class="w-full">
-                    <div class="relative">
-                        @if (count($activity->getMediaDisplay()) > 1)
-                            <button type="button"
-                                class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-                                x-on:click="prev()">
-                                <flux:icon.chevron-left />
-                            </button>
-                        @endif
-                        <div class="carousel-container relative flex justify-center items-center overflow-hidden">
-                            <template x-for="(media, index) in {{ $activity->getMediaDisplay() }}"
-                                :key="index">
-                                <div class="w-full h-[50vh] rounded-lg transition-all duration-500 bg-black/5"
-                                    x-show="currentIndex === index">
-                                    <img :src="media.url" class="w-full h-full object-contain"
-                                        :alt="media.name || 'Activity image'" />
-                                </div>
-                            </template>
-                        </div>
-                        @if (count($activity->getMediaDisplay()) > 1)
-                            <button type="button"
-                                class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-                                x-on:click="next()">
-                                <flux:icon.chevron-right />
-                            </button>
-                        @endif
-                    </div>
-                </div>
-            @else
-                <div class="w-full  h-[50vh] bg-primary-500 rounded-lg">
-                    <div class="w-full h-full flex justify-center items-center bg-black/5">
-                        <flux:icon.photo class="size-18 text-primary-400" />
-                    </div>
-                </div>
-            @endif
+            <x-card-image-carrousel :medias="$activity->getMediaDisplay()" customHeight="h-[50vh]" />
+
 
             @if ($activity->place_latitude && $activity->place_longitude)
                 <flux:field class="w-full">
@@ -142,15 +92,13 @@
 
 
         <div class="flex flex-col">
+            <x-show-place-name :placeName="$activity->place_name" />
 
+            <x-show-url :url="$activity->url" />
 
-            <x-activity.show-place-name :activity="$activity" />
+            <x-show-price :priceByGroup="$activity->price_by_group" :priceByPerson="$activity->price_by_person" />
 
-            <x-activity.show-url :activity="$activity" />
-
-            <x-activity.show-price :activity="$activity" />
-
-            <x-activity.show-date :activity="$activity" />
+            <x-show-date :startDate="$activity->start_date" :endDate="$activity->end_date" :startTime="$activity->start_time" :endTime="$activity->endTime" />
 
             <flux:separator class="mb-5" />
 

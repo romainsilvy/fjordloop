@@ -1,10 +1,10 @@
-@props(['activity'])
+@props(['medias' => null, 'customHeight' => 'h-72'])
 
-@if ($activity->getMediaDisplay() && count($activity->getMediaDisplay()) > 0)
+@if ($medias && count($medias) > 0)
     <div x-data="{
         currentIndex: 0,
         next() {
-            if (this.currentIndex < {{ count($activity->getMediaDisplay()) }} - 1) {
+            if (this.currentIndex < {{ count($medias) }} - 1) {
                 this.currentIndex++;
             } else {
                 this.currentIndex = 0;
@@ -14,12 +14,12 @@
             if (this.currentIndex > 0) {
                 this.currentIndex--;
             } else {
-                this.currentIndex = {{ count($activity->getMediaDisplay()) }} - 1;
+                this.currentIndex = {{ count($medias) }} - 1;
             }
         }
     }">
         <div class="relative">
-            @if (count($activity->getMediaDisplay()) > 1)
+            @if (count($medias) > 1)
                 <button type="button"
                     class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
                     x-on:click="prev()">
@@ -27,14 +27,14 @@
                 </button>
             @endif
             <div class="carousel-container relative flex justify-center items-center overflow-hidden">
-                <template x-for="(media, index) in {{ $activity->getMediaDisplay() }}" :key="index">
-                    <div class="w-full h-72 transition-all duration-500 bg-black/5" x-show="currentIndex === index">
+                <template x-for="(media, index) in {{ $medias }}" :key="index">
+                    <div class="w-full {{$customHeight}} transition-all duration-500 bg-black/5" x-show="currentIndex === index">
                         <img :src="media.url" class="w-full h-full object-contain"
                             :alt="media.name || 'Activity image'" />
                     </div>
                 </template>
             </div>
-            @if (count($activity->getMediaDisplay()) > 1)
+            @if (count($medias) > 1)
                 <button type="button"
                     class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
                     x-on:click="next()">
@@ -44,7 +44,9 @@
         </div>
     </div>
 @else
-    <div class="w-full flex justify-center items-center h-72 bg-black/5">
-        <flux:icon.photo class="size-18 text-primary-400" />
+    <div class="w-full {{$customHeight}} bg-primary-500 rounded-lg">
+        <div class="w-full h-full flex justify-center items-center bg-black/5">
+            <flux:icon.photo class="size-18 text-primary-400" />
+        </div>
     </div>
 @endif

@@ -58,7 +58,7 @@
                 <x-activity.list :activities="$activities" title="Activités" :travel="$travel" />
             </div>
             <div x-show="tab === 'housings'" class="w-full">
-                <x-housing.list  title="Logements" :travel="$travel" />
+                <x-housing.list  title="Logements" :travel="$travel" :housings="$housings" />
             </div>
         </div>
     </div>

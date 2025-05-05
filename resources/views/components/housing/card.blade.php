@@ -2,23 +2,24 @@
 
 <div class="bg-primary-500 rounded-md shadow-md">
 
-    {{-- <x-activity.card-carrousel :activity="$activity" />
+    <x-card-image-carrousel :medias="$housing->getMediaDisplay()" />
 
-    <a href="{{ route('travel.activity.show', ['travelId' => $travel->id, 'activityId' => $activity->id]) }}" wire:navigate class="flex flex-col p-4">
+    <a href="{{ route('travel.housing.show', ['travelId' => $travel->id, 'housingId' => $housing->id]) }}" wire:navigate class="flex flex-col p-4">
         <h2 class="text-lg font-semibold text-zinc-800">
-            {{ $activity->name }}
+            {{ $housing->name }}
         </h2>
 
         <p class="text-zinc-600">
-            {{ $activity->description }}
+            {{ $housing->description }}
         </p>
 
-        <x-activity.show-place-name :activity="$activity" />
+        <x-show-place-name :placeName="$housing->place_name" />
 
-        <x-activity.show-url :activity="$activity" />
+        <x-show-url :url="$housing->url" />
 
-        <x-activity.show-price :activity="$activity" />
+        <x-show-price :priceByGroup="$housing->price_by_group" :priceByPerson="$housing->price_by_person" />
 
-        <x-activity.show-date :activity="$activity" />
-    </a> --}}
+        <x-show-date :startDate="$housing->start_date" :endDate="$housing->end_date" :startTime="$housing->start_time" :endTime="$housing->endTime" />
+    </a>
+
 </div>

@@ -2,7 +2,7 @@
 
 <div class="flex flex-row items-center justify-start gap-2">
     <flux:icon.calendar-date-range class="size-4"/>
-    
+
     <p class="text-sm">
         @if (isset($travel->start_date) && isset($travel->end_date))
         Du
