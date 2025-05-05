@@ -152,10 +152,19 @@ class Update extends Component
 
     public function updatedImages()
     {
-        foreach ($this->images as $image) {
-            $this->tempImages[] = $image;
+        // Make sure we're working with valid image objects
+        if (empty($this->images)) {
+            return;
         }
 
+        // Add new images to tempImages
+        foreach ($this->images as $image) {
+            if ($image && $image->isValid()) {
+                $this->tempImages[] = $image;
+            }
+        }
+
+        // Reset images property
         $this->images = [];
     }
 
@@ -223,24 +232,37 @@ class Update extends Component
             'end_time' => $this->endTime,
         ]);
 
-
+        // Process only valid temporary images
         foreach ($this->tempImages as $image) {
-            $this->activity
-                ->addMedia($image->getRealPath())
-                ->usingName($image->getClientOriginalName())
-                ->toMediaCollection();
+            if ($image && method_exists($image, 'getRealPath') && file_exists($image->getRealPath())) {
+                $originalName = $image->getClientOriginalName() ?: 'image-' . uniqid();
+
+                $this->activity
+                    ->addMedia($image->getRealPath())
+                    ->usingName($originalName)
+                    ->toMediaCollection();
+            }
         }
 
+        // Delete marked media
         foreach ($this->mediaToDelete as $mediaId) {
             $this->activity->deleteMedia($mediaId);
         };
 
+        // Reset form
+        $this->tempImages = [];
         $this->cleanupFields();
 
         Flux::modals()->close();
         Toaster::success('Activité modifiée !');
 
-        $this->redirectRoute('travel.activity.show', ['travelId' => $this->activity->travel_id, 'activityId' => $this->activity->id], navigate: true);
+        $this->dispatch(
+            'open-map',
+            lat: $this->place['lat'],
+            lon: $this->place['lng'],
+            name: $this->place['display_name'],
+        );
+        $this->dispatch('activity-updated');
     }
 
     public function delete()
@@ -252,9 +274,13 @@ class Update extends Component
 
     public function cleanupFields()
     {
+        // Reset temporary images when cleaning up
+        $this->tempImages = [];
+        $this->images = [];
+        $this->mediaToDelete = [];
+
         $this->initFields();
     }
-
 
     public function render()
     {

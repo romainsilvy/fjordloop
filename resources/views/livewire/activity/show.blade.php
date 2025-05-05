@@ -29,7 +29,8 @@
                 <flux:field class="w-full">
                     <div
                         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200">
-                        <div wire:ignore x-data="mapComponent()" x-init="initMap">
+                        <div wire:ignore x-data="mapComponent()" x-init="initMap"
+                            x-on:activity-refreshed.window="refreshMarker($event.detail)">
                             <div class="w-full h-[50vh] rounded-lg" x-ref="mapContainer"></div>
                         </div>
                     </div>
@@ -41,6 +42,8 @@
                             return {
                                 map: null,
                                 bounds: null,
+                                marker: null,
+
 
                                 initMap() {
                                     this.$nextTick(() => {
@@ -71,7 +74,7 @@
                                         });
 
                                         if (activityLat && activityLon) {
-                                            const marker = L.marker([activityLat, activityLon], {
+                                            this.marker = L.marker([activityLat, activityLon], {
                                                     icon: customIcon
                                                 })
                                                 .addTo(this.map);
@@ -79,6 +82,15 @@
 
                                     });
                                 },
+                                refreshMarker(event) {
+                                    const lat = event[0].place_latitude;
+                                    const lon = event[0].place_longitude;
+
+                                    if (this.map) {
+                                        this.map.setView([lat, lon], 12);
+                                        this.marker.setLatLng([lat, lon]);
+                                    }
+                                }
                             };
                         }
                     </script>
