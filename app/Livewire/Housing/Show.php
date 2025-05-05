@@ -24,6 +24,8 @@ class Show extends Component
         $this->housing = $this->travel->housings()->findOrFail($this->housing->id);
 
         $this->dispatch('housing-refreshed', $this->housing);
+        $this->dispatch('media-refreshed', $this->housing->getMediaDisplay());
+
     }
 
     public function render()

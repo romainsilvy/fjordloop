@@ -22,7 +22,7 @@
 
         <div class="grid grid-cols-2 gap-4">
 
-            <x-card-image-carrousel :medias="$activity->getMediaDisplay()" customHeight="h-[50vh]" />
+            <x-card-image-carrousel :medias="$medias" customHeight="h-[50vh]" />
 
 
             @if ($activity->place_latitude && $activity->place_longitude)

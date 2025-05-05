@@ -1,7 +1,7 @@
 @props(['medias' => null, 'customHeight' => 'h-72'])
 
 @if ($medias && count($medias) > 0)
-<div x-data="{
+<div wire:ignore x-data="{
     currentIndex: 0,
     images: {{ json_encode($medias) }},
     next() {
@@ -17,16 +17,21 @@
         } else {
             this.currentIndex = this.images.length - 1;
         }
+    },
+    updateImages(newImages) {
+        this.images = newImages;
+        this.currentIndex = 0;
     }
-}">
+}"
+x-on:media-refreshed.window="updateImages($event.detail[0])"
+>
     <div class="relative">
-        @if (count($medias) > 1)
         <button type="button"
+            x-show="images.length > 1"
             class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
             x-on:click="prev()">
             <flux:icon.chevron-left />
         </button>
-        @endif
         <div class="carousel-container relative flex justify-center items-center overflow-hidden">
             <template x-for="(media, index) in images" :key="index">
                 <div class="w-full {{$customHeight}} transition-all duration-500 bg-black/5"
@@ -36,13 +41,12 @@
                 </div>
             </template>
         </div>
-        @if (count($medias) > 1)
         <button type="button"
+            x-show="images.length > 1"
             class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
             x-on:click="next()">
             <flux:icon.chevron-right />
         </button>
-        @endif
     </div>
 </div>
 @else
