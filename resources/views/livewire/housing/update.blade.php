@@ -1,21 +1,21 @@
-<flux:modal name="update-activity" class="w-full max-w-4xl mt-10 max-h-[90vh]" wire:close="cleanupFields" id="update-activity-modal"
+<flux:modal name="update-housing" class="w-full max-w-4xl mt-10 max-h-[90vh]" wire:close="cleanupFields" id="update-housing-modal"
     :dismissible="false">
     <div class="space-y-6">
         <div>
-            <flux:heading size="lg">Modifier l'activité {{ $activity?->name }}</flux:heading>
+            <flux:heading size="lg">Modifier le logement {{ $housing?->name }}</flux:heading>
         </div>
 
-        <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
+        <flux:input label="Nom" placeholder="Nom du logement" wire:model="name" />
         <flux:textarea label="Description" placeholder="Description" wire:model="description" />
 
-        <x-upload-image-carrousel :images="$tempImages" :existingImages="$existingMedia" inputId="upload-image-carrousel-activity-update" modalId="update-activity-modal" />
+        <x-upload-image-carrousel :images="$tempImages" :existingImages="$existingMedia" inputId="upload-image-carrousel-housing-update" modalId="update-housing-modal" />
 
 
         <livewire:search-map wire:model="place" />
 
-        <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
+        <flux:input type="url" label="Url" placeholder="Url du logement" wire:model="url" />
 
-        @if ($activity)
+        @if ($housing)
 
             <div class="*:w-1/2 flex items-center gap-4">
                 <flux:input.group label="Début">
@@ -56,7 +56,7 @@
 
 
         <div class="flex">
-            <flux:button wire:confirm="Êtes vous sur de vouloir supprimer cette activité ?" wire:click="delete"
+            <flux:button wire:confirm="Êtes vous sur de vouloir supprimer ce logement ?" wire:click="delete"
                 variant="danger">Supprimer</flux:button>
 
             <flux:spacer />

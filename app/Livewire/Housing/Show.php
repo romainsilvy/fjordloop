@@ -4,6 +4,7 @@ namespace App\Livewire\Housing;
 
 use App\Models\Travel;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Show extends Component
 {
@@ -16,6 +17,15 @@ class Show extends Component
 
         $this->housing = $this->travel->housings()->findOrFail($housingId);
     }
+
+    #[On('housing-updated')]
+    public function refreshHousing()
+    {
+        $this->housing = $this->travel->housings()->findOrFail($this->housing->id);
+
+        $this->dispatch('housing-refreshed', $this->housing);
+    }
+
     public function render()
     {
         return view('livewire.housing.show');
