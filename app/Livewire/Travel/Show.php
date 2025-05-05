@@ -30,7 +30,7 @@ class Show extends Component
         $this->dispatch('activities-refreshed', $this->activities);
     }
 
-    // #[On('housingCreated')]
+    #[On('housingCreated')]
     public function refreshHousings()
     {
         $this->housings = $this->travel->housings()->get();

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('housings', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('name');
-            $table->string('description')->nullable();
-            $table->string('url')->nullable();
+            $table->text('description')->nullable();
+            $table->text('url')->nullable();
             $table->decimal('price_by_person', 10, 2)->nullable();
             $table->decimal('price_by_group', 10, 2)->nullable();
             $table->string('place_name')->nullable();

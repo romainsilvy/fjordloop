@@ -117,6 +117,82 @@
             </style>
             <x-toaster-hub />
         </div>
+
+        <script>
+            function uploadCarrousel(modalId, inputId) {
+                return {
+                    isScrollable: false,
+                    modalId: modalId,
+                    inputId: inputId,
+
+                    init() {
+                        this.checkScroll();
+
+                        const observer = new MutationObserver(() => this.checkScroll());
+                        observer.observe(this.$refs.carousel, {
+                            childList: true,
+                            subtree: true
+                        });
+
+                        const modal = document.getElementById(this.modalId).firstElementChild;
+                        const modalObserver = new MutationObserver(() => {
+                            if (modal.hasAttribute('open')) {
+                                this.setupPasteHandler();
+                            } else {
+                                this.cleanupPasteHandler();
+                            }
+                        });
+                        modalObserver.observe(modal, {
+                            attributes: true
+                        });
+                    },
+
+                    checkScroll() {
+                        const container = this.$refs.carousel;
+                        this.isScrollable = container.scrollWidth > container.clientWidth;
+                    },
+                    setupPasteHandler() {
+                        this._boundHandlePaste = this.handlePaste.bind(this);
+                        document.addEventListener('paste', this._boundHandlePaste);
+
+                    },
+                    cleanupPasteHandler() {
+                        document.removeEventListener('paste', this._boundHandlePaste);
+                    },
+                    handlePaste(event) {
+                        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                        let hasProcessedImage = false;
+
+                        for (let index in items) {
+                            const item = items[index];
+
+                            if (item.kind === 'file') {
+                                const file = item.getAsFile();
+
+                                if (file && file.type.startsWith('image/') && !hasProcessedImage) {
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(file);
+                                    const fileInput = document.getElementById(this.inputId);
+                                    fileInput.files = dataTransfer.files;
+
+                                    // Trigger the change event on the file input
+                                    const event = new Event('change', {
+                                        bubbles: true
+                                    });
+
+                                    fileInput.dispatchEvent(event);
+
+                                    // Flag to prevent duplicate processing in the same paste event
+                                    hasProcessedImage = true;
+                                }
+                            }
+                        }
+                    },
+
+                }
+            }
+        </script>
+
         @stack('scripts')
 
 

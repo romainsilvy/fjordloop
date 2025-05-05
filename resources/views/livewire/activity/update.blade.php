@@ -1,4 +1,4 @@
-<flux:modal name="update-activity" class="w-full max-w-4xl mt-10 max-h-[90vh]" wire:close="cleanupFields"
+<flux:modal name="update-activity" class="w-full max-w-4xl mt-10 max-h-[90vh]" wire:close="cleanupFields" id="update-activity-modal"
     :dismissible="false">
     <div class="space-y-6">
         <div>
@@ -8,7 +8,8 @@
         <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
         <flux:textarea label="Description" placeholder="Description" wire:model="description" />
 
-        <x-upload-image-carrousel :images="$tempImages" :existingImages="$existingMedia" />
+        <x-upload-image-carrousel :images="$tempImages" :existingImages="$existingMedia" inputId="upload-image-carrousel-activity-update" modalId="update-activity-modal" />
+
 
         <livewire:search-map wire:model="place" />
 

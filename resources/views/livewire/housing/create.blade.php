@@ -1,14 +1,15 @@
-<flux:modal name="create-activity" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" id="create-activity-modal">
-    <div x-data="activityCreateCleanup()" class="space-y-6">
+<flux:modal name="create-housing" class="w-full max-w-4xl mt-10" wire:close="cleanupFields" id="create-housing-modal">
+    <div x-data="housingCreateCleanup()" class="space-y-6">
         <div>
-            <flux:heading size="lg">Créer une activité</flux:heading>
+            <flux:heading size="lg">Créer un logement</flux:heading>
         </div>
 
-        <flux:input label="Nom" placeholder="Nom de l'activité" wire:model="name" />
+        <flux:input label="Nom" placeholder="Nom du logement" wire:model="name" />
         <flux:textarea label="Description" placeholder="Description" wire:model="description" />
-        <flux:input type="url" label="Url" placeholder="Url de l'activité" wire:model="url" />
+        <flux:input type="url" label="Url" placeholder="Url du logement" wire:model="url" />
 
-        <x-upload-image-carrousel :images="$tempImages" inputId="upload-image-carrousel-activity-create" modalId="create-activity-modal" />
+        <x-upload-image-carrousel :images="$tempImages" inputId="upload-image-carrousel-housing-create" modalId="create-housing-modal" />
+
 
 
         <div class="*:w-1/2 flex items-center gap-4">
@@ -62,7 +63,7 @@
 </flux:modal>
 
 <script>
-    function activityCreateCleanup() {
+    function housingCreateCleanup() {
         return {
             init() {
                 const modal = this.$root.closest('dialog');

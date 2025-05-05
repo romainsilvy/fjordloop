@@ -56,15 +56,16 @@
             <!-- Tab Content -->
             <div x-show="tab === 'activities'" class="w-full">
                 <x-activity.list :activities="$activities" title="Activités" :travel="$travel" />
+                <livewire:activity.create :travel="$travel" />
             </div>
             <div x-show="tab === 'housings'" class="w-full">
                 <x-housing.list  title="Logements" :travel="$travel" :housings="$housings" />
+                <livewire:housing.create :travel="$travel" />
             </div>
         </div>
     </div>
 
     {{-- Modals --}}
-    <livewire:activity.create :travel="$travel" />
     <livewire:travel.update :travel="$travel" />
 
 </div>
