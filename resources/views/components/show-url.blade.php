@@ -5,7 +5,7 @@
         <flux:icon.link class="size-4" />
 
         <p class="underline">
-            {{ $url }}
+            {{ \Illuminate\Support\Str::limit($url, 50) }}
         </p>
     </div>
 @endif
