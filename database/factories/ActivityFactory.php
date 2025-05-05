@@ -27,13 +27,6 @@ class ActivityFactory extends Factory
             'place_name' => $this->faker->address(),
             'place_latitude' => $this->faker->latitude(),
             'place_longitude' => $this->faker->longitude(),
-            'place_geojson' => json_encode([
-                'type' => 'Point',
-                'coordinates' => [
-                    $this->faker->longitude(),
-                    $this->faker->latitude(),
-                ],
-            ]),
         ];
     }
 }

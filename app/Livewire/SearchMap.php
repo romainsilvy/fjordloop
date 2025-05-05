@@ -56,18 +56,17 @@ class SearchMap extends Component
     }
 
     #[On('open-map')]
-    public function updateQueryFromEvent($lat, $lon, $geojson, $name)
+    public function updateQueryFromEvent($lat, $lon, $name)
     {
         $this->query = $name;
     }
 
-    public function selectLocation($lat, $lon, $geojson, $name)
+    public function selectLocation($lat, $lon, $name)
     {
         $this->dispatch(
             'location-selected',
             lat: $lat,
             lon: $lon,
-            geojson: $geojson,
             name: $name
         );
 
@@ -77,7 +76,6 @@ class SearchMap extends Component
             'display_name' => $name,
             'lat' => $lat,
             'lng' => $lon,
-            'geojson' => $geojson,
         ];
     }
 
@@ -90,7 +88,6 @@ class SearchMap extends Component
             'display_name' => null,
             'lat' => null,
             'lng' => null,
-            'geojson' => null,
         ];
     }
 

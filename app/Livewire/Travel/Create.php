@@ -16,7 +16,6 @@ class Create extends Component
         'display_name' => null,
         'lat' => null,
         'lng' => null,
-        'geojson' => null,
     ];
 
     public $members = [];
@@ -37,7 +36,6 @@ class Create extends Component
             'place_name' => $this->place['display_name'],
             'place_latitude' => $this->place['lat'],
             'place_longitude' => $this->place['lng'],
-            'place_geojson' => $this->place['geojson'],
             'start_date' => $this->dateRange['start'],
             'end_date' => $this->dateRange['end'],
         ]);
@@ -59,7 +57,6 @@ class Create extends Component
             'display_name' => null,
             'lat' => null,
             'lng' => null,
-            'geojson' => null,
         ];
 
         $this->members = [];

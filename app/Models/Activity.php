@@ -25,7 +25,6 @@ class Activity extends Model implements HasMedia
         'place_name',
         'place_latitude',
         'place_longitude',
-        'place_geojson',
         'start_date',
         'start_time',
         'end_date',

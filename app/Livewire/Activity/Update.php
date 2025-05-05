@@ -36,7 +36,6 @@ class Update extends Component
         'display_name' => null,
         'lat' => null,
         'lng' => null,
-        'geojson' => null,
     ];
 
     #[Validate('url|nullable')]
@@ -74,7 +73,6 @@ class Update extends Component
                 'open-map',
                 lat: $this->place['lat'],
                 lon: $this->place['lng'],
-                geojson: $this->place['geojson'],
                 name: $this->place['display_name'],
             );
         }
@@ -117,7 +115,6 @@ class Update extends Component
         $this->place['display_name'] = $this->activity->place_name;
         $this->place['lat'] = $this->activity->place_latitude;
         $this->place['lng'] = $this->activity->place_longitude;
-        $this->place['geojson'] = $this->activity->place_geojson;
         $this->url = $this->activity->url;
         $this->price = $this->activity->{$this->priceType};
         $this->startDate = $this->activity->start_date?->format('Y-m-d');
@@ -217,7 +214,6 @@ class Update extends Component
             'place_name' => $this->place['display_name'],
             'place_latitude' => $this->place['lat'],
             'place_longitude' => $this->place['lng'],
-            'place_geojson' => $this->place['geojson'],
             'url' => $this->url,
             'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,

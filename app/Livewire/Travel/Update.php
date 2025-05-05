@@ -18,7 +18,6 @@ class Update extends Component
         'display_name' => null,
         'lat' => null,
         'lng' => null,
-        'geojson' => null,
     ];
 
     public $membersToInvite = [];
@@ -51,7 +50,6 @@ class Update extends Component
         $this->place['display_name'] = $this->travel->place_name;
         $this->place['lat'] = $this->travel->place_latitude;
         $this->place['lng'] = $this->travel->place_longitude;
-        $this->place['geojson'] = $this->travel->place_geojson;
         $this->dateRange['start'] = $this->travel->start_date;
         $this->dateRange['end'] = $this->travel->end_date;
         $this->membersToInvite = [];
@@ -71,7 +69,6 @@ class Update extends Component
             'place_name' => $this->place['display_name'],
             'place_latitude' => $this->place['lat'],
             'place_longitude' => $this->place['lng'],
-            'place_geojson' => $this->place['geojson'],
             'start_date' => $this->dateRange['start'],
             'end_date' => $this->dateRange['end'],
         ]);

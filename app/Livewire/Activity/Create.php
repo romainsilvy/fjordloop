@@ -27,7 +27,6 @@ class Create extends Component
         'display_name' => null,
         'lat' => null,
         'lng' => null,
-        'geojson' => null,
     ];
 
     #[Validate('url|nullable')]
@@ -135,7 +134,6 @@ class Create extends Component
             'place_name' => $this->place['display_name'],
             'place_latitude' => $this->place['lat'],
             'place_longitude' => $this->place['lng'],
-            'place_geojson' => $this->place['geojson'],
             'url' => $this->url,
             'price_by_person' => $this->priceType == 'price_by_person' ? $this->price : null,
             'price_by_group' => $this->priceType == 'price_by_group' ? $this->price : null,
@@ -167,7 +165,6 @@ class Create extends Component
             'display_name' => null,
             'lat' => null,
             'lng' => null,
-            'geojson' => null,
         ];
         $this->url = null;
         $this->tempImages = [];

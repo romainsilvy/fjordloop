@@ -76,7 +76,6 @@ class MapboxService
                 'display_name' => $feature['properties']['full_address'] ?? $feature['properties']['name'] ?? '',
                 'lat' => $feature['geometry']['coordinates'][1] ?? null,
                 'lon' => $feature['geometry']['coordinates'][0] ?? null,
-                'geojson' => json_encode($feature['geometry']),
                 'place_type' => $feature['properties']['feature_type'] ?? null,
                 'id' => $feature['id'] ?? null,
                 'context' => $feature['properties']['context'] ?? [],
