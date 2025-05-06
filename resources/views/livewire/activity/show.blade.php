@@ -28,14 +28,12 @@
             <flux:field class="w-full">
                 <div
                     class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200">
-                    <div wire:ignore x-data="showActivityMap(@js($activity->place_latitude), @js($activity->place_longitude), @js($activity->travel->place_latitude), @js($activity->travel->place_longitude))" x-init="initMap"
+                    <div wire:ignore x-data="showDetailMap(@js($activity->place_latitude), @js($activity->place_longitude), @js($activity->travel->place_latitude), @js($activity->travel->place_longitude))" x-init="initMap"
                         x-on:activity-refreshed.window="refreshMarker($event.detail)">
                         <div class="w-full h-[50vh] rounded-lg" x-ref="mapContainer"></div>
                     </div>
                 </div>
             </flux:field>
-
-
         </div>
 
 

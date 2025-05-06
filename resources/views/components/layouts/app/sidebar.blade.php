@@ -194,12 +194,12 @@
         </script>
 
     <script>
-        function showActivityMap(activityLat, activityLon, travelLat, travelLon) {
+        function showDetailMap(itemLat, itemLon, travelLat, travelLon) {
             return {
                 map: null,
                 marker: null,
-                activityLat: activityLat,
-                activityLon: activityLon,
+                itemLat: itemLat,
+                itemLon: itemLon,
                 travelLat: travelLat,
                 travelLon: travelLon,
                 customIcon: null,
@@ -227,12 +227,12 @@
                             popupAnchor: [0, -40],
                         });
 
-                        if (this.activityLat && this.activityLon) {
-                            this.marker = L.marker([this.activityLat, this.activityLon], {
+                        if (this.itemLat && this.itemLon) {
+                            this.marker = L.marker([this.itemLat, this.itemLon], {
                                     icon: this.customIcon
                                 })
                                 .addTo(this.map);
-                            this.map.setView([this.activityLat, this.activityLon], 12)
+                            this.map.setView([this.itemLat, this.itemLon], 12)
 
                         } else if(this.travelLat, this.travelLon) {
                             this.map.setView([this.travelLat, this.travelLon], 12)
