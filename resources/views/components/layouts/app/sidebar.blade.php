@@ -193,6 +193,73 @@
             }
         </script>
 
+    <script>
+        function showActivityMap(activityLat, activityLon, travelLat, travelLon) {
+            return {
+                map: null,
+                marker: null,
+                activityLat: activityLat,
+                activityLon: activityLon,
+                travelLat: travelLat,
+                travelLon: travelLon,
+                customIcon: null,
+
+                initMap() {
+                    this.$nextTick(() => {
+                        const container = this.$refs.mapContainer;
+
+                        if (!container) {
+                            console.error("Map container not found!");
+                            return;
+                        }
+
+                        this.map = L.map(container).setView([46.6034, 1.8883], 5);
+
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; OpenStreetMap contributors'
+                        }).addTo(this.map);
+
+                        this.customIcon = L.icon({
+                            iconUrl: '/images/markers/activity-orange.png',
+                            iconSize: [30, 40],
+                            iconAnchor: [15, 40],
+                            popupAnchor: [0, -40],
+                        });
+
+                        if (this.activityLat && this.activityLon) {
+                            this.marker = L.marker([this.activityLat, this.activityLon], {
+                                    icon: this.customIcon
+                                })
+                                .addTo(this.map);
+                            this.map.setView([this.activityLat, this.activityLon], 12)
+
+                        } else if(this.travelLat, this.travelLon) {
+                            this.map.setView([this.travelLat, this.travelLon], 12)
+                        }
+                    });
+                },
+                refreshMarker(event) {
+                    const lat = event[0].place_latitude;
+                    const lon = event[0].place_longitude;
+
+                    if (this.map && lat && lon) {
+                        if (this.marker) {
+                            this.marker.setLatLng([lat, lon]);
+                        } else {
+                            this.marker = L.marker([lat, lon], {
+                                    icon: this.customIcon
+                                })
+                                .addTo(this.map);
+                        }
+
+                        this.map.setView([lat, lon], 12);
+                    }
+                }
+            };
+        }
+    </script>
+
         @stack('scripts')
 
 
