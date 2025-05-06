@@ -20,6 +20,6 @@
 
         <x-show-price :priceByGroup="$activity->price_by_group" :priceByPerson="$activity->price_by_person" />
 
-        <x-show-date :startDate="$activity->start_date" :endDate="$activity->end_date" :startTime="$activity->start_time" :endTime="$activity->endTime" />
+        <x-show-date :startDate="$activity->start_date" :endDate="$activity->end_date" :startTime="$activity->start_time" :endTime="$activity->end_time" />
     </a>
 </div>

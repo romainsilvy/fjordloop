@@ -19,7 +19,7 @@
 
         <x-show-price :priceByGroup="$housing->price_by_group" :priceByPerson="$housing->price_by_person" />
 
-        <x-show-date :startDate="$housing->start_date" :endDate="$housing->end_date" :startTime="$housing->start_time" :endTime="$housing->endTime" />
+        <x-show-date :startDate="$housing->start_date" :endDate="$housing->end_date" :startTime="$housing->start_time" :endTime="$housing->end_time" />
     </a>
 
 </div>
