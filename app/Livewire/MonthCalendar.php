@@ -41,38 +41,10 @@ class MonthCalendar extends Component
         $this->travel = $travel;
     }
 
-    public function getTravelEvents()
-    {
-        $activities = $this->travel->activities()->get();
-        $housings = $this->travel->housings()->get();
-        $this->events = [];
-
-        foreach ($activities as $activity) {
-            $this->events[] = [
-                'name' => $activity->name,
-                'start_date' => $activity->start_date,
-                'end_date' => $activity->end_date,
-                'start_time' => $activity->start_time,
-                'end_time' => $activity->end_time,
-            ];
-        }
-
-        foreach ($housings as $housing) {
-            $this->events[] = [
-                'name' => $housing->name,
-                'start_date' => $housing->start_date,
-                'end_date' => $housing->end_date,
-                'start_time' => $housing->start_time,
-                'end_time' => $housing->end_time,
-            ];
-        }
-    }
-
     #[On('activityCreated')]
     #[On('housingCreated')]
     public function updateCalendar(): void
     {
-        $this->getTravelEvents();
         $date = Carbon::create($this->currentYear, $this->currentMonth, 1);
         if ($date) {
             $this->daysInMonth = $date->daysInMonth;
@@ -97,7 +69,7 @@ class MonthCalendar extends Component
                         'month' => $this->previousMonth,
                         'year' => $this->previousYear,
                         'isToday' => $currentDate->isToday(),
-                        'events' => $this->getDayEvents($currentDate),
+                        'events' => $this->travel->getDayEvents($currentDate),
                     ];
                 }
             }
@@ -112,7 +84,7 @@ class MonthCalendar extends Component
                         'month' => $this->currentMonth,
                         'year' => $this->currentYear,
                         'isToday' => $currentDate->isToday(),
-                        'events' => $this->getDayEvents($currentDate),
+                        'events' => $this->travel->getDayEvents($currentDate),
                     ];
                 }
             }
@@ -130,38 +102,13 @@ class MonthCalendar extends Component
                         'month' => $this->nextMonth,
                         'year' => $this->nextYear,
                         'isToday' => $currentDate->isToday(),
-                        'events' => $this->getDayEvents($currentDate),
+                        'events' => $this->travel->getDayEvents($currentDate),
                     ];
                 }
             }
         }
 
         $this->days = array_chunk($this->days, 7);
-    }
-
-    public function getDayEvents($day)
-    {
-        $events = [];
-        foreach ($this->events as $event) {
-            $startDate = Carbon::parse($event['start_date']);
-            $endDate = Carbon::parse($event['end_date']);
-
-            if ($day->between($startDate, $endDate)) {
-                $events[] = [
-                    'name' => $event['name'],
-                    'start_time' => $event['start_time'],
-                    'end_time' => $event['end_time'],
-                ];
-            }
-        }
-
-        usort($events, function ($a, $b) {
-            $aTime = $a['start_time'];
-            $bTime = $b['start_time'];
-            return strcmp($aTime, $bTime);
-        });
-
-        return $events;
     }
 
     public function next(): void

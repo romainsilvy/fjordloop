@@ -19,7 +19,6 @@ class WeekCalendar extends Component
     public Carbon $startDate;
     public Carbon $endDate;
 
-    public $events = [];
     public Travel $travel;
 
     /** @var array<int, array<string, mixed>> */
@@ -35,39 +34,10 @@ class WeekCalendar extends Component
         $this->updateCalendar();
     }
 
-    public function getTravelEvents()
-    {
-        $activities = $this->travel->activities()->get();
-        $housings = $this->travel->housings()->get();
-        $this->events = [];
-
-        foreach ($activities as $activity) {
-            $this->events[] = [
-                'name' => $activity->name,
-                'start_date' => $activity->start_date,
-                'end_date' => $activity->end_date,
-                'start_time' => $activity->start_time,
-                'end_time' => $activity->end_time,
-            ];
-        }
-
-        foreach ($housings as $housing) {
-            $this->events[] = [
-                'name' => $housing->name,
-                'start_date' => $housing->start_date,
-                'end_date' => $housing->end_date,
-                'start_time' => $housing->start_time,
-                'end_time' => $housing->end_time,
-            ];
-        }
-    }
-
     #[On('activityCreated')]
     #[On('housingCreated')]
     public function updateCalendar(): void
     {
-        $this->getTravelEvents();
-
         $this->days = [];
 
         // Generate 7 days for the week
@@ -82,7 +52,7 @@ class WeekCalendar extends Component
                 'shortDayName' => ucfirst($currentDate->translatedFormat('D')), // Short day name
                 'date' => $currentDate->format('Y-m-d'),
                 'isToday' => $currentDate->isToday(),
-                'events' => $this->getDayEvents($currentDate),
+                'events' => $this->travel->getDayEvents($currentDate),
             ];
         }
 
@@ -91,30 +61,7 @@ class WeekCalendar extends Component
         $this->endDateString = $this->endDate->translatedFormat('d M Y');
     }
 
-    public function getDayEvents($day)
-    {
-        $events = [];
-        foreach ($this->events as $event) {
-            $startDate = Carbon::parse($event['start_date']);
-            $endDate = Carbon::parse($event['end_date']);
 
-            if ($day->between($startDate, $endDate)) {
-                $events[] = [
-                    'name' => $event['name'],
-                    'start_time' => $event['start_time'],
-                    'end_time' => $event['end_time'],
-                ];
-            }
-        }
-
-        usort($events, function ($a, $b) {
-            $aTime = $a['start_time'];
-            $bTime = $b['start_time'];
-            return strcmp($aTime, $bTime);
-        });
-
-        return $events;
-    }
 
     public function next(): void
     {

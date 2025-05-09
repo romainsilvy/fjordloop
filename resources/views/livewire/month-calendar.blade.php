@@ -64,9 +64,12 @@
                         <!-- Events -->
                         <div class="flex-1 overflow-y-auto min-h-0 flex flex-col gap-1 p-1">
                             @foreach ($day['events'] as $event)
-                                <div class="text-xs bg-secondary-50 border-l-2 border-secondary-500 px-2 py-1 rounded shadow-sm">
+                                <div class="text-xs bg-secondary-50 border-l-2 border-secondary-500 px-2 py-1 rounded shadow-sm {{ $event['latitude'] && $event['longitude'] ? 'cursor-pointer' : '' }} " @if ($event['latitude'] && $event['longitude'])
+                                    @click="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )"
+                                @endif>
                                     <div class="text-secondary-600 font-medium">{{ $event['name'] }}</div>
                                     <div class="text-zinc-500">{{ $event['start_time'] }} {{ $event['end_time'] ? ' - ' : ''}} {{ $event['end_time'] }}</div>
+                                    <div class="text-zinc-500 text-xs">{{ $event['place_name'] }}</div>
                                 </div>
                             @endforeach
                         </div>

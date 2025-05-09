@@ -5,13 +5,13 @@
         </div>
         <div class="flex items-center space-x-2">
             <div wire:click="previous"
-                class="cursor-pointer text-xl sm:size-8 rounded-lg flex items-center justify-center text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800"
-                aria-label="Previous week" role="button" tabindex="0">
+                 class="cursor-pointer text-xl sm:size-8 rounded-lg flex items-center justify-center text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800"
+                 aria-label="Previous week" role="button" tabindex="0">
                 &lt;
             </div>
             <div wire:click="next"
-                class="cursor-pointer text-xl sm:size-8 rounded-lg flex items-center justify-center text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800"
-                aria-label="Next week" role="button" tabindex="0">
+                 class="cursor-pointer text-xl sm:size-8 rounded-lg flex items-center justify-center text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800"
+                 aria-label="Next week" role="button" tabindex="0">
                 &gt;
             </div>
         </div>
@@ -30,12 +30,16 @@
     <!-- Week view as columns -->
     <div class="h-full w-full grid grid-cols-7 min-h-0 border-t border-primary-500">
         @foreach ($days as $day)
-            <div class="flex flex-col p-1 h-full border-r border-primary-500 min-h-0 {{ $day['isToday'] ? 'bg-primary-50' : '' }}">
+            <div
+                 class="flex flex-col p-1 h-full border-r border-primary-500 min-h-0 {{ $day['isToday'] ? 'bg-primary-50' : '' }}">
                 <div class="flex-1 overflow-y-auto min-h-0 gap-1 flex flex-col mt-1">
                     @foreach ($day['events'] as $event)
-                        <div class="text-xs border-l-2 border-secondary-400 bg-secondary-50 px-2 py-1 rounded mb-1">
-                            <div class="font-medium">{{ $event['name'] }}</div>
-                            <div class="text-zinc-500">{{ $event['start_time'] }}{{ isset($event['end_time']) ? ' - ' . $event['end_time'] : '' }}</div>
+                        <div class="text-xs bg-secondary-50 border-l-2 border-secondary-500 px-2 py-1 rounded shadow-sm {{ $event['latitude'] && $event['longitude'] ? 'cursor-pointer' : '' }} "
+                             @if ($event['latitude'] && $event['longitude']) @click="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )" @endif>
+                            <div class="text-secondary-600 font-medium">{{ $event['name'] }}</div>
+                            <div class="text-zinc-500">{{ $event['start_time'] }}
+                                {{ $event['end_time'] ? ' - ' : '' }} {{ $event['end_time'] }}</div>
+                            <div class="text-zinc-500 text-xs">{{ $event['place_name'] }}</div>
                         </div>
                     @endforeach
                 </div>

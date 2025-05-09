@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Housing;
 use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
@@ -225,5 +226,62 @@ class Travel extends Model
     public function housings(): HasMany
     {
         return $this->hasMany(Housing::class);
+    }
+
+    public function getDayEvents($day)
+    {
+        $activities = $this->activities()->get();
+        $housings = $this->housings()->get();
+        $travelEvents = [];
+
+        foreach ($activities as $activity) {
+            $travelEvents[] = [
+                'name' => $activity->name,
+                'start_date' => $activity->start_date,
+                'end_date' => $activity->end_date,
+                'start_time' => $activity->start_time,
+                'end_time' => $activity->end_time,
+                'latitude' => $activity->place_latitude,
+                'longitude' => $activity->place_longitude,
+                'place_name' => $activity->place_name,
+            ];
+        }
+
+        foreach ($housings as $housing) {
+            $travelEvents[] = [
+                'name' => $housing->name,
+                'start_date' => $housing->start_date,
+                'end_date' => $housing->end_date,
+                'start_time' => $housing->start_time,
+                'end_time' => $housing->end_time,
+                'latitude' => $housing->place_latitude,
+                'longitude' => $housing->place_longitude,
+                'place_name' => $housing->place_name,
+            ];
+        }
+        $events = [];
+        foreach ($travelEvents as $event) {
+            $startDate = Carbon::parse($event['start_date']);
+            $endDate = Carbon::parse($event['end_date']);
+
+            if ($day->between($startDate, $endDate)) {
+                $events[] = [
+                    'name' => $event['name'],
+                    'start_time' => $event['start_time'],
+                    'end_time' => $event['end_time'],
+                    'latitude' => $event['latitude'],
+                    'longitude' => $event['longitude'],
+                    'place_name' => $event['place_name'],
+                ];
+            }
+        }
+
+        usort($events, function ($a, $b) {
+            $aTime = $a['start_time'];
+            $bTime = $b['start_time'];
+            return strcmp($aTime, $bTime);
+        });
+
+        return $events;
     }
 }

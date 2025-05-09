@@ -2,7 +2,7 @@
 
     <div
         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200">
-        <div wire:ignore x-data="mapComponent()" x-init="initMap" x-on:activities-refreshed.window="refreshMarkers($event.detail, 'activity')" x-on:housings-refreshed.window="refreshMarkers($event.detail, 'housing')">
+        <div wire:ignore x-data="mapComponent()" x-init="initMap" x-on:activities-refreshed.window="refreshMarkers($event.detail, 'activity')" x-on:housings-refreshed.window="refreshMarkers($event.detail, 'housing')" x-on:focus-map-marker.window="focusMarker($event.detail.latitude, $event.detail.longitude)">
             <div class="w-full h-[60vh] rounded-lg" x-ref="mapContainer"></div>
         </div>
     </div>
@@ -102,6 +102,18 @@
 
                     this.map.fitBounds(bounds, { padding: [20, 20] });
                 }
+            },
+
+            focusMarker(lat, lon) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                if (lat && lon) {
+                    this.map.setView([lat, lon], 12);
+                }
+
             },
 
             clearMarkers(type) {
