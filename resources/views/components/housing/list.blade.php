@@ -1,6 +1,6 @@
 @props(['housings' => [], 'title', 'travel'])
 
-<div class="flex flex-col gap-6">
+<div class="flex-1 flex flex-col gap-6">
     <div class="flex">
         <flux:heading size="xl" class="text-zinc-800 pl-4">
             {{ $title }}

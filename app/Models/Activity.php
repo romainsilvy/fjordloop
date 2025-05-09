@@ -37,6 +37,16 @@ class Activity extends Model implements HasMedia
         'end_date' => 'date',
     ];
 
+    public function getStartTimeAttribute($startTime)
+    {
+        return $startTime ? Carbon::parse($startTime)->format('H:i') : null;
+    }
+
+    public function getEndTimeAttribute($endTime)
+    {
+        return $endTime ? Carbon::parse($endTime)->format('H:i') : null;
+    }
+
     protected static function booted()
     {
         static::addGlobalScope('userIsMember', function (Builder $builder) {
