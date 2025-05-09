@@ -1,11 +1,21 @@
-@props(['url' => null])
+@props(['url' => null, 'full' => false, 'clickable' => false])
 
 @if ($url)
+    @php
+        $url = $full ? $url : \Illuminate\Support\Str::limit($url, 50);
+    @endphp
+
     <div class="flex flex-row items-center justify-start gap-2">
         <flux:icon.link class="size-4" />
 
-        <p class="underline">
-            {{ \Illuminate\Support\Str::limit($url, 50) }}
-        </p>
+        @if ($clickable)
+            <a class="underline" href="{{ $url }}" target="_blank" rel="noopener noreferrer">
+                {{ $url }}
+            </a>
+        @else
+            <p class="underline">
+                {{ $url }}
+            </p>
+        @endif
     </div>
 @endif

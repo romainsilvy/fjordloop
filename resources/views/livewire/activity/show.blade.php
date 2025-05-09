@@ -41,7 +41,7 @@
         <div class="flex flex-col">
             <x-show-place-name :placeName="$activity->place_name" />
 
-            <x-show-url :url="$activity->url" />
+            <x-show-url clickable full :url="$activity->url" />
 
             <x-show-price :priceByGroup="$activity->price_by_group" :priceByPerson="$activity->price_by_person" />
 

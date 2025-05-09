@@ -40,7 +40,7 @@
         <div class="flex flex-col">
             <x-show-place-name :placeName="$housing->place_name" />
 
-            <x-show-url :url="$housing->url" />
+            <x-show-url clickable full :url="$housing->url" />
 
             <x-show-price :priceByGroup="$housing->price_by_group" :priceByPerson="$housing->price_by_person" />
 
