@@ -261,8 +261,8 @@ class Travel extends Model
         }
         $events = [];
         foreach ($travelEvents as $event) {
-            $startDate = Carbon::parse($event['start_date']);
-            $endDate = Carbon::parse($event['end_date']);
+            $startDate = Carbon::parse($event['start_date'])->startOfDay();
+            $endDate = Carbon::parse($event['end_date'])->endOfDay();
 
             if ($day->between($startDate, $endDate)) {
                 $events[] = [
