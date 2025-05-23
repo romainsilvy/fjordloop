@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Log;
 
 class Travel extends Model
 {
@@ -261,6 +262,10 @@ class Travel extends Model
         }
         $events = [];
         foreach ($travelEvents as $event) {
+            if (empty($event['start_date']) || empty($event['end_date'])) {
+                continue;
+            }
+
             $startDate = Carbon::parse($event['start_date'])->startOfDay();
             $endDate = Carbon::parse($event['end_date'])->endOfDay();
 
