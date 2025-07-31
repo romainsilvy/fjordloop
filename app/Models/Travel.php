@@ -245,6 +245,7 @@ class Travel extends Model
                 'latitude' => $activity->place_latitude,
                 'longitude' => $activity->place_longitude,
                 'place_name' => $activity->place_name,
+                'type' => 'activity',
             ];
         }
 
@@ -258,6 +259,7 @@ class Travel extends Model
                 'latitude' => $housing->place_latitude,
                 'longitude' => $housing->place_longitude,
                 'place_name' => $housing->place_name,
+                'type'=> 'housing',
             ];
         }
         $events = [];
@@ -277,6 +279,7 @@ class Travel extends Model
                     'latitude' => $event['latitude'],
                     'longitude' => $event['longitude'],
                     'place_name' => $event['place_name'],
+                    'type' => $event['type'],
                 ];
             }
         }

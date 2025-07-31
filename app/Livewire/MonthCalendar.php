@@ -32,13 +32,24 @@ class MonthCalendar extends Component
 
     /** @var array<int, array<string, int|bool>> */
     public $days = []; // Full calendar with padding
+    /** @var array<int,array<int,array<string,mixed>>>                       */
+    public array $housingBars = [];   // grouped by week index
+
 
     public function mount(Travel $travel): void
     {
-        $this->updateStoredDates(Carbon::now());
-        $this->updateCalendar();
-
         $this->travel = $travel;
+
+        $today = Carbon::today();
+        $travelStart = $travel->start_date ?? $today;
+        $travelEnd = $travel->end_date ?? $travelStart;
+
+        $startDate = $today->between($travelStart, $travelEnd)
+            ? $today
+            : $travelStart;
+
+        $this->updateStoredDates($startDate);
+        $this->updateCalendar();
     }
 
     #[On('activityCreated')]
@@ -109,6 +120,67 @@ class MonthCalendar extends Component
         }
 
         $this->days = array_chunk($this->days, 7);
+
+        /* -----------------------------------------------------------------
+ | Build stacked housing bars — $housingBars[$weekIdx][$level][]   |
+ +----------------------------------------------------------------*/
+        $this->housingBars = [];          // reset
+        $housings = $this->travel->housings()->get();
+
+        foreach ($this->days as $weekIdx => $weekDays) {
+            $rowStart = Carbon::create(
+                $weekDays[0]['year'],
+                $weekDays[0]['month'],
+                $weekDays[0]['day']
+            )->startOfDay();
+            $rowEnd = Carbon::create(
+                $weekDays[6]['year'],
+                $weekDays[6]['month'],
+                $weekDays[6]['day']
+            )->endOfDay();
+
+            foreach ($housings as $h) {
+                // Skip if housing does not touch this calendar row
+                if ($h->end_date->lt($rowStart) || $h->start_date->gt($rowEnd)) {
+                    continue;
+                }
+
+                $colStart = max(1, $h->start_date->lt($rowStart)
+                    ? 1 : $h->start_date->dayOfWeekIso);
+                $colEnd   = min(7, $h->end_date->gt($rowEnd)
+                    ? 7 : $h->end_date->dayOfWeekIso);
+                $span     = $colEnd - $colStart + 1;
+
+                $bar = [
+                    'name'      => $h->name,
+                    'place'     => $h->place_name,
+                    'colStart'  => $colStart,
+                    'span'      => $span,
+                    'latitude'  => $h->place_latitude,
+                    'longitude' => $h->place_longitude,
+                ];
+
+                /* -------------  STACKING ALGORITHM  ------------- */
+                $placed = false;
+                foreach ($this->housingBars[$weekIdx] ?? [] as $level => $barsAtLevel) {
+                    $collision = collect($barsAtLevel)->contains(function ($b) use ($colStart, $colEnd) {
+                        $bStart = $b['colStart'];
+                        $bEnd   = $bStart + $b['span'] - 1;
+                        return max($bStart, $colStart) <= min($bEnd, $colEnd); // overlap?
+                    });
+
+                    if (! $collision) {           // fits on this level
+                        $this->housingBars[$weekIdx][$level][] = $bar;
+                        $placed = true;
+                        break;
+                    }
+                }
+
+                if (! $placed) {                   // needs a new level
+                    $this->housingBars[$weekIdx][] = [$bar];
+                }
+            }
+        }
     }
 
     public function next(): void
