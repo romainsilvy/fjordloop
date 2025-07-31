@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $user = User::firstOrCreate(
-            UserFactory::new()->definition(),
+            UserFactory::new([
+                'email' => 'test1@email.com',
+            ])->definition(),
         );
 
         Travel::factory()->count(10)->withOwner($user)->createActivities()->createHousings()->create();
