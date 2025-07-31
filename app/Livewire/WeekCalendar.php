@@ -28,8 +28,16 @@ class WeekCalendar extends Component
     {
         $this->travel = $travel;
 
-        // Start with the current week
-        $this->startDate = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $today        = Carbon::today();
+        $travelStart  = $travel->start_date ?? $today;
+        $travelEnd    = $travel->end_date   ?? $travelStart;
+
+        if ($today->between($travelStart, $travelEnd)) {
+            $this->startDate = $today->copy()->startOfWeek(Carbon::MONDAY);
+        } else {
+            $this->startDate = $travelStart->copy()->startOfWeek(Carbon::MONDAY);
+        }
+
         $this->updateStoredDates($this->startDate);
         $this->updateCalendar();
     }
