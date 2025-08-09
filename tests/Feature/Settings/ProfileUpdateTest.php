@@ -3,6 +3,8 @@
 use App\Livewire\Settings\Profile;
 use App\Models\User;
 use Livewire\Livewire;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Notification;
 
 test('profile page is displayed', function () {
     $this->actingAs($user = User::factory()->create());
@@ -73,4 +75,49 @@ test('correct password must be provided to delete account', function () {
     $response->assertHasErrors(['password']);
 
     expect($user->fresh())->not->toBeNull();
+});
+
+test('unverified user can resend verification notification', function () {
+    Notification::fake();
+
+    $user = User::factory()->create([
+        'email_verified_at' => null,
+    ]);
+
+    $this->actingAs($user);
+
+    $response = Livewire::test(Profile::class)
+        ->call('resendVerificationNotification');
+
+    $response->assertHasNoErrors();
+
+    Notification::assertSentTo($user, VerifyEmail::class);
+});
+
+test('verified user gets redirected when trying to resend verification', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $this->actingAs($user);
+
+    $response = Livewire::test(Profile::class)
+        ->call('resendVerificationNotification');
+
+    $response->assertRedirect(route('dashboard', absolute: false));
+});
+
+test('verified user does not receive verification notification when trying to resend', function () {
+    Notification::fake();
+
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->call('resendVerificationNotification');
+
+    Notification::assertNotSentTo($user, VerifyEmail::class);
 });
