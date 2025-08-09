@@ -77,6 +77,18 @@ it('handles API errors gracefully', function () {
         ->assertSet('results', []);
 });
 
+it('handles MapboxService exceptions during search', function () {
+    // Mock MapboxService to throw an exception
+    $this->mock(\App\Services\MapboxService::class, function ($mock) {
+        $mock->shouldReceive('searchPlaceWithGeojson')
+            ->andThrow(new \Exception('Service unavailable'));
+    });
+
+    Livewire::test(SearchMap::class)
+        ->set('query', 'TestPlace')
+        ->assertSet('results', []);
+});
+
 it('selects location correctly', function () {
     Livewire::test(SearchMap::class)
         ->call('selectLocation', 48.8566, 2.3522, 'Paris, France')
