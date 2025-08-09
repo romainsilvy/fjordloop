@@ -23,6 +23,9 @@ jobs:
       DB_USERNAME: postgres
       DB_DATABASE: postgres
       APP_LOCALE: fr
+      APP_URL: http://localhost
+      MAPBOX_KEY: fake-key-for-testing
+      NOMINATIM_URL: http://fake-nominatim-for-testing
 
     services:
       postgres:
@@ -58,10 +61,44 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Create Environment File
+        run: |
+          echo "APP_NAME=Laravel" > .env
+          echo "APP_ENV=testing" >> .env
+          echo "APP_KEY=base64:SnTWY8YvmGWLa4zrZEy1iFqdcYHl58AT2f+2crH1BIA=" >> .env
+          echo "APP_DEBUG=true" >> .env
+          echo "APP_TIMEZONE=UTC" >> .env
+          echo "APP_URL=http://localhost" >> .env
+          echo "APP_LOCALE=fr" >> .env
+          echo "DB_CONNECTION=pgsql" >> .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=${{ job.services.postgres.ports[5432] }}" >> .env
+          echo "DB_DATABASE=postgres" >> .env
+          echo "DB_USERNAME=postgres" >> .env
+          echo "DB_PASSWORD=postgres" >> .env
+          echo "CACHE_STORE=array" >> .env
+          echo "SESSION_DRIVER=array" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          echo "MAIL_MAILER=array" >> .env
+          echo "MAPBOX_KEY=fake-key-for-testing" >> .env
+          echo "NOMINATIM_URL=http://fake-nominatim-for-testing" >> .env
+
       - name: Build Assets
         run: npm run build
+
+      - name: Run Database Migrations
+        run: php artisan migrate --force
+        env:
+          DB_PORT: ${{ job.services.postgres.ports[5432] }}
+
+      - name: Clear Application Cache
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan view:clear
 
       - name: Run Tests
         run: ./vendor/bin/pest
         env:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
+          APP_URL: http://localhost
