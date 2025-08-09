@@ -237,4 +237,42 @@ describe('Travel model', function () {
         $events = $travel->getDayEvents(now()->addDays(7));
         expect($events)->toBeArray()->toBeEmpty();
     });
+
+    it('skips events with empty dates in getDayEvents', function () {
+        $owner = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $this->actingAs($owner);
+
+        $today = now();
+
+        // Create an activity with valid dates
+        Activity::factory()->create([
+            'travel_id' => $travel->id,
+            'start_date' => $today,
+            'end_date' => $today,
+            'name' => 'Valid Activity',
+        ]);
+
+        // Create an activity with null start_date
+        Activity::factory()->create([
+            'travel_id' => $travel->id,
+            'start_date' => null,
+            'end_date' => $today,
+            'name' => 'Invalid Activity 1',
+        ]);
+
+        // Create a housing with null end_date
+        Housing::factory()->create([
+            'travel_id' => $travel->id,
+            'start_date' => $today,
+            'end_date' => null,
+            'name' => 'Invalid Housing',
+        ]);
+
+        $events = $travel->getDayEvents($today);
+
+        // Should only return the valid activity, skipping the ones with null dates
+        expect($events)->toHaveCount(1)
+            ->and($events[0]['name'])->toBe('Valid Activity');
+    });
 });
