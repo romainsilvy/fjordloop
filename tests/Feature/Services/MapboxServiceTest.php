@@ -17,6 +17,7 @@ it('returns cached data if present', function () {
         ->once()
         ->andReturn($cachedData);
 
+    // No need to mock HTTP since cache will be used
     $service = new MapboxService();
 
     $response = $service->searchPlaceWithGeojson($query);
@@ -27,14 +28,13 @@ it('returns cached data if present', function () {
 it('calls Mapbox and caches result if not in cache', function () {
     $query = 'Lyon';
     $cacheKey = 'mapbox_search_' . md5($query);
-    $responseData = ['features' => ['real data']];
+    $responseData = $this->getDefaultMapboxResponse();
 
     Cache::shouldReceive('get')->with($cacheKey)->once()->andReturn(null);
     Cache::shouldReceive('put')->with($cacheKey, $responseData, 3600)->once();
 
-    Http::fake([
-        '*' => Http::response($responseData, 200),
-    ]);
+    // Override default mock with specific response
+    $this->mockMapboxApiWithResponse($responseData);
 
     $service = new MapboxService();
 
@@ -47,27 +47,16 @@ it('calls Mapbox and caches result if not in cache', function () {
 it('throws exception if no API key is configured', function () {
     config()->set('services.mapbox.key', null);
 
+    // Mock the API to ensure we're testing the key validation, not hitting real API
+    $this->mockMapboxApi();
+
     $service = new MapboxService();
 
     $service->searchPlaceWithGeojson('Marseille');
 })->throws(Exception::class, 'Mapbox API key is not configured');
 
 it('formats Mapbox response correctly', function () {
-    $data = [
-        'features' => [
-            [
-                'properties' => [
-                    'full_address' => '10 Rue de Rivoli, Paris',
-                    'feature_type' => 'address',
-                    'context' => ['city' => 'Paris'],
-                ],
-                'geometry' => [
-                    'coordinates' => [2.3522, 48.8566],
-                ],
-                'id' => 'place.1234',
-            ],
-        ],
-    ];
+    $data = $this->getMapboxResponseForLocation('Paris', '10 Rue de Rivoli, Paris', 2.3522, 48.8566);
 
     $response = new Response(new \GuzzleHttp\Psr7\Response(200, [], json_encode($data)));
 
@@ -77,7 +66,9 @@ it('formats Mapbox response correctly', function () {
     expect($results)->toHaveCount(1)
         ->and($results[0]['display_name'])->toBe('10 Rue de Rivoli, Paris')
         ->and($results[0]['lat'])->toBe(48.8566)
-        ->and($results[0]['lon'])->toBe(2.3522);
+        ->and($results[0]['lon'])->toBe(2.3522)
+        ->and($results[0]['place_type'])->toBe('place')
+        ->and($results[0]['id'])->toBe('place.paris');
 });
 
 it('returns empty array if response is not successful', function () {
@@ -95,6 +86,16 @@ it('logs warning and returns empty array if no features key', function () {
         ->with('Mapbox response missing "features" key', \Mockery::type('array'));
 
     $response = new Response(new \GuzzleHttp\Psr7\Response(200, [], json_encode(['invalid' => 'data'])));
+
+    $service = new MapboxService();
+    $results = $service->formatSearchResults($response);
+
+    expect($results)->toBe([]);
+});
+
+it('returns empty array when no features found', function () {
+    $emptyResponse = $this->getEmptyMapboxResponse();
+    $response = new Response(new \GuzzleHttp\Psr7\Response(200, [], json_encode($emptyResponse)));
 
     $service = new MapboxService();
     $results = $service->formatSearchResults($response);
