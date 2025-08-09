@@ -147,7 +147,7 @@ test('component can handle email parameter from request', function () {
 
     // Test by making an actual HTTP request with email parameter
     $response = $this->get("/reset-password/{$token}?email=" . urlencode($email));
-    
+
     $response->assertStatus(200);
     // The component should render successfully with the email parameter
     $response->assertSee('reset-password'); // Check that the reset form is present
@@ -155,7 +155,7 @@ test('component can handle email parameter from request', function () {
 
 test('component mount method sets token and email correctly', function () {
     $token = 'test-token';
-    
+
     // We test the initialization logic by creating the component
     $component = Livewire::test(ResetPassword::class, ['token' => $token]);
 
@@ -221,11 +221,11 @@ test('successful password reset updates user password and remember token', funct
             ->call('resetPassword');
 
         $user->refresh();
-        
+
         // Password should be updated
         expect($user->password)->not->toBe($originalPassword);
         expect(\Hash::check('new-secure-password', $user->password))->toBeTrue();
-        
+
         // Remember token should be regenerated
         expect($user->remember_token)->not->toBe($originalRememberToken);
         expect($user->remember_token)->toHaveLength(60);
