@@ -25,7 +25,6 @@ jobs:
       APP_LOCALE: fr
       APP_URL: http://localhost
       MAPBOX_KEY: fake-key-for-testing
-      NOMINATIM_URL: http://fake-nominatim-for-testing
 
     services:
       postgres:
@@ -81,7 +80,6 @@ jobs:
           echo "QUEUE_CONNECTION=sync" >> .env
           echo "MAIL_MAILER=array" >> .env
           echo "MAPBOX_KEY=fake-key-for-testing" >> .env
-          echo "NOMINATIM_URL=http://fake-nominatim-for-testing" >> .env
 
       - name: Build Assets
         run: npm run build

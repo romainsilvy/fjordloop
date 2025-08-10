@@ -35,10 +35,6 @@ return [
         ],
     ],
 
-    'nominatim' => [
-        'url' => env('NOMINATIM_URL', ''),
-    ],
-
     'mapbox' => [
         'key' => env('MAPBOX_KEY', ''),
     ],
