@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.1] - 2025-08-10
+
+- docs(changelog): update for v1.0.0 (5771bc7)
+- :zap: add sentry (343c591)
+
 ## [v1.0.0] - 2025-08-10
 
 - :zap: init repo (7365e71)
@@ -111,4 +116,4 @@ All notable changes to this project will be documented in this file.
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-10 19:12:05
+Generated on 2025-08-10 19:16:09
