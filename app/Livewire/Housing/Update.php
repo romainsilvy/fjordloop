@@ -229,7 +229,7 @@ class Update extends Component
         // Process only valid temporary images
         foreach ($this->tempImages as $image) {
             if ($image && method_exists($image, 'getRealPath') && file_exists($image->getRealPath())) {
-                $originalName = $image->getClientOriginalName() ?: 'image-' . uniqid();
+                $originalName = method_exists($image, 'getClientOriginalName') ? $image->getClientOriginalName() : ('image-' . uniqid());
 
                 $this->housing
                     ->addMedia($image->getRealPath())

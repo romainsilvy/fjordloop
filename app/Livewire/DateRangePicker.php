@@ -25,15 +25,34 @@ class DateRangePicker extends Component
 
     public string $monthName;
 
-    /** @var array<string, string> */
+    /**
+     * @var array{start: string, end: string}
+     */
     #[Modelable]
-    public array $dateRange = [];
+    public array $dateRange = [
+        'start' => '',
+        'end'   => '',
+    ];
 
-    /** @var array<int, array<string, int|bool>> */
-    public $days = []; // Full calendar with padding
+    /**
+     * Full calendar split into weeks (each week is a list of day arrays)
+     * @var list<list<array{
+     *   day:int,
+     *   month:int,
+     *   year:int,
+     *   isSelectedStart:bool,
+     *   isSelectedEnd:bool,
+     *   isBetween:bool,
+     *   isToday:bool
+     * }>>
+     */
+    public array $days = [];
 
     public function mount(): void
     {
+        // ensure keys exist (helps PHPStan and removes “non-empty-string” headaches)
+        $this->dateRange = $this->dateRange + ['start' => '', 'end' => ''];
+
         $this->updateStoredDates(Carbon::now());
         $this->updateCalendar();
     }
@@ -45,85 +64,76 @@ class DateRangePicker extends Component
             $this->daysInMonth = $date->daysInMonth;
             $this->monthName = ucfirst($date->translatedFormat('F'));
 
-            // Determine the first day of the current month (1=Monday, 7=Sunday)
             $firstDay = $date->dayOfWeekIso;
-
             $previousMonth = $date->copy()->subMonth();
             $daysInPreviousMonth = $previousMonth->daysInMonth;
 
-            $this->days = [];
+            // pull strings safely; use strict empty checks
+            $startStr = $this->dateRange['start'] ?? '';
+            $endStr   = $this->dateRange['end'] ?? '';
 
-            $selectedStartDate = $this->dateRange['start'] ? Carbon::parse($this->dateRange['start']) : null;
-            $selectedEndDate = $this->dateRange['end'] ? Carbon::parse($this->dateRange['end']) : null;
+            $selectedStartDate = $startStr !== '' ? Carbon::parse($startStr) : null;
+            $selectedEndDate   = $endStr !== ''   ? Carbon::parse($endStr)   : null;
 
-            // Add days from the previous month
+            /** @var list<array{day:int,month:int,year:int,isSelectedStart:bool,isSelectedEnd:bool,isBetween:bool,isToday:bool}> $daysFlat */
+            $daysFlat = [];
+
+            // prev-month padding
             for ($i = $firstDay - 1; $i > 0; $i--) {
                 $day = $daysInPreviousMonth - $i + 1;
                 $currentDate = Carbon::create($this->previousYear, $this->previousMonth, $day);
                 if ($currentDate) {
-                    $isSelectedStart = $selectedStartDate && $selectedStartDate->isSameDay($currentDate);
-                    $isSelectedEnd = $selectedEndDate && $selectedEndDate->isSameDay($currentDate);
-                    $isBetween = $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate);
-
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $day,
                         'month' => $this->previousMonth,
                         'year' => $this->previousYear,
-                        'isSelectedStart' => $isSelectedStart,
-                        'isSelectedEnd' => $isSelectedEnd,
-                        'isBetween' => $isBetween,
+                        'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
+                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
             }
 
-            // Add days from the current month
+            // current month
             for ($i = 1; $i <= $this->daysInMonth; $i++) {
                 $currentDate = Carbon::create($this->currentYear, $this->currentMonth, $i);
-
                 if ($currentDate) {
-                    $isSelectedStart = $selectedStartDate && $selectedStartDate->isSameDay($currentDate);
-                    $isSelectedEnd = $selectedEndDate && $selectedEndDate->isSameDay($currentDate);
-                    $isBetween = $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate);
-
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $i,
                         'month' => $this->currentMonth,
                         'year' => $this->currentYear,
-                        'isSelectedStart' => $isSelectedStart,
-                        'isSelectedEnd' => $isSelectedEnd,
-                        'isBetween' => $isBetween,
+                        'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
+                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
             }
 
-            // Add days from the next month
-            $remainingCells = 7 - (count($this->days) % 7);
+            // next-month padding
+            $remainingCells = 7 - (count($daysFlat) % 7);
             $remainingCells = $remainingCells === 7 ? 0 : $remainingCells;
 
             for ($i = 1; $i <= $remainingCells; $i++) {
                 $currentDate = Carbon::create($this->nextYear, $this->nextMonth, $i);
-
                 if ($currentDate) {
-                    $isSelectedStart = $selectedStartDate && $selectedStartDate->isSameDay($currentDate);
-                    $isSelectedEnd = $selectedEndDate && $selectedEndDate->isSameDay($currentDate);
-                    $isBetween = $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate);
-
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $i,
                         'month' => $this->nextMonth,
                         'year' => $this->nextYear,
-                        'isSelectedStart' => $isSelectedStart,
-                        'isSelectedEnd' => $isSelectedEnd,
-                        'isBetween' => $isBetween,
+                        'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
+                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
             }
-        }
 
-        $this->days = array_chunk($this->days, 7);
+            /** @var list<list<array{day:int,month:int,year:int,isSelectedStart:bool,isSelectedEnd:bool,isBetween:bool,isToday:bool}>> $weeks */
+            $weeks = array_chunk($daysFlat, 7);
+            $this->days = $weeks;
+        }
     }
 
     public function next(): void
@@ -150,21 +160,25 @@ class DateRangePicker extends Component
     {
         $date = Carbon::create($year, $month, $day);
         if ($date) {
-            $formatedDate = $date->format('Y-m-d');
+            $formattedDate = $date->format('Y-m-d');
 
-            if ($this->dateRange['start'] == '') {
-                $this->dateRange['start'] = $date->format('Y-m-d');
-            } elseif ($this->dateRange['start'] != '' && $this->dateRange['end'] != '') {
-                $this->dateRange['start'] = $date->format('Y-m-d');
+            $start = $this->dateRange['start'] ?? '';
+            $end   = $this->dateRange['end'] ?? '';
+
+            if ($start === '') {
+                $this->dateRange['start'] = $formattedDate;
+            } elseif ($start && $end) {
+                // both already set → restart with new start, clear end
+                $this->dateRange['start'] = $formattedDate;
                 $this->dateRange['end'] = '';
             } else {
-                if ($formatedDate === $this->dateRange['start']) {
+                if ($formattedDate === $start) {
                     return;
-                } elseif ($formatedDate < $this->dateRange['start']) {
-                    $this->dateRange['start'] = $formatedDate;
+                } elseif ($formattedDate < $start) {
+                    $this->dateRange['start'] = $formattedDate;
                     $this->dateRange['end'] = '';
                 } else {
-                    $this->dateRange['end'] = $formatedDate;
+                    $this->dateRange['end'] = $formattedDate;
                 }
             }
         }

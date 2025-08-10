@@ -76,6 +76,11 @@ class Activity extends Model implements HasMedia
         return $query->whereNotNull(['place_name', 'place_latitude', 'place_longitude']);
     }
 
+    /**
+     * travel
+     *
+     * @return BelongsTo<Travel, $this>
+     */
     public function travel(): BelongsTo
     {
         return $this->belongsTo(Travel::class);

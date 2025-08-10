@@ -30,8 +30,17 @@ class MonthCalendar extends Component
     public Travel $travel;
 
 
-    /** @var array<int, array<string, int|bool>> */
-    public $days = []; // Full calendar with padding
+    // Full calendar split into weeks (each week is a list of day arrays)
+    /**
+     * @var list<list<array{
+     *   day:int,
+     *   month:int,
+     *   year:int,
+     *   isToday:bool,
+     *   events:mixed
+     * }>>
+     */
+    public array $days = [];
     /** @var array<int,array<int,array<string,mixed>>>                       */
     public array $housingBars = [];   // grouped by week index
 
@@ -61,21 +70,19 @@ class MonthCalendar extends Component
             $this->daysInMonth = $date->daysInMonth;
             $this->monthName = ucfirst($date->translatedFormat('F'));
 
-            // Determine the first day of the current month (1=Monday, 7=Sunday)
             $firstDay = $date->dayOfWeekIso;
-
             $previousMonth = $date->copy()->subMonth();
             $daysInPreviousMonth = $previousMonth->daysInMonth;
 
-            $this->days = [];
+            /** @var list<array{day:int,month:int,year:int,isToday:bool,events:mixed}> $daysFlat */
+            $daysFlat = [];
 
-            // Add days from the previous month
+            // prev-month padding
             for ($i = $firstDay - 1; $i > 0; $i--) {
                 $day = $daysInPreviousMonth - $i + 1;
                 $currentDate = Carbon::create($this->previousYear, $this->previousMonth, $day);
                 if ($currentDate) {
-
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $day,
                         'month' => $this->previousMonth,
                         'year' => $this->previousYear,
@@ -85,12 +92,11 @@ class MonthCalendar extends Component
                 }
             }
 
-            // Add days from the current month
+            // current month
             for ($i = 1; $i <= $this->daysInMonth; $i++) {
                 $currentDate = Carbon::create($this->currentYear, $this->currentMonth, $i);
-
                 if ($currentDate) {
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $i,
                         'month' => $this->currentMonth,
                         'year' => $this->currentYear,
@@ -100,15 +106,14 @@ class MonthCalendar extends Component
                 }
             }
 
-            // Add days from the next month
-            $remainingCells = 7 - (count($this->days) % 7);
+            // next-month padding
+            $remainingCells = 7 - (count($daysFlat) % 7);
             $remainingCells = $remainingCells === 7 ? 0 : $remainingCells;
 
             for ($i = 1; $i <= $remainingCells; $i++) {
                 $currentDate = Carbon::create($this->nextYear, $this->nextMonth, $i);
-
                 if ($currentDate) {
-                    $this->days[] = [
+                    $daysFlat[] = [
                         'day' => $i,
                         'month' => $this->nextMonth,
                         'year' => $this->nextYear,
@@ -117,22 +122,32 @@ class MonthCalendar extends Component
                     ];
                 }
             }
+
+            // Now safely assign the chunked weeks to the property
+            /** @var list<list<array{day:int,month:int,year:int,isToday:bool,events:mixed}>> $weeks */
+            $weeks = array_chunk($daysFlat, 7);
+            $this->days = $weeks;
         }
 
-        $this->days = array_chunk($this->days, 7);
-
         /* -----------------------------------------------------------------
- | Build stacked housing bars — $housingBars[$weekIdx][$level][]   |
- +----------------------------------------------------------------*/
-        $this->housingBars = [];          // reset
+     | Build stacked housing bars — $housingBars[$weekIdx][$level][]   |
+     +----------------------------------------------------------------*/
+        $this->housingBars = [];
         $housings = $this->travel->housings()->get();
 
         foreach ($this->days as $weekIdx => $weekDays) {
+            /** @var array{
+             *   0: array{day:int,month:int,year:int,isToday:bool,events:mixed},
+             *   6: array{day:int,month:int,year:int,isToday:bool,events:mixed}
+             * } $weekDays
+             */
+
             $rowStart = Carbon::create(
                 $weekDays[0]['year'],
                 $weekDays[0]['month'],
                 $weekDays[0]['day']
             )->startOfDay();
+
             $rowEnd = Carbon::create(
                 $weekDays[6]['year'],
                 $weekDays[6]['month'],
@@ -140,15 +155,12 @@ class MonthCalendar extends Component
             )->endOfDay();
 
             foreach ($housings as $h) {
-                // Skip if housing does not touch this calendar row
                 if ($h->end_date->lt($rowStart) || $h->start_date->gt($rowEnd)) {
                     continue;
                 }
 
-                $colStart = max(1, $h->start_date->lt($rowStart)
-                    ? 1 : $h->start_date->dayOfWeekIso);
-                $colEnd   = min(7, $h->end_date->gt($rowEnd)
-                    ? 7 : $h->end_date->dayOfWeekIso);
+                $colStart = max(1, $h->start_date->lt($rowStart) ? 1 : $h->start_date->dayOfWeekIso);
+                $colEnd   = min(7, $h->end_date->gt($rowEnd) ? 7 : $h->end_date->dayOfWeekIso);
                 $span     = $colEnd - $colStart + 1;
 
                 $bar = [
@@ -160,23 +172,22 @@ class MonthCalendar extends Component
                     'longitude' => $h->place_longitude,
                 ];
 
-                /* -------------  STACKING ALGORITHM  ------------- */
                 $placed = false;
                 foreach ($this->housingBars[$weekIdx] ?? [] as $level => $barsAtLevel) {
                     $collision = collect($barsAtLevel)->contains(function ($b) use ($colStart, $colEnd) {
                         $bStart = $b['colStart'];
                         $bEnd   = $bStart + $b['span'] - 1;
-                        return max($bStart, $colStart) <= min($bEnd, $colEnd); // overlap?
+                        return max($bStart, $colStart) <= min($bEnd, $colEnd);
                     });
 
-                    if (! $collision) {           // fits on this level
+                    if (!$collision) {
                         $this->housingBars[$weekIdx][$level][] = $bar;
                         $placed = true;
                         break;
                     }
                 }
 
-                if (! $placed) {                   // needs a new level
+                if (!$placed) {
                     $this->housingBars[$weekIdx][] = [$bar];
                 }
             }

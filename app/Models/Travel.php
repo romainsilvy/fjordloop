@@ -219,11 +219,21 @@ class Travel extends Model
     //     return $this->hasMany(TravelHousing::class);
     // }
 
+    /**
+     * activities
+     *
+     * @return HasMany<Activity, $this>
+     */
     public function activities(): HasMany
     {
         return $this->hasMany(Activity::class);
     }
 
+    /**
+     * housings
+     *
+     * @return HasMany<Housing, $this>
+     */
     public function housings(): HasMany
     {
         return $this->hasMany(Housing::class);
