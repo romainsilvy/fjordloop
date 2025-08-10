@@ -108,5 +108,6 @@ All notable changes to this project will be documented in this file.
 - :zap: delete nominatim (d1d25f6)
 - :zap: add larastan (788de3b)
 - :zap: changelog and release generator (2ec2968)
+- docs(changelog): update for v1.0.0 (2f9514a)
 
-Generated on 2025-08-10 19:08:25
+Generated on 2025-08-10 19:10:48
