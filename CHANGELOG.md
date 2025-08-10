@@ -109,5 +109,6 @@ All notable changes to this project will be documented in this file.
 - :zap: add larastan (788de3b)
 - :zap: changelog and release generator (2ec2968)
 - docs(changelog): update for v1.0.0 (2f9514a)
+- docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-10 19:10:48
+Generated on 2025-08-10 19:12:05
