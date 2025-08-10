@@ -89,10 +89,8 @@ release:
 	@git push origin "v$(VERSION)"
 
 	@echo "Preparing release notes for v$(VERSION)..."
-	@awk 'BEGIN{p=0} \
-		/^## \\[v$(VERSION)\\]/{p=1; print; next} \
-		/^## \\[/{if(p){exit}} \
-		p{print}' CHANGELOG.md > RELEASE_NOTES.md
+	@awk 'BEGIN{p=0} index($$0,"## [v$(VERSION)]")==1{p=1; print; next} /^## \[/{if(p){exit}} p{print}' CHANGELOG.md > RELEASE_NOTES.md
+
 
 	@echo "Creating GitHub release..."
 	@gh release create "v$(VERSION)" --title "Release v$(VERSION)" --notes-file RELEASE_NOTES.md --target main
