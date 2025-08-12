@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.3] - 2025-08-12
+
+- docs(changelog): update for v1.0.2 (7ccd72b)
+- :bricks: run tests on every pu,ll request (3b233a8)
+
 ## [v1.0.2] - 2025-08-12
 
 - docs(changelog): update for v1.0.1 (f9ddfba)
@@ -125,4 +130,4 @@ All notable changes to this project will be documented in this file.
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-12 14:49:03
+Generated on 2025-08-12 15:06:29
