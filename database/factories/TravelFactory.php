@@ -9,8 +9,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon as SupportCarbon;
 
-   // alias to avoid confusion
-
 /**
  * @extends Factory<\App\Models\Travel>
  */
