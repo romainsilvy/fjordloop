@@ -1,12 +1,11 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Travel;
 use App\Models\Housing;
+use App\Models\Travel;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -127,7 +126,7 @@ describe('Housing model', function () {
 
         // Mock getTemporaryUrl to test getMediaDisplay without S3 calls
         $originalMedia = $housing->getMedia()->first();
-        $mockedMedia = \Mockery::mock($originalMedia)->makePartial();
+        $mockedMedia = Mockery::mock($originalMedia)->makePartial();
         $mockedMedia->shouldReceive('getTemporaryUrl')
             ->andReturn('http://localhost/storage/mocked-temp-url.jpg');
 

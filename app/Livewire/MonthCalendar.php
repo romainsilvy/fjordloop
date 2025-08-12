@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
-use Carbon\Carbon;
 use App\Models\Travel;
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class MonthCalendar extends Component
 {
@@ -29,7 +28,6 @@ class MonthCalendar extends Component
 
     public Travel $travel;
 
-
     // Full calendar split into weeks (each week is a list of day arrays)
     /**
      * @var list<list<array{
@@ -41,9 +39,8 @@ class MonthCalendar extends Component
      * }>>
      */
     public array $days = [];
-    /** @var array<int,array<int,array<string,mixed>>>                       */
+    /** @var array<int,array<int,array<string,mixed>>> */
     public array $housingBars = [];   // grouped by week index
-
 
     public function mount(Travel $travel): void
     {
@@ -141,7 +138,6 @@ class MonthCalendar extends Component
              *   6: array{day:int,month:int,year:int,isToday:bool,events:mixed}
              * } $weekDays
              */
-
             $rowStart = Carbon::create(
                 $weekDays[0]['year'],
                 $weekDays[0]['month'],
@@ -160,15 +156,15 @@ class MonthCalendar extends Component
                 }
 
                 $colStart = max(1, $h->start_date->lt($rowStart) ? 1 : $h->start_date->dayOfWeekIso);
-                $colEnd   = min(7, $h->end_date->gt($rowEnd) ? 7 : $h->end_date->dayOfWeekIso);
-                $span     = $colEnd - $colStart + 1;
+                $colEnd = min(7, $h->end_date->gt($rowEnd) ? 7 : $h->end_date->dayOfWeekIso);
+                $span = $colEnd - $colStart + 1;
 
                 $bar = [
-                    'name'      => $h->name,
-                    'place'     => $h->place_name,
-                    'colStart'  => $colStart,
-                    'span'      => $span,
-                    'latitude'  => $h->place_latitude,
+                    'name' => $h->name,
+                    'place' => $h->place_name,
+                    'colStart' => $colStart,
+                    'span' => $span,
+                    'latitude' => $h->place_latitude,
                     'longitude' => $h->place_longitude,
                 ];
 
@@ -176,18 +172,19 @@ class MonthCalendar extends Component
                 foreach ($this->housingBars[$weekIdx] ?? [] as $level => $barsAtLevel) {
                     $collision = collect($barsAtLevel)->contains(function ($b) use ($colStart, $colEnd) {
                         $bStart = $b['colStart'];
-                        $bEnd   = $bStart + $b['span'] - 1;
+                        $bEnd = $bStart + $b['span'] - 1;
+
                         return max($bStart, $colStart) <= min($bEnd, $colEnd);
                     });
 
-                    if (!$collision) {
+                    if (! $collision) {
                         $this->housingBars[$weekIdx][$level][] = $bar;
                         $placed = true;
                         break;
                     }
                 }
 
-                if (!$placed) {
+                if (! $placed) {
                     $this->housingBars[$weekIdx][] = [$bar];
                 }
             }

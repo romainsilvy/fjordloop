@@ -3,8 +3,8 @@
 namespace App\Livewire\Housing;
 
 use App\Models\Travel;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Show extends Component
 {

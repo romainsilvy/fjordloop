@@ -124,7 +124,7 @@ class MapboxTestHelpers
                     'type' => 'Feature',
                     'properties' => [
                         'name' => $address,
-                        'full_address' => "$address, $city, France",
+                        'full_address' => "{$address}, {$city}, France",
                         'feature_type' => 'address',
                         'context' => [
                             'place' => [

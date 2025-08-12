@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Travel;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Modelable;
 use Illuminate\Support\Facades\Validator;
+use Livewire\Attributes\Modelable;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class MembersSelector extends Component
 {

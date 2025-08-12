@@ -2,19 +2,18 @@
 
 namespace App\Livewire\Activity;
 
-use Flux\Flux;
-use Carbon\Carbon;
 use App\Models\Travel;
-use Livewire\Component;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Flux\Flux;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
-use Livewire\Attributes\Validate;
 
 class Create extends Component
 {
     use WithFileUploads;
-
 
     public Travel $travel;
 
@@ -48,7 +47,6 @@ class Create extends Component
     public $endDate;
     public $endTime;
     public $travelDateRange;
-
 
     public function mount(Travel $travel)
     {
@@ -93,10 +91,8 @@ class Create extends Component
             $this->endDate = $this->startDate;
         }
 
-
         $this->refreshAvailableEndDates($this->startDate);
     }
-
 
     public function updatedImages()
     {

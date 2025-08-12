@@ -3,9 +3,8 @@
 namespace App\Livewire\Activity;
 
 use App\Models\Travel;
-use Livewire\Component;
-use App\Models\Activity;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Show extends Component
 {

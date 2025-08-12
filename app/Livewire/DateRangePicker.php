@@ -3,9 +3,9 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Modelable;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class DateRangePicker extends Component
 {
@@ -31,11 +31,12 @@ class DateRangePicker extends Component
     #[Modelable]
     public array $dateRange = [
         'start' => '',
-        'end'   => '',
+        'end' => '',
     ];
 
     /**
      * Full calendar split into weeks (each week is a list of day arrays)
+     *
      * @var list<list<array{
      *   day:int,
      *   month:int,
@@ -70,10 +71,10 @@ class DateRangePicker extends Component
 
             // pull strings safely; use strict empty checks
             $startStr = $this->dateRange['start'] ?? '';
-            $endStr   = $this->dateRange['end'] ?? '';
+            $endStr = $this->dateRange['end'] ?? '';
 
             $selectedStartDate = $startStr !== '' ? Carbon::parse($startStr) : null;
-            $selectedEndDate   = $endStr !== ''   ? Carbon::parse($endStr)   : null;
+            $selectedEndDate = $endStr !== '' ? Carbon::parse($endStr) : null;
 
             /** @var list<array{day:int,month:int,year:int,isSelectedStart:bool,isSelectedEnd:bool,isBetween:bool,isToday:bool}> $daysFlat */
             $daysFlat = [];
@@ -88,8 +89,8 @@ class DateRangePicker extends Component
                         'month' => $this->previousMonth,
                         'year' => $this->previousYear,
                         'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
-                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
-                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
+                        'isSelectedEnd' => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween' => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
@@ -104,8 +105,8 @@ class DateRangePicker extends Component
                         'month' => $this->currentMonth,
                         'year' => $this->currentYear,
                         'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
-                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
-                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
+                        'isSelectedEnd' => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween' => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
@@ -123,8 +124,8 @@ class DateRangePicker extends Component
                         'month' => $this->nextMonth,
                         'year' => $this->nextYear,
                         'isSelectedStart' => $selectedStartDate && $selectedStartDate->isSameDay($currentDate),
-                        'isSelectedEnd'   => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
-                        'isBetween'       => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
+                        'isSelectedEnd' => $selectedEndDate && $selectedEndDate->isSameDay($currentDate),
+                        'isBetween' => $selectedStartDate && $selectedEndDate && $currentDate->greaterThan($selectedStartDate) && $currentDate->lessThan($selectedEndDate),
                         'isToday' => $currentDate->isToday(),
                     ];
                 }
@@ -163,7 +164,7 @@ class DateRangePicker extends Component
             $formattedDate = $date->format('Y-m-d');
 
             $start = $this->dateRange['start'] ?? '';
-            $end   = $this->dateRange['end'] ?? '';
+            $end = $this->dateRange['end'] ?? '';
 
             if ($start === '') {
                 $this->dateRange['start'] = $formattedDate;
@@ -206,7 +207,6 @@ class DateRangePicker extends Component
 
         $this->updateCalendar();
     }
-
 
     public function render()
     {

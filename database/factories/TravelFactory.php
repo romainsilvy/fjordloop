@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
-use App\Models\Travel;
-use App\Models\Housing;
 use App\Models\Activity;
-use Carbon\Carbon;
+use App\Models\Housing;
+use App\Models\Travel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon as SupportCarbon;   // alias to avoid confusion
+use Illuminate\Support\Carbon as SupportCarbon;
+
+   // alias to avoid confusion
 
 /**
  * @extends Factory<\App\Models\Travel>
@@ -21,12 +22,12 @@ class TravelFactory extends Factory
         $length = $this->faker->numberBetween(3, 20);
 
         return [
-            'name'            => $this->faker->sentence(3),
-            'place_name'      => $this->faker->city,
-            'place_latitude'  => $this->faker->latitude,
+            'name' => $this->faker->sentence(3),
+            'place_name' => $this->faker->city,
+            'place_latitude' => $this->faker->latitude,
             'place_longitude' => $this->faker->longitude,
-            'start_date'      => $start,
-            'end_date'        => (clone $start)->modify("+{$length} days"),
+            'start_date' => $start,
+            'end_date' => (clone $start)->modify("+{$length} days"),
         ];
     }
 
@@ -56,21 +57,21 @@ class TravelFactory extends Factory
                 $nights = rand(1, 3);
                 $checkout = (clone $cursor)->addDays($nights)->min($tripEnd);
 
-                $checkIn  = (clone $cursor)->setTime(15, 0, 0);
+                $checkIn = (clone $cursor)->setTime(15, 0, 0);
                 $checkOut = (clone $checkout)->setTime(11, 0, 0);
 
                 $housings[] = [
-                    'travel_id'   => $travel->id,
-                    'name'        => fake()->company . ' Hotel',
+                    'travel_id' => $travel->id,
+                    'name' => fake()->company . ' Hotel',
                     'description' => fake()->sentence(10),
-                    'place_name'  => fake()->address,
-                    'place_latitude'  => fake()->latitude,
+                    'place_name' => fake()->address,
+                    'place_latitude' => fake()->latitude,
                     'place_longitude' => fake()->longitude,
-                    'price_by_group'  => fake()->randomFloat(2, 50, 500),
-                    'start_date'  => $checkIn->toDateString(),
-                    'start_time'  => $checkIn->toTimeString(),
-                    'end_date'    => $checkOut->toDateString(),
-                    'end_time'    => $checkOut->toTimeString(),
+                    'price_by_group' => fake()->randomFloat(2, 50, 500),
+                    'start_date' => $checkIn->toDateString(),
+                    'start_time' => $checkIn->toTimeString(),
+                    'end_date' => $checkOut->toDateString(),
+                    'end_time' => $checkOut->toTimeString(),
                 ];
 
                 $cursor = (clone $checkout)->addDay()->startOfDay();
@@ -103,20 +104,20 @@ class TravelFactory extends Factory
                 // Generate activities for this day, start between 07:00 and 20:00 and lasting 30–180 minutes
                 for ($i = 0; $i < $dailyCount; $i++) {
                     $start = (clone $day)->setTime(7, 0)->addMinutes(rand(0, 13 * 60));
-                    $end   = (clone $start)->addMinutes(rand(30, 180));
+                    $end = (clone $start)->addMinutes(rand(30, 180));
 
                     $activities[] = [
-                        'travel_id'   => $travel->id,
-                        'name'        => fake()->sentence(3),
+                        'travel_id' => $travel->id,
+                        'name' => fake()->sentence(3),
                         'description' => fake()->sentence(10),
-                        'place_name'  => fake()->address,
-                        'place_latitude'  => fake()->latitude,
+                        'place_name' => fake()->address,
+                        'place_latitude' => fake()->latitude,
                         'place_longitude' => fake()->longitude,
-                        'price_by_group'  => fake()->randomFloat(2, 0, 200),
-                        'start_date'  => $start->toDateString(),
-                        'start_time'  => $start->toTimeString(),
-                        'end_date'    => $end->toDateString(),
-                        'end_time'    => $end->toTimeString(),
+                        'price_by_group' => fake()->randomFloat(2, 0, 200),
+                        'start_date' => $start->toDateString(),
+                        'start_time' => $start->toTimeString(),
+                        'end_date' => $end->toDateString(),
+                        'end_time' => $end->toTimeString(),
                     ];
                 }
 

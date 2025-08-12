@@ -3,19 +3,17 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\Travel;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Housing extends Model implements HasMedia
 {
-    use HasUuids, HasFactory, InteractsWithMedia;
+    use HasFactory, HasUuids, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -38,16 +36,6 @@ class Housing extends Model implements HasMedia
         'end_date' => 'date',
     ];
 
-    public function getStartTimeAttribute($startTime)
-    {
-        return $startTime ? Carbon::parse($startTime)->format('H:i') : null;
-    }
-
-    public function getEndTimeAttribute($endTime)
-    {
-        return $endTime ? Carbon::parse($endTime)->format('H:i') : null;
-    }
-
     protected static function booted()
     {
         static::addGlobalScope('userIsMember', function (Builder $builder) {
@@ -59,6 +47,16 @@ class Housing extends Model implements HasMedia
                 }
             });
         });
+    }
+
+    public function getStartTimeAttribute($startTime)
+    {
+        return $startTime ? Carbon::parse($startTime)->format('H:i') : null;
+    }
+
+    public function getEndTimeAttribute($endTime)
+    {
+        return $endTime ? Carbon::parse($endTime)->format('H:i') : null;
     }
 
     public function getMediaDisplay()

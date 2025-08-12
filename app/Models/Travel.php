@@ -3,21 +3,18 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\Housing;
-use App\Models\Activity;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Travel extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -32,6 +29,13 @@ class Travel extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public static function fromInvitation(string $token): ?Travel
+    {
+        return self::withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
+            $query->where('token', $token);
+        })->first();
+    }
 
     protected static function booted()
     {
@@ -122,15 +126,6 @@ class Travel extends Model
     {
         return $query->whereNull('start_date')->orWhereNull('end_date');
     }
-
-    public static function fromInvitation(string $token): ?Travel
-    {
-        return self::withoutGlobalScope('userIsMember')->whereHas('invitations', function (Builder $query) use ($token) {
-            $query->where('token', $token);
-        })->first();
-    }
-
-
 
     public function attachOwner(User $user): void
     {
@@ -269,7 +264,7 @@ class Travel extends Model
                 'latitude' => $housing->place_latitude,
                 'longitude' => $housing->place_longitude,
                 'place_name' => $housing->place_name,
-                'type'=> 'housing',
+                'type' => 'housing',
             ];
         }
         $events = [];
@@ -297,6 +292,7 @@ class Travel extends Model
         usort($events, function ($a, $b) {
             $aTime = $a['start_time'];
             $bTime = $b['start_time'];
+
             return strcmp($aTime, $bTime);
         });
 

@@ -1,18 +1,19 @@
 <?php
 
 use App\Livewire\MonthCalendar;
-use App\Models\Travel;
-use App\Models\User;
 use App\Models\Activity;
 use App\Models\Housing;
+use App\Models\Travel;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Livewire;
 
-function createMonthCalendarComponent($travel = null) {
+function createMonthCalendarComponent($travel = null)
+{
     $user = User::factory()->create();
     auth()->login($user);
 
-    if (!$travel) {
+    if (! $travel) {
         $travel = Travel::factory()->withOwner($user)->create([
             'start_date' => Carbon::now()->startOfMonth(),
             'end_date' => Carbon::now()->endOfMonth(),
@@ -123,7 +124,7 @@ test('calendar includes events from travel activities', function () {
 
     foreach ($days as $week) {
         foreach ($week as $day) {
-            if (!empty($day['events'])) {
+            if (! empty($day['events'])) {
                 foreach ($day['events'] as $event) {
                     if ($event['name'] === 'Test Activity' && $event['type'] === 'activity') {
                         $hasActivityEvent = true;
@@ -164,7 +165,7 @@ test('calendar includes events from travel housings', function () {
 
     foreach ($days as $week) {
         foreach ($week as $day) {
-            if (!empty($day['events'])) {
+            if (! empty($day['events'])) {
                 foreach ($day['events'] as $event) {
                     if ($event['name'] === 'Test Hotel' && $event['type'] === 'housing') {
                         $hasHousingEvent = true;
@@ -237,7 +238,7 @@ test('housing bars are generated correctly', function () {
     // Should have housing bars for the week containing the housing
     $hasHousingBar = false;
     foreach ($housingBars as $weekIndex => $weekBars) {
-        if (!empty($weekBars)) {
+        if (! empty($weekBars)) {
             foreach ($weekBars as $level => $bars) {
                 foreach ($bars as $bar) {
                     if ($bar['name'] === 'Test Hotel') {
@@ -450,7 +451,7 @@ test('housing bars handle housings that span multiple weeks', function () {
     // Should have housing bars in multiple weeks
     $weeksWithBars = 0;
     foreach ($housingBars as $weekIndex => $weekBars) {
-        if (!empty($weekBars)) {
+        if (! empty($weekBars)) {
             $weeksWithBars++;
         }
     }

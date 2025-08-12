@@ -39,7 +39,7 @@ test('can add multiple members', function () {
     expect($component->get('members'))->toBe([
         'user1@example.com',
         'user2@example.com',
-        'user3@example.com'
+        'user3@example.com',
     ]);
     expect($component->get('memberToAdd'))->toBe('');
     expect($component->get('error'))->toBe('');

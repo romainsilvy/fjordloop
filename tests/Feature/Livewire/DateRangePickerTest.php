@@ -4,9 +4,10 @@ use App\Livewire\DateRangePicker;
 use Carbon\Carbon;
 use Livewire\Livewire;
 
-function createDateRangePickerComponent($dateRange = null) {
+function createDateRangePickerComponent($dateRange = null)
+{
     return Livewire::test(DateRangePicker::class, [
-        'dateRange' => $dateRange ?? ['start' => '', 'end' => '']
+        'dateRange' => $dateRange ?? ['start' => '', 'end' => ''],
     ]);
 }
 

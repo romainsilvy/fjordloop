@@ -4,8 +4,6 @@ use App\Livewire\Housing\Show;
 use App\Models\Housing;
 use App\Models\Travel;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 test('housing show component can be rendered', function () {
