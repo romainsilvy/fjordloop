@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.2] - 2025-08-12
+
+- docs(changelog): update for v1.0.1 (f9ddfba)
+- :bricks: improve the cicd process (bce36b2)
+- :zap: add duster and fix errors (d9bfcac)
+- :bricks: add code coverage to the cicd (edfda59)
+- :bug: fix linter (517b85a)
+- :bricks: fix deploy workflows (1223381)
+
 ## [v1.0.1] - 2025-08-10
 
 - docs(changelog): update for v1.0.0 (5771bc7)
@@ -116,4 +125,4 @@ All notable changes to this project will be documented in this file.
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-10 19:16:09
+Generated on 2025-08-12 14:49:03
