@@ -18,20 +18,20 @@ class HousingFactory extends Factory
         $isPriceByPerson = $this->faker->boolean();
 
         return [
-            'name'             => $this->faker->sentence(3),
-            'description'      => $this->faker->sentence(10),
-            'url'              => $this->faker->boolean() ? $this->faker->url() : null,
-            'price_by_person'  => $isPriceByPerson ? $this->faker->randomFloat(2, 0, 250) : null,
-            'price_by_group'   => $isPriceByPerson ? null : $this->faker->randomFloat(2, 0, 500),
-            'place_name'       => $this->faker->address(),
-            'place_latitude'   => $this->faker->latitude(),
-            'place_longitude'  => $this->faker->longitude(),
+            'name' => $this->faker->sentence(3),
+            'description' => $this->faker->sentence(10),
+            'url' => $this->faker->boolean() ? $this->faker->url() : null,
+            'price_by_person' => $isPriceByPerson ? $this->faker->randomFloat(2, 0, 250) : null,
+            'price_by_group' => $isPriceByPerson ? null : $this->faker->randomFloat(2, 0, 500),
+            'place_name' => $this->faker->address(),
+            'place_latitude' => $this->faker->latitude(),
+            'place_longitude' => $this->faker->longitude(),
             // these will be filled by forTravel()
-            'start_date'       => null,
-            'start_time'       => null,
-            'end_date'         => null,
-            'end_time'         => null,
-            'travel_id'        => null,
+            'start_date' => null,
+            'start_time' => null,
+            'end_date' => null,
+            'end_time' => null,
+            'travel_id' => null,
         ];
     }
 
@@ -57,11 +57,11 @@ class HousingFactory extends Factory
             );
 
             return [
-                'travel_id'  => $travel->id,
+                'travel_id' => $travel->id,
                 'start_date' => $checkIn->format('Y-m-d'),
                 'start_time' => $checkIn->format('H:i:s'),
-                'end_date'   => $checkOut->format('Y-m-d'),
-                'end_time'   => $checkOut->format('H:i:s'),
+                'end_date' => $checkOut->format('Y-m-d'),
+                'end_time' => $checkOut->format('H:i:s'),
             ];
         });
     }

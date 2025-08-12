@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Travel;
 
-use App\Models\Activity;
 use App\Models\Travel;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Show extends Component
 {

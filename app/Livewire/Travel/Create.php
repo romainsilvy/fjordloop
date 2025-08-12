@@ -3,9 +3,9 @@
 namespace App\Livewire\Travel;
 
 use App\Models\Travel;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
-use Livewire\Attributes\Validate;
 
 class Create extends Component
 {
@@ -43,7 +43,8 @@ class Create extends Component
         $travel->attachOwner($user);
         $travel->inviteMembers($this->members, $user);
 
-        Toaster::success( 'Voyage créée!');
+        Toaster::success('Voyage créée!');
+
         return redirect()->route('travel.show', [
             'travelId' => $travel->id,
         ]);

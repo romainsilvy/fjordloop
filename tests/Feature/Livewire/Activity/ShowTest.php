@@ -4,8 +4,6 @@ use App\Livewire\Activity\Show;
 use App\Models\Activity;
 use App\Models\Travel;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 test('activity show component can be rendered', function () {

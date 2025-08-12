@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Travel;
 
-use Flux\Flux;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
-use Livewire\Attributes\Validate;
 
 class Update extends Component
 {
@@ -33,7 +32,6 @@ class Update extends Component
     public function mount($travel)
     {
         $this->travel = $travel;
-
 
         $this->loadFields();
     }
@@ -76,6 +74,7 @@ class Update extends Component
         $this->travel->inviteMembers($this->membersToInvite, $user);
 
         Toaster::success('Voyage modifié!');
+
         return redirect()->route('travel.show', [
             'travelId' => $this->travel->id,
         ]);

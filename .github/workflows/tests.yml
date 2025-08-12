@@ -1,16 +1,22 @@
 name: tests
 
 on:
-  push:
-    branches:
-      - develop
-      - main
   pull_request:
     branches:
       - develop
       - main
+  workflow_call:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Duster Lint"
+        uses: tighten/duster-action@v3
+        with:
+          args: lint
+
   ci:
     runs-on: ubuntu-latest
     environment: Testing
@@ -96,7 +102,8 @@ jobs:
           php artisan view:clear
 
       - name: Run Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --coverage --min=100
         env:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
           APP_URL: http://localhost
+          XDEBUG_MODE: coverage

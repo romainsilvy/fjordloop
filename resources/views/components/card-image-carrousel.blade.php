@@ -34,7 +34,7 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
         </button>
         <div class="carousel-container relative flex justify-center items-center overflow-hidden">
             <template x-for="(media, index) in images" :key="index">
-                <div class="w-full {{$customHeight}} transition-all duration-500 bg-black/5"
+                <div class="w-full {{ $customHeight }} transition-all duration-500 bg-black/5"
                      x-show="currentIndex === index">
                     <img :src="media.url" class="w-full h-full object-contain"
                         :alt="media.name || 'Activity image'" />
@@ -50,7 +50,7 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
     </div>
 </div>
 @else
-<div class="w-full {{$customHeight}} bg-primary-500 rounded-lg">
+<div class="w-full {{ $customHeight }} bg-primary-500 rounded-lg">
     <div class="w-full h-full flex justify-center items-center bg-black/5">
         <flux:icon.photo class="size-18 text-primary-400" />
     </div>

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 
 class TravelInvitation extends Model
 {
-
     use HasFactory, HasUuids;
     protected $fillable = [
         'travel_id',

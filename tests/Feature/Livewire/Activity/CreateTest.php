@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
-use Masmerise\Toaster\Toaster;
 
 test('activity create component can be rendered', function () {
     $user = User::factory()->create();

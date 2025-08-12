@@ -1,15 +1,12 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Travel;
-use Livewire\Livewire;
-
-use App\Models\Activity;
 use App\Livewire\WeekCalendar;
+use App\Models\Activity;
 use App\Models\Housing;
-
-use function Pest\Laravel\{get};
+use App\Models\Travel;
+use App\Models\User;
+use Carbon\Carbon;
+use Livewire\Livewire;
 
 beforeEach(function () {
     // Freeze time for consistent testing
@@ -20,7 +17,7 @@ it('mounts correctly with current week', function () {
     // Create a travel instance
     $travel = Travel::factory()->create([
         'start_date' => '2024-03-01',
-        'end_date' => '2024-03-31'
+        'end_date' => '2024-03-31',
     ]);
 
     // Test the component
@@ -36,7 +33,7 @@ it('mounts correctly with current week', function () {
 it('navigates to previous week correctly', function () {
     $travel = Travel::factory()->create([
         'start_date' => '2024-03-01',
-        'end_date' => '2024-03-31'
+        'end_date' => '2024-03-31',
     ]);
 
     Livewire::test(WeekCalendar::class, ['travel' => $travel])
@@ -49,7 +46,7 @@ it('navigates to previous week correctly', function () {
 it('navigates to next week correctly', function () {
     $travel = Travel::factory()->create([
         'start_date' => '2024-03-01',
-        'end_date' => '2024-03-31'
+        'end_date' => '2024-03-31',
     ]);
 
     Livewire::test(WeekCalendar::class, ['travel' => $travel])
@@ -63,7 +60,7 @@ it('updates calendar when activity is created', function () {
     $owner = User::factory()->create();
     $travel = Travel::factory()->withOwner($owner)->create([
         'start_date' => Carbon::now()->startOfWeek(Carbon::MONDAY),
-        'end_date' => Carbon::now()->endOfWeek(Carbon::MONDAY)
+        'end_date' => Carbon::now()->endOfWeek(Carbon::MONDAY),
     ]);
     $this->actingAs($owner);
 
@@ -78,7 +75,6 @@ it('updates calendar when activity is created', function () {
     // Simulate activity creation event and wait for it to be processed
     $component->dispatch('activityCreated');
 
-
     expect($component->get('days'))->not->toBe($initialDays)
         ->and($component->get('days'))->toHaveCount(7);
 });
@@ -87,7 +83,7 @@ it('updates calendar when housing is created', function () {
     $owner = User::factory()->create();
     $travel = Travel::factory()->withOwner($owner)->create([
         'start_date' => Carbon::now()->startOfWeek(Carbon::MONDAY),
-        'end_date' => Carbon::now()->endOfWeek(Carbon::MONDAY)
+        'end_date' => Carbon::now()->endOfWeek(Carbon::MONDAY),
     ]);
     $this->actingAs($owner);
 
@@ -102,7 +98,6 @@ it('updates calendar when housing is created', function () {
     // Simulate housing creation event and wait for it to be processed
     $component->dispatch('housingCreated');
 
-
     expect($component->get('days'))->not->toBe($initialDays)
         ->and($component->get('days'))->toHaveCount(7);
 });
@@ -110,7 +105,7 @@ it('updates calendar when housing is created', function () {
 it('displays correct day information', function () {
     $travel = Travel::factory()->create([
         'start_date' => '2024-03-01',
-        'end_date' => '2024-03-31'
+        'end_date' => '2024-03-31',
     ]);
 
     $component = Livewire::test(WeekCalendar::class, ['travel' => $travel]);
@@ -127,7 +122,7 @@ it('displays correct day information', function () {
         'shortDayName',
         'date',
         'isToday',
-        'events'
+        'events',
     ]);
 
     // Test if today is marked correctly
@@ -139,7 +134,7 @@ it('displays correct day information', function () {
 it('formats dates correctly', function () {
     $travel = Travel::factory()->create([
         'start_date' => '2024-03-01',
-        'end_date' => '2024-03-31'
+        'end_date' => '2024-03-31',
     ]);
 
     $component = Livewire::test(WeekCalendar::class, ['travel' => $travel]);

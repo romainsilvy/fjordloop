@@ -3,12 +3,12 @@
 namespace App\Livewire;
 
 use App\Services\MapboxService;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Modelable;
+use Exception;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Modelable;
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Masmerise\Toaster\Toaster;
-
 
 class SearchMap extends Component
 {
@@ -43,7 +43,7 @@ class SearchMap extends Component
                     Toaster::info('Aucun résultat trouvé pour votre recherche');
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // log the error
             Log::error('Mapbox search error: ' . $e->getMessage());
             Toaster::error('Une erreur est survenue dans la recherche, nos équipes ont été prévenues. Merci de réessayer plus tard');

@@ -2,7 +2,6 @@
 
 use App\Livewire\SearchMap;
 use Livewire\Livewire;
-use Masmerise\Toaster\Toaster;
 
 it('renders search map component', function () {
     // Mock to avoid API calls during rendering
@@ -81,7 +80,7 @@ it('handles MapboxService exceptions during search', function () {
     // Mock MapboxService to throw an exception
     $this->mock(\App\Services\MapboxService::class, function ($mock) {
         $mock->shouldReceive('searchPlaceWithGeojson')
-            ->andThrow(new \Exception('Service unavailable'));
+            ->andThrow(new Exception('Service unavailable'));
     });
 
     Livewire::test(SearchMap::class)

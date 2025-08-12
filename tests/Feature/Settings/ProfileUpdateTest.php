@@ -2,9 +2,9 @@
 
 use App\Livewire\Settings\Profile;
 use App\Models\User;
-use Livewire\Livewire;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
+use Livewire\Livewire;
 
 test('profile page is displayed', function () {
     $this->actingAs($user = User::factory()->create());

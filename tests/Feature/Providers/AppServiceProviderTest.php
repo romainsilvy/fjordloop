@@ -1,9 +1,9 @@
 <?php
 
 use App\Providers\AppServiceProvider;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 
 uses(RefreshDatabase::class);
 
@@ -73,7 +73,7 @@ describe('AppServiceProvider', function () {
 
             // Execute the compiled code and capture output
             ob_start();
-            eval("?>" . $compiled);
+            eval('?>' . $compiled);
             $result = ob_get_clean();
 
             expect($result)->toBe($case['expected']);
