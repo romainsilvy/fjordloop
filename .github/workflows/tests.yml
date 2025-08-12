@@ -11,6 +11,15 @@ on:
       - main
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Duster Lint"
+        uses: tighten/duster-action@v3
+        with:
+          args: lint
+
   ci:
     runs-on: ubuntu-latest
     environment: Testing
