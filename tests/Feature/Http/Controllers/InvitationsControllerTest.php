@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Travel;
-use App\Models\TravelInvitation;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 test('authenticated user can accept a valid invitation', function () {

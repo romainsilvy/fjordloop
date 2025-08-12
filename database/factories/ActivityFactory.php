@@ -18,20 +18,20 @@ class ActivityFactory extends Factory
         $isPriceByPerson = $this->faker->boolean();
 
         return [
-            'name'             => $this->faker->sentence(3),
-            'description'      => $this->faker->sentence(10),
-            'url'              => $this->faker->boolean() ? $this->faker->url() : null,
-            'price_by_person'  => $isPriceByPerson ? $this->faker->randomFloat(2, 0, 100) : null,
-            'price_by_group'   => $isPriceByPerson ? null : $this->faker->randomFloat(2, 0, 100),
-            'place_name'       => $this->faker->address(),
-            'place_latitude'   => $this->faker->latitude(),
-            'place_longitude'  => $this->faker->longitude(),
+            'name' => $this->faker->sentence(3),
+            'description' => $this->faker->sentence(10),
+            'url' => $this->faker->boolean() ? $this->faker->url() : null,
+            'price_by_person' => $isPriceByPerson ? $this->faker->randomFloat(2, 0, 100) : null,
+            'price_by_group' => $isPriceByPerson ? null : $this->faker->randomFloat(2, 0, 100),
+            'place_name' => $this->faker->address(),
+            'place_latitude' => $this->faker->latitude(),
+            'place_longitude' => $this->faker->longitude(),
             // date/time fields kept null here – they’ll be filled by forTravel()
-            'start_date'       => null,
-            'start_time'       => null,
-            'end_date'         => null,
-            'end_time'         => null,
-            'travel_id'        => null,
+            'start_date' => null,
+            'start_time' => null,
+            'end_date' => null,
+            'end_time' => null,
+            'travel_id' => null,
         ];
     }
 
@@ -48,17 +48,17 @@ class ActivityFactory extends Factory
             );
 
             // End must be on/after the start but still before the trip ends
-            $end   = $this->faker->dateTimeBetween(
+            $end = $this->faker->dateTimeBetween(
                 $start,
                 $travel->end_date
             );
 
             return [
-                'travel_id'  => $travel->id,
+                'travel_id' => $travel->id,
                 'start_date' => $start->format('Y-m-d'),
                 'start_time' => $start->format('H:i:s'),
-                'end_date'   => $end->format('Y-m-d'),
-                'end_time'   => $end->format('H:i:s'),
+                'end_date' => $end->format('Y-m-d'),
+                'end_time' => $end->format('H:i:s'),
             ];
         });
     }

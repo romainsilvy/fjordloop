@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\InvitationsController;
+use App\Livewire\Activity\Show as ActivityShow;
+use App\Livewire\Housing\Show as HousingShow;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Travel\Index as TravelIndex;
 use App\Livewire\Travel\Show as TravelShow;
-use App\Livewire\Activity\Show as ActivityShow;
-use App\Livewire\Housing\Show as HousingShow;
-
 use Illuminate\Support\Facades\Route;
 
 Route::view('dashboard', 'dashboard')
@@ -26,9 +25,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('travel.')
         ->group(function () {
             Route::get('/', TravelIndex::class)->name('index');
-            Route::get('/{travelId}', TravelShow::class)->name('show');
-
-
+            Route::get('{travelId}', TravelShow::class)->name('show');
 
             Route::prefix('{travelId}')
                 ->group(function () {
@@ -36,13 +33,13 @@ Route::middleware(['auth'])->group(function () {
                     Route::prefix('activity')
                         ->name('activity.')
                         ->group(function () {
-                            Route::get('/{activityId}', ActivityShow::class)->name('show');
+                            Route::get('{activityId}', ActivityShow::class)->name('show');
                         });
 
                     Route::prefix('housing')
                         ->name('housing.')
                         ->group(function () {
-                            Route::get('/{housingId}', HousingShow::class)->name('show');
+                            Route::get('{housingId}', HousingShow::class)->name('show');
                         });
                 });
 

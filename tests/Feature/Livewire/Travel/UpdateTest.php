@@ -5,7 +5,6 @@ use App\Models\Travel;
 use App\Models\TravelInvitation;
 use App\Models\User;
 use Livewire\Livewire;
-use Masmerise\Toaster\Toaster;
 
 test('travel update component can be rendered', function () {
     $user = User::factory()->create();

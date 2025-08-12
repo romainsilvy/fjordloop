@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Housing;
 
-use Flux\Flux;
-use Carbon\Carbon;
 use App\Models\Housing;
-use Livewire\Component;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Flux\Flux;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
-use Livewire\Attributes\Validate;
 
 class Update extends Component
 {
@@ -44,7 +44,6 @@ class Update extends Component
     public $price;
     public $priceType = 'price_by_person';
 
-
     public $availableStartDates = [];
     public $startDate;
     public $startTime;
@@ -52,7 +51,6 @@ class Update extends Component
     public $endDate;
     public $endTime;
     public $travelDateRange;
-
 
     public function mount($housing)
     {
@@ -83,7 +81,6 @@ class Update extends Component
 
         $period = CarbonPeriod::create($startDate, $endDate);
 
-
         foreach ($period as $date) {
             $key = $date->format('Y-m-d'); // e.g. 2025-06-01
             $value = $date->translatedFormat('l j F'); // e.g. Monday 6 June (with localization support)
@@ -94,7 +91,6 @@ class Update extends Component
 
         $this->availableStartDates = $this->travelDateRange;
         $this->refreshAvailableEndDates($this->startDate);
-
 
         if ($this->housing->price_by_person) {
             $this->priceType = 'price_by_person';
@@ -119,7 +115,6 @@ class Update extends Component
         $this->loadExistingMedia();
     }
 
-
     public function refreshAvailableEndDates($startDate)
     {
         $noDate = ['' => 'pas de date'];
@@ -133,7 +128,6 @@ class Update extends Component
     public function updatedStartDate()
     {
         $this->refreshAvailableEndDates($this->startDate);
-
 
         if ($this->startDate == null) {
             $this->endDate = null;
@@ -162,23 +156,6 @@ class Update extends Component
         $this->images = [];
     }
 
-    protected function loadExistingMedia()
-    {
-        if ($this->housing) {
-            $this->existingMedia = $this->housing->getMedia()
-                ->map(function ($media) {
-                    return [
-                        'id' => $media->id,
-                        'name' => $media->name,
-                        'url' => $media->getTemporaryUrl(Carbon::now()->addMinutes(5)),
-                        'file_name' => $media->file_name,
-                        'marked_for_deletion' => in_array($media->id, $this->mediaToDelete),
-                    ];
-                })
-                ->toArray();
-        }
-    }
-
     public function removeImage(int $index)
     {
         if (isset($this->tempImages[$index])) {
@@ -197,7 +174,7 @@ class Update extends Component
     public function markMediaForDeletion($mediaId)
     {
         if ($this->housing) {
-            if (!in_array($mediaId, $this->mediaToDelete)) {
+            if (! in_array($mediaId, $this->mediaToDelete)) {
                 $this->mediaToDelete[] = $mediaId;
             }
 
@@ -241,7 +218,7 @@ class Update extends Component
         // Delete marked media
         foreach ($this->mediaToDelete as $mediaId) {
             $this->housing->deleteMedia($mediaId);
-        };
+        }
 
         // Reset form
         $this->tempImages = [];
@@ -279,5 +256,22 @@ class Update extends Component
     public function render()
     {
         return view('livewire.housing.update');
+    }
+
+    protected function loadExistingMedia()
+    {
+        if ($this->housing) {
+            $this->existingMedia = $this->housing->getMedia()
+                ->map(function ($media) {
+                    return [
+                        'id' => $media->id,
+                        'name' => $media->name,
+                        'url' => $media->getTemporaryUrl(Carbon::now()->addMinutes(5)),
+                        'file_name' => $media->file_name,
+                        'marked_for_deletion' => in_array($media->id, $this->mediaToDelete),
+                    ];
+                })
+                ->toArray();
+        }
     }
 }

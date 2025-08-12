@@ -46,7 +46,7 @@
             :placeholder="__('Confirm password')"
         />
 
-        <p>En vous inscrivant vous acceptez de recevoir des e-mails de la part de {{config('app.name')}}</p>
+        <p>En vous inscrivant vous acceptez de recevoir des e-mails de la part de {{ config('app.name') }}</p>
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">

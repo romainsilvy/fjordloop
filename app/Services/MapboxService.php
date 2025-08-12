@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use Exception;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class MapboxService
@@ -19,13 +22,13 @@ class MapboxService
     /**
      * Recherche un lieu avec Mapbox et inclut les données GeoJSON
      *
-     * @param string $query Le terme de recherche
-     * @return \Illuminate\Http\Client\Response
+     * @param  string  $query  Le terme de recherche
+     * @return Response
      */
     public function searchPlaceWithGeojson($query)
     {
         if (empty($this->apiKey)) {
-            throw new \Exception("Mapbox API key is not configured");
+            throw new Exception('Mapbox API key is not configured');
         }
 
         $cacheKey = 'mapbox_search_' . md5($query);
@@ -34,8 +37,8 @@ class MapboxService
         $cachedData = Cache::get($cacheKey);
 
         if ($cachedData) {
-            return new \Illuminate\Http\Client\Response(
-                new \GuzzleHttp\Psr7\Response(200, [], json_encode($cachedData))
+            return new Response(
+                new GuzzleResponse(200, [], json_encode($cachedData))
             );
         }
 
@@ -47,7 +50,6 @@ class MapboxService
             'language' => 'fr',
         ]);
 
-
         if ($response->successful()) {
             Cache::put($cacheKey, $response->json(), 3600);
         }
@@ -57,15 +59,15 @@ class MapboxService
 
     public function formatSearchResults($response)
     {
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             return [];
         }
 
         $data = $response->json();
 
-
-        if (!isset($data['features']) || !is_array($data['features'])) {
+        if (! isset($data['features']) || ! is_array($data['features'])) {
             Log::warning('Mapbox response missing "features" key', ['response' => $data]);
+
             return [];
         }
 

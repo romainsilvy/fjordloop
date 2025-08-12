@@ -18,7 +18,6 @@ class GlobalMap extends Component
         $this->housings = $travel->housings()->hasPlace()->get();
     }
 
-
     public function render()
     {
         return view('livewire.travel.global-map');

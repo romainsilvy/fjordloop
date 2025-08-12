@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Blade::directive('euro', function ($expression) {
-            return "<?php echo number_format($expression, 2, ',', ' ') . ' €'; ?>";
+            return "<?php echo number_format({$expression}, 2, ',', ' ') . ' €'; ?>";
         });
     }
 }

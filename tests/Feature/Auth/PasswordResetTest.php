@@ -35,7 +35,7 @@ test('reset password screen can be rendered', function () {
         ->call('sendPasswordResetLink');
 
     Notification::assertSentTo($user, ResetPasswordNotification::class, function ($notification) {
-        $response = $this->get('/reset-password/'.$notification->token);
+        $response = $this->get('/reset-password/' . $notification->token);
 
         $response->assertStatus(200);
 
@@ -178,7 +178,7 @@ test('component initializes with empty email when not in request', function () {
 });
 
 test('password reset dispatches password reset event', function () {
-    \Event::fake();
+    Event::fake();
     Notification::fake();
 
     $user = User::factory()->create();
@@ -194,7 +194,7 @@ test('password reset dispatches password reset event', function () {
             ->set('password_confirmation', 'new-password')
             ->call('resetPassword');
 
-        \Event::assertDispatched(\Illuminate\Auth\Events\PasswordReset::class, function ($event) use ($user) {
+        Event::assertDispatched(\Illuminate\Auth\Events\PasswordReset::class, function ($event) use ($user) {
             return $event->user->id === $user->id;
         });
 
@@ -224,7 +224,7 @@ test('successful password reset updates user password and remember token', funct
 
         // Password should be updated
         expect($user->password)->not->toBe($originalPassword);
-        expect(\Hash::check('new-secure-password', $user->password))->toBeTrue();
+        expect(Hash::check('new-secure-password', $user->password))->toBeTrue();
 
         // Remember token should be regenerated
         expect($user->remember_token)->not->toBe($originalRememberToken);

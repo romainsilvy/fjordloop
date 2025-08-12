@@ -116,7 +116,7 @@ test('failed login attempts are rate limited', function () {
 });
 
 test('rate limiting lockout event is dispatched', function () {
-    \Event::fake();
+    Event::fake();
 
     $user = User::factory()->create();
 
@@ -134,7 +134,7 @@ test('rate limiting lockout event is dispatched', function () {
         ->set('password', 'wrong-password')
         ->call('login');
 
-    \Event::assertDispatched(\Illuminate\Auth\Events\Lockout::class);
+    Event::assertDispatched(\Illuminate\Auth\Events\Lockout::class);
 });
 
 test('successful login clears rate limiter', function () {

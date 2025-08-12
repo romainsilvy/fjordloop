@@ -4,7 +4,6 @@ use App\Livewire\Travel\Create;
 use App\Models\Travel;
 use App\Models\User;
 use Livewire\Livewire;
-use Masmerise\Toaster\Toaster;
 
 test('travel create component can be rendered', function () {
     $user = User::factory()->create();

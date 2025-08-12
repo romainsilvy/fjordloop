@@ -1,13 +1,11 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Travel;
-use App\Models\Housing;
 use App\Models\Activity;
-use App\Models\TravelInvitation;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Housing;
+use App\Models\Travel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
@@ -95,7 +93,7 @@ describe('Travel model', function () {
 
         $result = Travel::past()->get();
         expect($result->pluck('id'))->toContain($past->id)
-         ->not->toContain($future->id);
+            ->not->toContain($future->id);
     });
 
     it('scopeActive returns only active travels', function () {
@@ -109,7 +107,7 @@ describe('Travel model', function () {
         ]);
         $result = Travel::active()->get();
         expect($result->pluck('id'))->toContain($active->id)
-         ->not->toContain($inactive->id);
+            ->not->toContain($inactive->id);
     });
 
     it('scopeUpcoming returns only upcoming travels', function () {
@@ -117,7 +115,7 @@ describe('Travel model', function () {
         $current = Travel::factory()->create(['start_date' => now()->subDay(), 'end_date' => now()->addDay()]);
         $result = Travel::upcoming()->get();
         expect($result->pluck('id'))->toContain($upcoming->id)
-         ->not->toContain($current->id);
+            ->not->toContain($current->id);
     });
 
     it('scopeNoDate returns travels with missing dates', function () {
@@ -135,7 +133,7 @@ describe('Travel model', function () {
 
         $result = Travel::noDate()->get();
         expect($result->pluck('id'))->toContain($noStart->id)->toContain($noEnd->id)
-         ->not->toContain($full->id);
+            ->not->toContain($full->id);
     });
 
     it('can retrieve the owner of a travel', function () {

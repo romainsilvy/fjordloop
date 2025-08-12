@@ -9,7 +9,6 @@ class Index extends Component
 {
     public $sections = [];
 
-
     public function mount()
     {
         $upcoming = Travel::upcoming()->get();

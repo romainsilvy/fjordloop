@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Travel;
 use App\Models\TravelInvitation;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class TravelInvitationFactory extends Factory
     {
         return [
             'travel_id' => Travel::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
             'email' => $this->faker->unique()->safeEmail(),
             'token' => $this->faker->uuid(),
         ];

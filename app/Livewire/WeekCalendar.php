@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
-use Carbon\Carbon;
 use App\Models\Travel;
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class WeekCalendar extends Component
 {
@@ -28,9 +27,9 @@ class WeekCalendar extends Component
     {
         $this->travel = $travel;
 
-        $today        = Carbon::today();
-        $travelStart  = $travel->start_date ?? $today;
-        $travelEnd    = $travel->end_date   ?? $travelStart;
+        $today = Carbon::today();
+        $travelStart = $travel->start_date ?? $today;
+        $travelEnd = $travel->end_date ?? $travelStart;
 
         if ($today->between($travelStart, $travelEnd)) {
             $this->startDate = $today->copy()->startOfWeek(Carbon::MONDAY);
@@ -68,8 +67,6 @@ class WeekCalendar extends Component
         $this->startDateString = $this->startDate->translatedFormat('d M Y');
         $this->endDateString = $this->endDate->translatedFormat('d M Y');
     }
-
-
 
     public function next(): void
     {

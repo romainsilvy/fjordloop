@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Travel;
-use Illuminate\Http\Request;
 
 class InvitationsController extends Controller
 {
-    public function accept($token) {
+    public function accept($token)
+    {
         $travel = Travel::fromInvitation($token);
 
-        if (!$travel) {
+        if (! $travel) {
             return redirect()->route('travel.index')->error('Le lien d\'invitation est invalide.');
         }
 
@@ -23,10 +23,11 @@ class InvitationsController extends Controller
         return redirect()->route('travel.show', $travel->id)->success('Vous avez rejoint le voyage.');
     }
 
-    public function refuse($token) {
+    public function refuse($token)
+    {
         $travel = Travel::fromInvitation($token);
 
-        if (!$travel) {
+        if (! $travel) {
             return redirect()->route('travel.index')->error('Le lien d\'invitation est invalide.');
         }
 
@@ -35,6 +36,7 @@ class InvitationsController extends Controller
         }
 
         $travel->refuseInvitation($token);
+
         return redirect()->route('travel.index')->success('Vous avez refusé l\'invitation au voyage.');
     }
 }

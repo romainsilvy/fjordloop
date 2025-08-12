@@ -25,8 +25,8 @@
                         return;
                     }
 
-                    let travelLat = @json($travel->place_latitude);
-                    let travelLon = @json($travel->place_longitude);
+                    let travelLat = {!! json_encode($travel->place_latitude) !!}
+                    let travelLon = {!! json_encode($travel->place_longitude) !!}
                     let zoom = 12;
 
                     if (!travelLat && !travelLon) {
@@ -41,8 +41,8 @@
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(this.map);
 
-                    this.addMarkers(@json($activities), 'activity');
-                    this.addMarkers(@json($housings), 'housing');
+                    this.addMarkers({!! json_encode($activities) !!}, 'activity');
+                    this.addMarkers({!! json_encode($housings) !!}, 'housing');
                 });
             },
 
