@@ -14,6 +14,20 @@ jobs:
         with:
           args: lint
 
+  larastan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - name: Run Larastan
+        run: ./vendor/bin/phpstan analyse --no-progress --no-ansi
+
   ci:
     runs-on: ubuntu-latest
     environment: Testing
@@ -47,7 +61,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.3
           tools: composer:v2
           coverage: xdebug
 
