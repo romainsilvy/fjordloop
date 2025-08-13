@@ -64,12 +64,14 @@ release:
 
 	@echo "Updating composer.json version..."
 	# Compat GNU/BSD sed : tente GNU puis BSD
-	@sed -i 's/"version": "[^"]*"/"version": "$(VERSION)"/' composer.json 2>/dev/null || \
-		sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' composer.json 2>/dev/null || \
-		sed -i 's/"name": "laravel\/livewire-starter-kit",/&\
-    "version": "$(VERSION)",/' composer.json 2>/dev/null || \
-		sed -i '' 's/"name": "laravel\/livewire-starter-kit",/&\
-    "version": "$(VERSION)",/' composer.json
+	# Si le champ version existe, le mettre à jour, sinon l'ajouter après le nom
+	@if grep -q '"version"' composer.json; then \
+		sed -i 's/"version": "[^"]*"/"version": "$(VERSION)"/' composer.json 2>/dev/null || \
+		sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' composer.json; \
+	else \
+		sed -i 's/"name": "laravel\/livewire-starter-kit",/&\n    "version": "$(VERSION)",/' composer.json 2>/dev/null || \
+		sed -i '' 's/"name": "laravel\/livewire-starter-kit",/&\n    "version": "$(VERSION)",/' composer.json; \
+	fi
 	@echo "Version updated to $(VERSION) in composer.json"
 
 	@echo "Committing version bump..."
