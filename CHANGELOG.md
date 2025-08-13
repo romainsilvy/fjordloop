@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file.
 
 - docs(changelog): update for v1.0.3 (3208fb7)
 - :bricks: add larastan in the tests action (96897eb)
-- chore: bump version to v1.0.4 (da404f6)
+- :arrow_up: Bump league/commonmark (d5063b9)
+- :arrow_up: Bump livewire/livewire (2efa352)
+- :arrow_up: Bump axios in the npm_and_yarn group across 1 directory (71a3217)
+- :arrow_up: Bump form-data in the npm_and_yarn group across 1 directory (a521404)
+- :arrow_up: Bump vite in the npm_and_yarn group across 1 directory (7655dea)
+- chore: bump version to v1.0.4 (3de265d)
+- docs(changelog): update for v1.0.4 (7e2393f)
 
 ## [v1.0.3] - 2025-08-12
 
@@ -136,4 +142,4 @@ All notable changes to this project will be documented in this file.
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-13 10:49:16
+Generated on 2025-08-13 10:50:57
