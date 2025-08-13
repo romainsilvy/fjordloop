@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.4] - 2025-08-13
+
+- docs(changelog): update for v1.0.3 (3208fb7)
+- :bricks: add larastan in the tests action (96897eb)
+- chore: bump version to v1.0.4 (da404f6)
+
 ## [v1.0.3] - 2025-08-12
 
 - docs(changelog): update for v1.0.2 (7ccd72b)
@@ -130,4 +136,4 @@ All notable changes to this project will be documented in this file.
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
 
-Generated on 2025-08-12 15:06:29
+Generated on 2025-08-13 10:49:16
