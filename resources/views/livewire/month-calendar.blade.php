@@ -83,10 +83,14 @@
                                             bg-tertiary-50 border-tertiary-500"
                                      @if ($event['latitude'] && $event['longitude'])
                                          @click="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} })"
+                                         role="button"
+                                         tabindex="0"
+                                         aria-label="Focus sur la carte pour {{ $event['name'] }}"
+                                         @keydown.enter="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} })"
+                                         @keydown.space.prevent="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} })"
                                      @endif
                                      role="listitem"
-                                     aria-label="Événement {{ $event['name'] }}"
-                                     @if ($event['latitude'] && $event['longitude']) tabindex="0" @endif>
+                                     aria-label="Événement {{ $event['name'] }}">
                                     <div class="font-medium text-tertiary-600 whitespace-nowrap overflow-hidden text-ellipsis"><span class="text-black">{{ $event['start_time'] }} - </span>{{ $event['name'] }}</div>
                                 </div>
                             @endforeach
@@ -108,9 +112,11 @@
                                     text-[10px] leading-tight rounded px-1 overflow-hidden cursor-pointer"
                              style="grid-column: {{ $bar['colStart'] }} / span {{ $bar['span'] }};"
                              @click="$dispatch('focus-map-marker', { latitude: {{ $bar['latitude'] }}, longitude: {{ $bar['longitude'] }} })"
-                             role="listitem"
-                             aria-label="Logement {{ $bar['name'] }}"
-                             tabindex="0">
+                             role="button"
+                             tabindex="0"
+                             aria-label="Focus sur la carte pour le logement {{ $bar['name'] }}"
+                             @keydown.enter="$dispatch('focus-map-marker', { latitude: {{ $bar['latitude'] }}, longitude: {{ $bar['longitude'] }} })"
+                             @keydown.space.prevent="$dispatch('focus-map-marker', { latitude: {{ $bar['latitude'] }}, longitude: {{ $bar['longitude'] }} })">
                             <span class="font-medium">{{ $bar['name'] }}</span>
                         </div>
                     @endforeach
