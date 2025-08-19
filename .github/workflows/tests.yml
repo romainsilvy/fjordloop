@@ -28,6 +28,32 @@ jobs:
       - name: Run Larastan
         run: ./vendor/bin/phpstan analyse --no-progress --no-ansi
 
+  composer_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+      - name: Composer Audit
+        run: composer audit --no-interaction --no-ansi --locked
+
+  npm_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Node Dependencies (no scripts)
+        run: npm i --ignore-scripts
+      - name: npm audit
+        run: npm audit
+
   ci:
     runs-on: ubuntu-latest
     environment: Testing
