@@ -17,6 +17,8 @@ class Show extends Component
     {
         $this->travel = Travel::findOrFail($travelId);
 
+        $this->authorize('view', $this->travel);
+
         $this->refreshActivities();
         $this->refreshHousings();
     }

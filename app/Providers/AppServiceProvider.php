@@ -2,12 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
+use App\Models\Activity;
+use App\Models\Housing;
+use App\Models\Travel;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,7 +38,13 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             $key = ($request->input('email') ?? 'guest') . '|' . $request->ip();
+
             return Limit::perMinute(5)->by($key);
         });
+
+        // Register policies
+        Gate::policy(Travel::class, \App\Policies\TravelPolicy::class);
+        Gate::policy(Activity::class, \App\Policies\ActivityPolicy::class);
+        Gate::policy(Housing::class, \App\Policies\HousingPolicy::class);
     }
 }

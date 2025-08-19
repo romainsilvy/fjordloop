@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Housing extends Model implements HasMedia
 {
-    use HasFactory, HasUuids, InteractsWithMedia;
+    use AuthorizesRequests, HasFactory, HasUuids, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -83,5 +84,45 @@ class Housing extends Model implements HasMedia
     public function travel(): BelongsTo
     {
         return $this->belongsTo(Travel::class);
+    }
+
+    /**
+     * Check if the user can perform an action on this housing.
+     */
+    public function can(User $user, string $ability): bool
+    {
+        return $user->can($ability, $this);
+    }
+
+    /**
+     * Check if the user can view this housing.
+     */
+    public function canView(User $user): bool
+    {
+        return $this->can($user, 'view');
+    }
+
+    /**
+     * Check if theuser can update this housing.
+     */
+    public function canUpdate(User $user): bool
+    {
+        return $this->can($user, 'update');
+    }
+
+    /**
+     * Check if the user can delete this housing.
+     */
+    public function canDelete(User $user): bool
+    {
+        return $this->can($user, 'delete');
+    }
+
+    /**
+     * Check if the user can create housings for the associated travel.
+     */
+    public function canCreateForTravel(User $user): bool
+    {
+        return $this->travel->can($user, 'createHousing');
     }
 }

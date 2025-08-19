@@ -33,6 +33,8 @@ class Update extends Component
     {
         $this->travel = $travel;
 
+        $this->authorize('view', $this->travel);
+
         $this->loadFields();
     }
 
@@ -58,6 +60,8 @@ class Update extends Component
 
     public function save()
     {
+        $this->authorize('update', $this->travel);
+
         $this->validate();
 
         $user = auth()->user();
@@ -71,7 +75,10 @@ class Update extends Component
             'end_date' => $this->dateRange['end'],
         ]);
 
-        $this->travel->inviteMembers($this->membersToInvite, $user);
+        if (! empty($this->membersToInvite)) {
+            $this->authorize('inviteMembers', $this->travel);
+            $this->travel->inviteMembers($this->membersToInvite, $user);
+        }
 
         Toaster::success('Voyage modifié!');
 
@@ -82,6 +89,8 @@ class Update extends Component
 
     public function deleteMember($memberId)
     {
+        $this->authorize('manageMembers', $this->travel);
+
         $this->travel->members()->detach($memberId);
         $this->members = $this->travel->members()->get();
         Toaster::success('Membre supprimé!');
@@ -89,6 +98,8 @@ class Update extends Component
 
     public function deleteInvitation($invitationId)
     {
+        $this->authorize('manageMembers', $this->travel);
+
         $this->travel->invitations()->where('id', $invitationId)->delete();
         $this->invitations = $this->travel->invitations()->get();
         Toaster::success('Invitation supprimée!');
@@ -96,6 +107,8 @@ class Update extends Component
 
     public function resendInvitation($invitationId)
     {
+        $this->authorize('manageMembers', $this->travel);
+
         $invitation = $this->travel->invitations()->where('id', $invitationId)->first();
         if ($invitation) {
             $invitation->sendEmail();

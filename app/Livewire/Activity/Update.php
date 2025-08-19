@@ -58,6 +58,7 @@ class Update extends Component
         $this->activity = $activity;
 
         if ($this->activity) {
+            $this->authorize('update', $this->activity);
             $this->initFields();
 
             Flux::modal('update-activity')->show();

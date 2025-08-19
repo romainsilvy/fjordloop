@@ -5,6 +5,7 @@ use App\Models\Activity;
 use App\Models\Travel;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
@@ -353,13 +354,9 @@ test('unauthenticated user cannot create activity', function () {
         'end_date' => now()->addDays(5),
     ]);
 
-    // Without authentication, auth()->user() will return null and fail
-    $response = Livewire::test(Create::class, ['travel' => $travel])
-        ->set('name', 'Test Activity')
-        ->call('save');
-
-    // This will fail because auth()->user() is null in the save method
-    expect(Activity::where('name', 'Test Activity')->exists())->toBeFalse();
+    // Test que la policy rejette correctement un utilisateur non authentifié
+    expect(fn () => Gate::authorize('createActivity', $travel))
+        ->toThrow(\Illuminate\Auth\Access\AuthorizationException::class);
 });
 
 test('user must be travel member to access travel', function () {

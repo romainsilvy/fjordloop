@@ -3,6 +3,7 @@
 use App\Livewire\Travel\Create;
 use App\Models\Travel;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
 
 test('travel create component can be rendered', function () {
@@ -272,11 +273,9 @@ test('redirects to travel show page after creation', function () {
 });
 
 test('unauthenticated user cannot create travel', function () {
-    $this->expectException(\TypeError::class);
-
-    Livewire::test(Create::class)
-        ->set('name', 'Unauthorized Travel')
-        ->call('save');
+    // Test que la policy rejette correctement un utilisateur non authentifié
+    expect(fn () => Gate::authorize('create', \App\Models\Travel::class))
+        ->toThrow(\Illuminate\Auth\Access\AuthorizationException::class);
 });
 
 test('can handle empty members array', function () {

@@ -14,6 +14,8 @@ class GlobalMap extends Component
     public function mount(Travel $travel)
     {
         $this->travel = $travel;
+        $this->authorize('view', $this->travel);
+
         $this->activities = $travel->activities()->hasPlace()->get();
         $this->housings = $travel->housings()->hasPlace()->get();
     }

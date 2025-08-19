@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Travel extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use AuthorizesRequests, HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -269,9 +270,6 @@ class Travel extends Model
         }
         $events = [];
         foreach ($travelEvents as $event) {
-            if (empty($event['start_date']) || empty($event['end_date'])) {
-                continue;
-            }
 
             $startDate = Carbon::parse($event['start_date'])->startOfDay();
             $endDate = Carbon::parse($event['end_date'])->endOfDay();
@@ -297,5 +295,53 @@ class Travel extends Model
         });
 
         return $events;
+    }
+
+    /**
+     * Check if the user can perform an action on this travel.
+     */
+    public function can(User $user, string $ability): bool
+    {
+        return $user->can($ability, $this);
+    }
+
+    /**
+     * Check if the user can view this travel.
+     */
+    public function canView(User $user): bool
+    {
+        return $this->can($user, 'view');
+    }
+
+    /**
+     * Check if the user can update this travel.
+     */
+    public function canUpdate(User $user): bool
+    {
+        return $this->can($user, 'update');
+    }
+
+    /**
+     * Check if the user can delete this travel.
+     */
+    public function canDelete(User $user): bool
+    {
+        return $this->can($user, 'delete');
+    }
+
+    /**
+     * Check if the user can invite members to this travel.
+     */
+    public function canInviteMembers(User $user): bool
+    {
+        return $this->can($user, 'inviteMembers');
+    }
+
+    /**
+     * Check if the user can manage members of this travel.
+     */
+    public function canManageMembers(User $user): bool
+    {
+        return $this->can($user, 'manageMembers');
     }
 }
