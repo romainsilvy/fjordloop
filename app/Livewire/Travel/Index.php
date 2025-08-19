@@ -11,6 +11,8 @@ class Index extends Component
 
     public function mount()
     {
+        $this->authorize('viewAny', Travel::class);
+
         $upcoming = Travel::upcoming()->get();
         $active = Travel::active()->get();
         $past = Travel::past()->get();

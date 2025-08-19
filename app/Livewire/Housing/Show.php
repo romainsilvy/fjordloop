@@ -14,8 +14,10 @@ class Show extends Component
     public function mount($travelId, $housingId)
     {
         $this->travel = Travel::findOrFail($travelId);
+        $this->authorize('view', $this->travel);
 
         $this->housing = $this->travel->housings()->findOrFail($housingId);
+        $this->authorize('view', $this->housing);
     }
 
     #[On('housing-updated')]

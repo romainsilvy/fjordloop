@@ -15,8 +15,11 @@ class Show extends Component
     public function mount($travelId, $activityId)
     {
         $this->travel = Travel::findOrFail($travelId);
+        $this->authorize('view', $this->travel);
 
         $this->activity = $this->travel->activities()->findOrFail($activityId);
+        $this->authorize('view', $this->activity);
+
         $this->medias = $this->activity->getMediaDisplay();
     }
 

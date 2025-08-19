@@ -187,4 +187,82 @@ describe('Housing model', function () {
         expect($housing->id)->toBeString()
             ->and(strlen($housing->id))->toBe(36);
     });
+
+    // Tests pour les méthodes d'autorisation
+    it('can check user permissions', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($housing->can($member, 'view'))->toBeTrue();
+        expect($housing->can($member, 'update'))->toBeTrue();
+        expect($housing->can($member, 'delete'))->toBeTrue();
+    });
+
+    it('can check view permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($housing->canView($member))->toBeTrue();
+    });
+
+    it('can check update permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($housing->canUpdate($member))->toBeTrue();
+    });
+
+    it('can check delete permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($housing->canDelete($member))->toBeTrue();
+    });
+
+    it('can check create for travel permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($housing->canCreateForTravel($member))->toBeTrue();
+    });
+
+    it('non member cannot perform actions', function () {
+        $owner = User::factory()->create();
+        $nonMember = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $housing = Housing::factory()->forTravel($travel)->create();
+
+        expect($housing->can($nonMember, 'view'))->toBeFalse();
+        expect($housing->can($nonMember, 'update'))->toBeFalse();
+        expect($housing->can($nonMember, 'delete'))->toBeFalse();
+        expect($housing->canView($nonMember))->toBeFalse();
+        expect($housing->canUpdate($nonMember))->toBeFalse();
+        expect($housing->canDelete($nonMember))->toBeFalse();
+        expect($housing->canCreateForTravel($nonMember))->toBeFalse();
+    });
 });

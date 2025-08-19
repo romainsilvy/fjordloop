@@ -52,6 +52,8 @@ class Create extends Component
     {
         $this->travel = $travel;
 
+        $this->authorize('createHousing', $this->travel);
+
         $startDate = Carbon::parse($travel->start_date);
         $endDate = Carbon::parse($travel->end_date);
 

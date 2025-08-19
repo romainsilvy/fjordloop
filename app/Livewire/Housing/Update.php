@@ -57,6 +57,7 @@ class Update extends Component
         $this->housing = $housing;
 
         if ($this->housing) {
+            $this->authorize('update', $this->housing);
             $this->initFields();
 
             Flux::modal('update-housing')->show();

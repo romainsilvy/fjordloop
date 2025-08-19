@@ -187,4 +187,82 @@ describe('Activity model', function () {
         expect($activity->id)->toBeString()
             ->and(strlen($activity->id))->toBe(36);
     });
+
+    // Tests pour les méthodes d'autorisation
+    it('can check user permissions', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($activity->can($member, 'view'))->toBeTrue();
+        expect($activity->can($member, 'update'))->toBeTrue();
+        expect($activity->can($member, 'delete'))->toBeTrue();
+    });
+
+    it('can check view permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($activity->canView($member))->toBeTrue();
+    });
+
+    it('can check update permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($activity->canUpdate($member))->toBeTrue();
+    });
+
+    it('can check delete permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($activity->canDelete($member))->toBeTrue();
+    });
+
+    it('can check create for travel permission', function () {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        // Ajouter le membre au voyage
+        $travel->members()->attach($member->id);
+
+        expect($activity->canCreateForTravel($member))->toBeTrue();
+    });
+
+    it('non member cannot perform actions', function () {
+        $owner = User::factory()->create();
+        $nonMember = User::factory()->create();
+        $travel = Travel::factory()->withOwner($owner)->create();
+        $activity = Activity::factory()->forTravel($travel)->create();
+
+        expect($activity->can($nonMember, 'view'))->toBeFalse();
+        expect($activity->can($nonMember, 'update'))->toBeFalse();
+        expect($activity->can($nonMember, 'delete'))->toBeFalse();
+        expect($activity->canView($nonMember))->toBeFalse();
+        expect($activity->canUpdate($nonMember))->toBeFalse();
+        expect($activity->canDelete($nonMember))->toBeFalse();
+        expect($activity->canCreateForTravel($nonMember))->toBeFalse();
+    });
 });

@@ -1,7 +1,9 @@
 <?php
 
 use App\Providers\AppServiceProvider;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 
@@ -95,6 +97,29 @@ describe('AppServiceProvider', function () {
         $provider = new AppServiceProvider($this->app);
 
         expect($provider)->toBeInstanceOf(AppServiceProvider::class);
+    });
+
+    it('configures rate limiter for login', function () {
+        // Test que le rate limiter est configuré
+        $rateLimiter = app(RateLimiter::class);
+
+        // Créer une fausse requête
+        $request = Request::create('/login', 'POST', [
+            'email' => 'test@example.com',
+        ]);
+        $request->server->set('REMOTE_ADDR', '127.0.0.1');
+
+        // Obtenir le limiteur pour 'login'
+        $limiter = $rateLimiter->limiter('login');
+
+        // Vérifier que le limiteur existe et peut être appelé
+        expect($limiter)->toBeCallable();
+
+        // Appeler le limiteur avec la requête
+        $limit = $limiter($request);
+
+        // Vérifier que c'est une instance de Limit
+        expect($limit)->toBeInstanceOf(\Illuminate\Cache\RateLimiting\Limit::class);
     });
 
 });
