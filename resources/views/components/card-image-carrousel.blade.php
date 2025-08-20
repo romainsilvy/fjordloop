@@ -29,30 +29,45 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
         <button type="button"
             x-show="images.length > 1"
             class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-            x-on:click="prev()">
+            x-on:click="prev()"
+            aria-label="Image précédente"
+            @keydown.enter="prev()"
+            @keydown.space.prevent="prev()">
             <flux:icon.chevron-left />
         </button>
         <div class="carousel-container relative flex justify-center items-center overflow-hidden">
             <template x-for="(media, index) in images" :key="index">
                 <div class="w-full {{ $customHeight }} transition-all duration-500 bg-black/5"
-                     x-show="currentIndex === index">
+                     x-show="currentIndex === index"
+                     role="img"
+                     :aria-label="media.name || 'Image de l\'activité'"
+                     :aria-describedby="'image-' + index">
                     <img :src="media.url" class="w-full h-full object-contain"
-                        :alt="media.name || 'Activity image'" />
+                        :alt="media.name ? 'Image de ' + media.name : 'Image de l\'activité ou du logement'" />
                 </div>
             </template>
         </div>
         <button type="button"
             x-show="images.length > 1"
             class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-            x-on:click="next()">
+            x-on:click="next()"
+            aria-label="Image suivante"
+            @keydown.enter="next()"
+            @keydown.space.prevent="next()">
             <flux:icon.chevron-right />
         </button>
     </div>
+
+    @if (count($medias) > 1)
+        <flux:description class="mt-2 text-center text-sm text-zinc-500">
+            Utilisez les flèches ou naviguez au clavier pour parcourir les {{ count($medias) }} images
+        </flux:description>
+    @endif
 </div>
 @else
 <div class="w-full {{ $customHeight }} bg-primary-500 rounded-lg">
     <div class="w-full h-full flex justify-center items-center bg-black/5">
-        <flux:icon.photo class="size-18 text-primary-400" />
+        <flux:icon.photo class="size-18 text-primary-400" aria-hidden="true" />
     </div>
 </div>
 @endif

@@ -14,6 +14,7 @@
             autofocus
             autocomplete="email"
             placeholder="email@example.com"
+            description="Entrez votre adresse e-mail pour vous connecter à votre compte"
         />
 
         <!-- Password -->
@@ -25,6 +26,7 @@
                 required
                 autocomplete="current-password"
                 :placeholder="__('Password')"
+                description="Entrez votre mot de passe pour accéder à votre compte"
             />
 
             @if (Route::has('password.request'))
@@ -35,7 +37,7 @@
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        <flux:checkbox wire:model="remember" :label="__('Remember me')" description="Cochez cette case pour rester connecté sur cet appareil" />
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>

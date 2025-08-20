@@ -35,7 +35,14 @@
                 <div class="flex-1 overflow-y-auto min-h-0 gap-1 flex flex-col mt-1">
                     @foreach ($day['events'] as $event)
                         <div class="text-xs bg-secondary-50 border-l-2 border-secondary-500 px-2 py-1 rounded shadow-sm {{ $event['latitude'] && $event['longitude'] ? 'cursor-pointer' : '' }} "
-                             @if ($event['latitude'] && $event['longitude']) @click="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )" @endif>
+                             @if ($event['latitude'] && $event['longitude'])
+                                 @click="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )"
+                                 tabindex="0"
+                                 role="button"
+                                 aria-label="Focus sur la carte pour {{ $event['name'] }}"
+                                 @keydown.enter="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )"
+                                 @keydown.space.prevent="$dispatch('focus-map-marker', { latitude: {{ $event['latitude'] }}, longitude: {{ $event['longitude'] }} } )"
+                             @endif>
                             <div class="text-secondary-600 font-medium">{{ $event['name'] }}</div>
                             <div class="text-zinc-500">{{ $event['start_time'] }}
                                 {{ $event['end_time'] ? ' - ' : '' }} {{ $event['end_time'] }}</div>

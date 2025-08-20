@@ -5,8 +5,8 @@
         $url = $full ? $url : \Illuminate\Support\Str::limit($url, 50);
     @endphp
 
-    <div class="flex flex-row items-center justify-start gap-2">
-        <flux:icon.link class="size-4" />
+    <div class="flex flex-row items-center justify-start gap-2" role="group" aria-label="Lien externe">
+        <flux:icon.link class="size-4" aria-hidden="true" />
 
         @if ($clickable)
             <a class="underline" href="{{ $url }}" target="_blank" rel="noopener noreferrer">

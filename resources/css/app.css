@@ -103,14 +103,35 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+/* Focus styles for keyboard navigation accessibility */
 *:focus {
-    outline: none !important;
+    outline: 2px solid var(--color-primary-600) !important;
+    outline-offset: 2px !important;
 }
 
-/* If you need focus indicators for accessibility, use a different style */
 *:focus-visible {
-    outline: none !important;
-    outline-offset: 0 !important;
+    outline: 2px solid var(--color-primary-600) !important;
+    outline-offset: 2px !important;
+}
+
+/* Enhanced focus styles for interactive elements */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[role="button"]:focus,
+[tabindex]:focus {
+    outline: 2px solid var(--color-primary-600) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(225, 190, 137, 0.2) !important;
+}
+
+/* Focus styles for Flux components */
+[data-flux-control]:focus {
+    outline: 2px solid var(--color-primary-600) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(225, 190, 137, 0.2) !important;
 }
 
 /* \[:where(&)\]:size-4 {

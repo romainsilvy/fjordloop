@@ -1,8 +1,8 @@
 @props(['startDate' => null, 'endDate' => null, 'startTime' => null, 'endTime' => null])
 
 @if ($startDate)
-    <div class="flex flex-row items-center justify-start gap-2">
-        <flux:icon.calendar-date-range class="size-4" />
+    <div class="flex flex-row items-center justify-start gap-2" role="group" aria-label="Informations de date et heure">
+        <flux:icon.calendar-date-range class="size-4" aria-hidden="true" />
 
         <p>
             @if ($startDate)

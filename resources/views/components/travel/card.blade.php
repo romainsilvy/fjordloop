@@ -7,9 +7,9 @@
     <x-travel.show-date :travel="$travel" />
 
     @if ($travel->place_name)
-        <div class="flex flex-row items-center justify-start gap-2">
-            <flux:icon.map-pin class="size-4" />
-            <p class="text-sm">{{ $travel->place_name }}
+        <div class="flex flex-row items-center justify-start gap-2" role="group" aria-label="Localisation du voyage">
+            <flux:icon.map-pin class="size-4" aria-hidden="true" />
+            <p class="text-sm">{{ $travel->place_name }}</p>
         </div>
     @endif
 
