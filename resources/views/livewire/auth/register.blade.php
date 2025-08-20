@@ -14,6 +14,7 @@
             autofocus
             autocomplete="name"
             :placeholder="__('Full name')"
+            description="Entrez votre nom complet tel qu'il apparaîtra sur votre profil"
         />
 
         <!-- Email Address -->
@@ -24,6 +25,7 @@
             required
             autocomplete="email"
             placeholder="email@example.com"
+            description="Entrez votre adresse e-mail pour créer votre compte et recevoir les notifications"
         />
 
         <!-- Password -->
@@ -34,6 +36,7 @@
             required
             autocomplete="new-password"
             :placeholder="__('Password')"
+            description="Créez un mot de passe sécurisé d'au moins 8 caractères"
         />
 
         <!-- Confirm Password -->
@@ -44,9 +47,10 @@
             required
             autocomplete="new-password"
             :placeholder="__('Confirm password')"
+            description="Confirmez votre mot de passe en le saisissant une seconde fois"
         />
 
-        <p>En vous inscrivant vous acceptez de recevoir des e-mails de la part de {{ config('app.name') }}</p>
+        <p class="text-sm text-zinc-600">En vous inscrivant vous acceptez de recevoir des e-mails de la part de {{ config('app.name') }}</p>
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">

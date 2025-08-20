@@ -57,6 +57,12 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
             <flux:icon.chevron-right />
         </button>
     </div>
+
+    @if (count($medias) > 1)
+        <flux:description class="mt-2 text-center text-sm text-zinc-500">
+            Utilisez les flèches ou naviguez au clavier pour parcourir les {{ count($medias) }} images
+        </flux:description>
+    @endif
 </div>
 @else
 <div class="w-full {{ $customHeight }} bg-primary-500 rounded-lg">

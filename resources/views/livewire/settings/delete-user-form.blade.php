@@ -20,7 +20,12 @@
                 </flux:subheading>
             </div>
 
-            <flux:input wire:model="password" :label="__('Password')" type="password" aria-required="true" />
+            <flux:input
+                wire:model="password"
+                :label="__('Password')"
+                type="password"
+                aria-required="true"
+                description="Entrez votre mot de passe actuel pour confirmer la suppression définitive de votre compte" />
 
             <div class="flex justify-end space-x-2 rtl:space-x-reverse">
                 <flux:modal.close>

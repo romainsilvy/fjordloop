@@ -5,7 +5,12 @@
             <p id="create-travel-description" class="sr-only">Formulaire pour créer un nouveau voyage</p>
         </div>
 
-        <flux:input label="Nom" placeholder="Nom du voyage" wire:model="name" aria-required="true" />
+        <flux:input
+            label="Nom"
+            placeholder="Nom du voyage"
+            wire:model="name"
+            aria-required="true"
+            description="Entrez le nom de votre voyage (ex: Week-end à Paris, Vacances d'été en Espagne)" />
 
         <livewire:travel.members-selector wire:model="members" />
 

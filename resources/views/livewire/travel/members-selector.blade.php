@@ -2,6 +2,7 @@
         <flux:label class="inline-flex items-center text-sm font-medium text-zinc-800">
         {{ $title }}
     </flux:label>
+    <flux:description>Ajoutez de nouveaux membres en saisissant leur adresse e-mail. Ils recevront une invitation par e-mail.</flux:description>
 
     <div
         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm py-2 min-h-10 leading-[1.375rem] ps-3 pe-3 bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200"
@@ -13,7 +14,8 @@
                 placeholder="Ajouter un membre par e-mail"
                 class="w-full"
                 @keydown.enter.prevent="$wire.addMember()"
-                aria-label="Ajouter un membre par e-mail">
+                aria-label="Ajouter un membre par e-mail"
+                aria-describedby="member-email-help">
             </input>
             <span class="w-5 h-5 cursor-pointer"
                 wire:click="addMember"
@@ -21,6 +23,7 @@
                 tabindex="0"
                 aria-label="Ajouter le membre">+</span>
         </div>
+        <div id="member-email-help" class="sr-only">Saisissez l'adresse e-mail de la personne que vous souhaitez inviter</div>
 
         <div>
             @if (count($members) > 0)
@@ -38,7 +41,6 @@
                 @if (!$loop->last)
                     <hr class="border-zinc-200" aria-hidden="true">
                 @endif
-                {{-- <hr> --}}
             @endforeach
         </div>
     </div>

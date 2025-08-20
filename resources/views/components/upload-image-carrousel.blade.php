@@ -1,7 +1,9 @@
 @props(['images', 'existingImages' => [], 'inputId', 'modalId'])
 <div class="mt-4" x-data="uploadCarrousel(@js($modalId), @js($inputId))">
+    <flux:label class="block text-sm font-medium text-gray-700 mb-2">Images</flux:label>
+    <flux:description class="mb-3">Ajoutez des images pour illustrer votre contenu. Formats acceptés : JPG, PNG, GIF. Taille maximale : 10MB par image.</flux:description>
+
     <input type="file" id="{{ $inputId }}" wire:model="images" multiple hidden x-ref="fileInput" accept="image/*" />
-    <label class="block text-sm font-medium text-gray-700 mb-2">Images</label>
     <div class="relative">
         <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
             x-show="isScrollable" x-on:click="this.$refs.carousel.scrollBy({left: -250, behavior: 'smooth'})"

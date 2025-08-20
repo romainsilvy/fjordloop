@@ -2,6 +2,7 @@
         <flux:label class="inline-flex items-center text-sm font-medium text-zinc-800">
         Lieu
     </flux:label>
+    <flux:description>Recherchez et sélectionnez un lieu pour votre activité, logement ou voyage. La recherche utilise OpenStreetMap pour trouver des adresses précises.</flux:description>
 
     <div
         class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200"
@@ -14,8 +15,10 @@
                 placeholder="Rechercher un lieu"
                 class="w-full"
                 aria-label="Rechercher un lieu"
-                role="searchbox">
+                role="searchbox"
+                aria-describedby="search-help">
             </input>
+            <div id="search-help" class="sr-only">Saisissez le nom d'un lieu, une adresse ou un point d'intérêt pour le rechercher</div>
 
             <div wire:loading.delay wire:target="query"
                 class="absolute top-1/2 end-3 -translate-y-1/2 transform flex items-center gap-x-1.5 text-xs text-zinc-400"

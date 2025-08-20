@@ -13,6 +13,7 @@
             required
             autocomplete="email"
             aria-required="true"
+            description="Votre adresse e-mail (pré-remplie pour confirmation)"
         />
 
         <!-- Password -->
@@ -24,6 +25,7 @@
             autocomplete="new-password"
             :placeholder="__('Password')"
             aria-required="true"
+            description="Créez un nouveau mot de passe sécurisé d'au moins 8 caractères"
         />
 
         <!-- Confirm Password -->
@@ -35,6 +37,7 @@
             autocomplete="new-password"
             :placeholder="__('Confirm password')"
             aria-required="true"
+            description="Confirmez votre nouveau mot de passe en le saisissant une seconde fois"
         />
 
         <div class="flex items-center justify-end">

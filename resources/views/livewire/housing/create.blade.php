@@ -5,14 +5,30 @@
             <p id="create-housing-description" class="sr-only">Formulaire pour créer un nouveau logement</p>
         </div>
 
-        <flux:input label="Nom" placeholder="Nom du logement" wire:model="name" aria-required="true" />
-        <flux:textarea label="Description" placeholder="Description" wire:model="description" />
-        <flux:input type="url" label="Url" placeholder="Url du logement" wire:model="url" />
+        <flux:input
+            label="Nom"
+            placeholder="Nom du logement"
+            wire:model="name"
+            aria-required="true"
+            description="Entrez le nom du logement (ex: Hôtel Central, Appartement Vue Mer)" />
+
+        <flux:textarea
+            label="Description"
+            placeholder="Description"
+            wire:model="description"
+            description="Décrivez le logement, ses équipements et ses caractéristiques" />
+
+        <flux:input
+            type="url"
+            label="Url"
+            placeholder="Url du logement"
+            wire:model="url"
+            description="Lien vers le site web de réservation ou d'information (optionnel)" />
 
         <x-upload-image-carrousel :images="$tempImages" inputId="upload-image-carrousel-housing-create" modalId="create-housing-modal" />
 
         <div class="*:w-1/2 flex items-center gap-4" role="group" aria-label="Dates et heures du logement">
-            <flux:input.group label="Début">
+            <flux:input.group label="Début" description="Date et heure d'arrivée au logement">
                 <flux:select class="max-w-fit" wire:model.live="startDate" aria-label="Date de début">
                     <flux:select.option value="">pas de date</flux:select.option>
                     @foreach ($availableStartDates as $key => $date)
@@ -23,7 +39,7 @@
                 <flux:input type="time" wire:model.live="startTime" aria-label="Heure de début" />
             </flux:input.group>
 
-            <flux:input.group label="Fin">
+            <flux:input.group label="Fin" description="Date et heure de départ du logement">
                 <flux:select class="max-w-fit" wire:model.live="endDate" aria-label="Date de fin">
                     @if (!$startDate)
                         <flux:select.option value="">pas de date</flux:select.option>
@@ -38,8 +54,13 @@
         </div>
 
         <div class="*:w-1/2" role="group" aria-label="Prix du logement">
-            <flux:input.group label="Prix">
-                <flux:input type="number" placeholder="99.99" wire:model="price" aria-label="Montant du prix" />
+            <flux:input.group label="Prix" description="Informations sur le coût du logement">
+                <flux:input
+                    type="number"
+                    placeholder="99.99"
+                    wire:model="price"
+                    aria-label="Montant du prix"
+                    description="Prix en euros (ex: 120.00)" />
 
                 <flux:select class="max-w-fit" wire:model="priceType" aria-label="Type de prix">
                     @foreach ($availablePrices as $key => $availablePrice)

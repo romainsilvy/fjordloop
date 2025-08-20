@@ -5,7 +5,12 @@
             <p id="update-travel-description" class="sr-only">Formulaire pour modifier le voyage</p>
         </div>
 
-        <flux:input label="Nom" placeholder="Nom du voyage" wire:model="name" aria-required="true" />
+        <flux:input
+            label="Nom"
+            placeholder="Nom du voyage"
+            wire:model="name"
+            aria-required="true"
+            description="Entrez le nom de votre voyage (ex: Week-end à Paris, Vacances d'été en Espagne)" />
 
         <livewire:search-map wire:model="place" />
 
@@ -14,6 +19,7 @@
                 <flux:label class="inline-flex items-center text-sm font-medium text-zinc-800">
                     Invitations en attente
                 </flux:label>
+                <flux:description>Gérez les invitations envoyées aux utilisateurs qui n'ont pas encore rejoint le voyage</flux:description>
 
                 <div
                     class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] ps-3 pe-3 bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200"
@@ -48,6 +54,7 @@
             <flux:label class="inline-flex items-center text-sm font-medium text-zinc-800">
                 Membres
             </flux:label>
+            <flux:description>Liste des membres actuels du voyage et options de gestion</flux:description>
 
             <div
                 class="w-full border rounded-lg block disabled:shadow-none appearance-none text-base sm:text-sm min-h-10 leading-[1.375rem] ps-3 pe-3 bg-white text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200"

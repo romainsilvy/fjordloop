@@ -17,6 +17,7 @@
             autocomplete="new-password"
             :placeholder="__('Password')"
             aria-required="true"
+            description="Entrez votre mot de passe actuel pour confirmer votre identité et accéder à cette zone sécurisée"
         />
 
         <flux:button variant="primary" type="submit" class="w-full" aria-label="Confirmer le mot de passe">{{ __('Confirm') }}</flux:button>

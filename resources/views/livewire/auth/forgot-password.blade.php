@@ -14,6 +14,7 @@
             autofocus
             placeholder="email@example.com"
             aria-required="true"
+            description="Entrez l'adresse e-mail associée à votre compte pour recevoir un lien de réinitialisation"
         />
 
         <flux:button variant="primary" type="submit" class="w-full" aria-label="Envoyer le lien de réinitialisation du mot de passe">{{ __('Email password reset link') }}</flux:button>

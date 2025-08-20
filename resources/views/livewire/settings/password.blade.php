@@ -10,6 +10,7 @@
                 required
                 autocomplete="current-password"
                 aria-required="true"
+                description="Entrez votre mot de passe actuel pour confirmer votre identité"
             />
             <flux:input
                 wire:model="password"
@@ -18,6 +19,7 @@
                 required
                 autocomplete="new-password"
                 aria-required="true"
+                description="Créez un nouveau mot de passe sécurisé d'au moins 8 caractères"
             />
             <flux:input
                 wire:model="password_confirmation"
@@ -26,6 +28,7 @@
                 required
                 autocomplete="new-password"
                 aria-required="true"
+                description="Confirmez votre nouveau mot de passe en le saisissant une seconde fois"
             />
 
             <div class="flex items-center gap-4">

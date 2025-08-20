@@ -10,11 +10,20 @@
     @endif
 
     <div class="flex flex-col items-center justify-between space-y-3" role="group" aria-label="Actions de vérification">
-        <flux:button wire:click="sendVerification" variant="primary" class="w-full" aria-label="Renvoyer l'email de vérification">
+        <flux:button
+            wire:click="sendVerification"
+            variant="primary"
+            class="w-full"
+            aria-label="Renvoyer l'email de vérification"
+            description="Cliquez pour recevoir un nouvel email de vérification">
             {{ __('auth.verification.resend_email') }}
         </flux:button>
 
-        <flux:link class="text-sm cursor-pointer" wire:click="logout" aria-label="Se déconnecter">
+        <flux:link
+            class="text-sm cursor-pointer"
+            wire:click="logout"
+            aria-label="Se déconnecter"
+            description="Vous pouvez vous déconnecter et vous reconnecter plus tard pour vérifier votre email">
             {{ __('auth.verification.logout') }}
         </flux:link>
     </div>
