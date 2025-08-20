@@ -32,6 +32,24 @@
 - (no commits yet)
 
 
+## [v1.0.7] - 2025-08-20
+
+### Refactor
+- improve html structure with good types, aria labels and descriptions
+- improve keyboard navigation
+- add all form informations and labels 
+- add image alt
+
+
+### Commit history
+
+- :memo: changelog: cut v1.0.6 (a06b7b0)
+- :wheelchair: add aria label and description (009f3e4)
+- :wheelchair: improve keyboard navigation (07e21db)
+- :wheelchair: improve form informations (09b382d)
+- :wheelchair: improve image informations (eef9c55)
+
+
 ## [v1.0.6] - 2025-08-20
 
 ### Refactor
