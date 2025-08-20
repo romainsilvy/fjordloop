@@ -6,13 +6,13 @@
     <input type="file" id="{{ $inputId }}" wire:model="images" multiple hidden x-ref="fileInput" accept="image/*" />
     <div class="relative">
         <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-            x-show="isScrollable" x-on:click="this.$refs.carousel.scrollBy({left: -250, behavior: 'smooth'})"
+            x-show="isScrollable" x-on:click="$refs.carousel.scrollBy({left: -250, behavior: 'smooth'})"
             aria-label="Faire défiler vers la gauche">
             <flux:icon.chevron-left />
         </button>
         <button type="button"
             class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow z-10"
-            x-show="isScrollable" x-on:click="this.$refs.carousel.scrollBy({left: 250, behavior: 'smooth'})"
+            x-show="isScrollable" x-on:click="$refs.carousel.scrollBy({left: 250, behavior: 'smooth'})"
             aria-label="Faire défiler vers la droite">
             <flux:icon.chevron-right />
         </button>
@@ -21,7 +21,7 @@
                 @if (!$image['marked_for_deletion'])
                     <div class="relative flex-none w-40 h-40 snap-start">
                         <img src="{{ $image['url'] }}" class="w-full h-full object-cover rounded-lg shadow"
-                            alt="{{ $image['name'] }}" />
+                            alt="{{ $image['name'] ? 'Image de ' . $image['name'] : 'Image existante ' . ($index + 1) }}" />
                         <button type="button" wire:click="markMediaForDeletion({{ $image['id'] }})"
                             class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition"
                             aria-label="Supprimer l'image {{ $image['name'] }}">
@@ -34,10 +34,10 @@
                 <div class="relative flex-none w-40 h-40 snap-start">
                     @if (method_exists($image, 'temporaryUrl'))
                         <img src="{{ $image->temporaryUrl() }}" class="w-full h-full object-cover rounded-lg shadow"
-                            alt="Uploaded image {{ $index + 1 }}" />
+                            alt="Image téléchargée {{ $index + 1 }} - {{ $image->getClientOriginalName() }}" />
                     @else
                         <div class="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                            <flux:icon.photo class="size-12 text-gray-400" />
+                            <flux:icon.photo class="size-12 text-gray-400" aria-hidden="true" />
                         </div>
                     @endif
                     <button type="button" wire:click="removeImage({{ $index }})"
@@ -48,7 +48,7 @@
                 </div>
             @endforeach
             <div class="flex-none w-40 h-40 snap-start">
-                <button type="button" x-on:click="this.$refs.fileInput.click()"
+                <button type="button" x-on:click="$refs.fileInput.click()"
                     class="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:text-gray-500 hover:border-gray-400 transition"
                     aria-label="Ajouter une nouvelle image">
                     <flux:icon.plus class="size-12" />

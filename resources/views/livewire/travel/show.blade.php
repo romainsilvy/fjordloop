@@ -10,9 +10,9 @@
                 <flux:heading size="xl" id="travel-detail-title">{{ ucfirst($travel->name) }}</flux:heading>
 
                 @if ($travel->place_name)
-                    <div class="flex flex-row items-center justify-start gap-2" role="text" aria-label="Lieu du voyage">
+                    <div class="flex flex-row items-center justify-start gap-2" role="group" aria-label="Lieu du voyage">
                         <flux:icon.map-pin class="size-4" aria-hidden="true" />
-                        <p class="text-sm">{{ $travel->place_name }}
+                        <p class="text-sm">{{ $travel->place_name }}</p>
                     </div>
                 @endif
 

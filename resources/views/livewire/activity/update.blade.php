@@ -57,12 +57,7 @@
 
         <div class="*:w-1/2" role="group" aria-label="Prix de l'activité">
             <flux:input.group label="Prix" description="Informations sur le coût de l'activité">
-                <flux:input
-                    type="number"
-                    placeholder="99.99"
-                    wire:model="price"
-                    aria-label="Montant du prix"
-                    description="Prix en euros (ex: 25.50)" />
+                <flux:input type="number" placeholder="99.99" wire:model="price" aria-label="Montant du prix"/>
 
                 <flux:select class="max-w-fit" wire:model="priceType" aria-label="Type de prix">
                     @foreach ($availablePrices as $key => $availablePrice)

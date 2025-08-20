@@ -43,7 +43,7 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
                      :aria-label="media.name || 'Image de l\'activité'"
                      :aria-describedby="'image-' + index">
                     <img :src="media.url" class="w-full h-full object-contain"
-                        :alt="media.name || 'Activity image'" />
+                        :alt="media.name ? 'Image de ' + media.name : 'Image de l\'activité ou du logement'" />
                 </div>
             </template>
         </div>
@@ -67,7 +67,7 @@ x-on:media-refreshed.window="updateImages($event.detail[0])"
 @else
 <div class="w-full {{ $customHeight }} bg-primary-500 rounded-lg">
     <div class="w-full h-full flex justify-center items-center bg-black/5">
-        <flux:icon.photo class="size-18 text-primary-400" />
+        <flux:icon.photo class="size-18 text-primary-400" aria-hidden="true" />
     </div>
 </div>
 @endif

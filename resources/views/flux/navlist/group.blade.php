@@ -16,8 +16,8 @@
         class="group/disclosure-button mb-[2px] flex h-10 w-full items-center rounded-lg text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 lg:h-8"
     >
         <div class="ps-3 pe-4">
-            <flux:icon.chevron-down class="hidden size-3! group-data-open/disclosure-button:block" />
-            <flux:icon.chevron-right class="block size-3! group-data-open/disclosure-button:hidden" />
+            <flux:icon.chevron-down class="hidden size-3! group-data-open/disclosure-button:block" aria-hidden="true" />
+            <flux:icon.chevron-right class="block size-3! group-data-open/disclosure-button:hidden" aria-hidden="true" />
         </div>
 
         <span class="text-sm font-medium leading-none">{{ $heading }}</span>
