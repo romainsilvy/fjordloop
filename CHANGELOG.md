@@ -1,3 +1,48 @@
+## [Unreleased]
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+### Security
+- 
+
+### Docs
+- 
+
+### CI
+- 
+
+### Refactor
+- 
+
+### Perf
+- 
+
+### Chore
+- 
+
+### Commit history
+
+- (no commits yet)
+
+
+## [v1.0.6] - 2025-08-20
+
+### Refactor
+- Edit makefile to allow the user to add details in the release
+- Use gitmojis in the release commits
+
+### Commit history
+
+- docs(changelog): update for v1.0.5 (433dacc)
+- :zap: refactor changelog (a227ae7)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
