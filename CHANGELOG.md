@@ -1,35 +1,12 @@
-## [Unreleased]
-
-### Added
-- 
-
-### Changed
-- 
+## [v1.0.8] - 2025-08-21
 
 ### Fixed
-- 
-
-### Security
-- 
-
-### Docs
-- 
-
-### CI
-- 
-
-### Refactor
-- 
-
-### Perf
-- 
-
-### Chore
-- 
+- make release command stop generating empty section in the changelog so everything is managed by the make changelog command
 
 ### Commit history
 
-- (no commits yet)
+- :memo: changelog: cut v1.0.7 (2f98687)
+- :bug: stop changelog generation in release (4ec3682)
 
 
 ## [v1.0.7] - 2025-08-20
@@ -61,11 +38,19 @@
 - docs(changelog): update for v1.0.5 (433dacc)
 - :zap: refactor changelog (a227ae7)
 
-# Changelog
-
-All notable changes to this project will be documented in this file.
 
 ## [v1.0.5] - 2025-08-19
+
+### Security
+- Added and hardened HTTP security headers.
+- Implemented login rate-limiting.
+- Introduced security policies.
+- Enabled composer audit and npm audit checks.
+
+### Changed
+- Streamlined user email verification flow.
+
+### Commit history
 
 - docs(changelog): update for v1.0.4 (5fb3e9f)
 - :lock: add security headers on requests (cd50867)
@@ -77,6 +62,14 @@ All notable changes to this project will be documented in this file.
 - chore: bump version to v1.0.5 (40aad39)
 
 ## [v1.0.4] - 2025-08-13
+
+### CI
+- Integrated Larastan into the test workflow.
+
+### Chore
+- Dependency bumps (commonmark, Livewire, axios, form-data, vite).
+
+### Commit history
 
 - docs(changelog): update for v1.0.3 (3208fb7)
 - :bricks: add larastan in the tests action (96897eb)
@@ -90,10 +83,27 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.0.3] - 2025-08-12
 
+### CI
+- Run tests on every pull request.
+
+### Commit history
+
 - docs(changelog): update for v1.0.2 (7ccd72b)
 - :bricks: run tests on every pu,ll request (3b233a8)
 
 ## [v1.0.2] - 2025-08-12
+
+### CI
+- Improved CI/CD pipeline and added code coverage reporting.
+- Fixed deployment workflows.
+
+### Refactor
+- Introduced Duster and applied style/lint fixes.
+
+### Fixed
+- Linter failures.
+
+### Commit history
 
 - docs(changelog): update for v1.0.1 (f9ddfba)
 - :bricks: improve the cicd process (bce36b2)
@@ -104,10 +114,32 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.0.1] - 2025-08-10
 
+### Added
+
+- Sentry integration for error tracking.
+
+### Commit history
+
 - docs(changelog): update for v1.0.0 (5771bc7)
 - :zap: add sentry (343c591)
 
 ## [v1.0.0] - 2025-08-10
+
+### Added
+- Project bootstrap and cleaned base install.
+- Travel management (index, create, update, show, invitations).
+- Activities module (create via modal, update, dedicated page, start/end dates, image management).
+- Maps & geodata (searchable map on create, global travel map, GeoJSON + lat/long storage, custom markers).
+- Calendars (month and week views, map ↔ event interactions like scroll-to-card and marker focus).
+- Housings (create, update, map integration).
+- Accounts & emails (email approval on registration).
+- UI assets & navigation (translations, logo, favicon, navbar, breadcrumbs, loaders).
+- Test infrastructure (initial test setup, examples for services/models/Livewire).
+
+### CI
+- Deployment actions and foundational test workflows.
+
+### Commit history
 
 - :zap: init repo (7365e71)
 - :zap: cleanup base install (8ed9c0b)
@@ -215,5 +247,3 @@ All notable changes to this project will be documented in this file.
 - :zap: changelog and release generator (2ec2968)
 - docs(changelog): update for v1.0.0 (2f9514a)
 - docs(changelog): update for v1.0.0 (7d560e9)
-
-Generated on 2025-08-19 23:28:08
