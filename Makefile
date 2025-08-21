@@ -148,30 +148,7 @@ release:
 	TMP=$$(mktemp)
 	awk -v newhdr="## [$$TAG] - $$DATE" 'BEGIN{ replaced=0 } { if(!replaced && $$0 ~ /^## \[Unreleased\]/){ print newhdr; replaced=1; next } print }' CHANGELOG.md > "$$TMP"
 
-	{
-	  echo "## [Unreleased]"
-	  echo
-	  echo "### Added";    echo "- "
-	  echo
-	  echo "### Changed";  echo "- "
-	  echo
-	  echo "### Fixed";    echo "- "
-	  echo
-	  echo "### Security"; echo "- "
-	  echo
-	  echo "### Docs";     echo "- "
-	  echo
-	  echo "### CI";       echo "- "
-	  echo
-	  echo "### Refactor"; echo "- "
-	  echo
-	  echo "### Perf";     echo "- "
-	  echo
-	  echo "### Chore";    echo "- "
-	  echo
-	  echo "### Commit history"; echo; echo "- (no commits yet)"; echo; echo
-	  cat "$$TMP"
-	} > CHANGELOG.md
+	cat "$$TMP" >> CHANGELOG.md
 	rm -f "$$TMP"
 
 	git add CHANGELOG.md
