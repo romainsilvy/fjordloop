@@ -1,3 +1,14 @@
+## [v1.2.0] - 2025-08-22
+
+### Docs
+- Total refactor of the readme file
+
+### Commit history
+
+- :memo: changelog: cut v1.1.0 (992a80b)
+- :memo: update readme (d79ff35)
+
+
 ## [v1.1.0] - 2025-08-22
 
 ### Added
