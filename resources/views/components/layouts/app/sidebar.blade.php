@@ -22,6 +22,12 @@
 
             <flux:spacer />
 
+            <flux:navlist.item
+                icon="envelope"
+                href="mailto:contact@tondomaine.com">
+                {{ __('Nous contacter') }}
+            </flux:navlist.item>
+
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
                 <flux:profile avatar:color="sky"
