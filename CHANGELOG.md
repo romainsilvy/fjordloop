@@ -1,3 +1,14 @@
+## [v1.0.9] - 2025-08-22
+
+### Fixed
+- add proper validation on housing dates in month calendar to avoid null errors 
+
+### Commit history
+
+- :memo: changelog: cut v1.0.8 (fcc5bc7)
+- :bug: fix housing with no date in month calendar (80b30b1)
+
+
 ## [v1.0.8] - 2025-08-21
 
 ### Fixed
