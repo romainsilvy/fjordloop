@@ -151,7 +151,7 @@ class MonthCalendar extends Component
             )->endOfDay();
 
             foreach ($housings as $h) {
-                if ($h->end_date->lt($rowStart) || $h->start_date->gt($rowEnd)) {
+                if (! $h->end_date || $h->end_date->lt($rowStart) || ! $h->start_date || $h->start_date->gt($rowEnd)) {
                     continue;
                 }
 
