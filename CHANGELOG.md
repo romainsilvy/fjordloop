@@ -1,3 +1,14 @@
+## [v1.1.0] - 2025-08-22
+
+### Added
+- Mailto contact button in the sidebar
+
+### Commit history
+
+- :memo: changelog: cut v1.0.9 (b77c484)
+- :zap: add contact button (e49344b)
+
+
 ## [v1.0.9] - 2025-08-22
 
 ### Fixed
